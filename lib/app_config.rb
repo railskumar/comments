@@ -72,7 +72,7 @@ module AppConfig
       
       Rails.extend(AppConfig::RailsExtensions)
       
-      config_file = "#{app.root}/config/application.yml"
+      config_file = "#{Rails.root}/config/application.yml"
       config = YAML.load_file(config_file)
       
       if !config[Rails.env]
