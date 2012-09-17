@@ -2,8 +2,10 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.1.6'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+# heroku gems and services
+gem 'pg'
+gem 'dalli'
+gem 'heroku'
 
 gem 'schema_plus'
 gem 'default_value_for'
@@ -30,6 +32,7 @@ end
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'mysql2'
   gem 'rspec-rails', '~> 2.4'
   gem 'capybara', :require => false
   gem 'capybara-webkit', :require => false
@@ -46,6 +49,3 @@ group :assets do
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier', '>= 1.0.3'
 end
-
-gem 'mysql2'
-# gem 'pg'
