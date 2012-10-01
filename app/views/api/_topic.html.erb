@@ -18,7 +18,7 @@
 	<% else %>
 		<div class="juvia-comments juvia-no-comments">There are no comments yet.</div>
 	<% end %>
-	<% if params[:user_logged_in]%>
+	<% if user_logged_in?(params[:user_logged_in])%>
 	  <h3>Add comment</h3>
 	  <%= render :partial => 'form' %>
 	<% else %>
