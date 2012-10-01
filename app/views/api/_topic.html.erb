@@ -18,8 +18,11 @@
 	<% else %>
 		<div class="juvia-comments juvia-no-comments">There are no comments yet.</div>
 	<% end %>
-	
-	<h3>Add comment</h3>
-	<%= render :partial => 'form' %>
+	<% if params[:user_logged_in]%>
+	  <h3>Add comment</h3>
+	  <%= render :partial => 'form' %>
+	<% else %>
+	  <h3>Please Login to richarddawkins.net to comment</h3>
+	<% end %>
 </div>
 </div> <!-- juvia-container -->
