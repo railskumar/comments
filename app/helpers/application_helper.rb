@@ -67,7 +67,4 @@ module ApplicationHelper
     end
   end
 
-  def user_logged_in?(logged_in)
-    logged_in == "true" 
-  end
 end

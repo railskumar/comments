@@ -106,10 +106,19 @@ private
   end
   
   def populate_variables
-    @container    = params[:container]
-    @site_key     = params[:site_key]
-    @topic_key    = params[:topic_key]
-    @jsonp        = params[:jsonp]
+    @container      = params[:container]
+    @site_key       = params[:site_key]
+    @topic_key      = params[:topic_key]
+    @jsonp          = params[:jsonp]
+    if @require_external_user = ( params[:use_my_user] == "true" )
+      if @user_logged_in = ( params[:user_logged_in] == "true" )
+        @username = params[:username]
+        @user_email = params[:user_email]
+        @user_image = params[:user_image]
+      else
+        @logged_in_message = params[:logged_in_message] || "Please Login to make comment"
+      end
+    end
   end
 
   def prepare!(required_params, accepted_formats)
