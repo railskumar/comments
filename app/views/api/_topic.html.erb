@@ -4,6 +4,17 @@
 	data-topic-title="<%= @topic_title %>"
 	data-topic-url="<%= @topic_url %>">
 <div class="juvia-topic">
+	<% if @require_external_user %>
+	  <% if @user_logged_in %> 
+	    <h3>Add comment</h3>
+	    <%= render :partial => 'user_form' %>
+	  <% else %>
+	    <h3><%= @logged_in_message%></h3>
+	  <% end %>
+    <% else %>
+      <h3>Add comment</h3>
+      <%= render :partial => 'form' %>
+    <% end %>
 	<% comments = topic.comments.visible.to_a %>
 	<% if comments.size == 1 %>
 		<h3 class="juvia-comment-count-header">1 comment</h3>
@@ -17,12 +28,6 @@
 		</div>
 	<% else %>
 		<div class="juvia-comments juvia-no-comments">There are no comments yet.</div>
-	<% end %>
-	<% if user_logged_in?(params[:user_logged_in])%>
-	  <h3>Add comment</h3>
-	  <%= render :partial => 'form' %>
-	<% else %>
-	  <h3>Please Login to richarddawkins.net to comment</h3>
 	<% end %>
 </div>
 </div> <!-- juvia-container -->
