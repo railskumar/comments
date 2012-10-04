@@ -1,6 +1,9 @@
 // -*- Mode: SCSS; tab-width: 4; indent-tabs-mode: true; c-basic-offset: 4 -*-
 
 @import "comment_content";
+@import "lib/bootstrap_overrides";
+
+
 
 .juvia-container {
 	font-family: 'Helvetica', 'Arial', 'Sans Serif';
@@ -51,6 +54,10 @@
 	float: left;
 	margin-top: -8px;
 	margin-left: -92px;
+}
+
+.juvia-avatar img{
+   border-radius: 6px 6px 6px 6px;
 }
 
 .juvia-comment .juvia-author {
@@ -134,7 +141,7 @@
 
 .juvia-textarea-field textarea {
 	width: 50em;
-	height: 15em;
+	height: 9em;
 }
 
 .juvia-form-actions .juvia-action {
