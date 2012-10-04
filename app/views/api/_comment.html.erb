@@ -4,14 +4,16 @@
 			<div class="juvia-avatar">
 				<img src="//www.gravatar.com/avatar/<%= comment.author_email_md5 %>?s=64"
 				width="64"
-				height="64"
+				height="40"
+				class="img-circle"
 				alt="<%= comment.author_name || 'Anonymous' %>">
 			</div>
 		<% else %>
 			<div class="juvia-avatar">
 				<img src="http://www.gravatar.com/avatar/generic?s=64"
 				width="64"
-				height="64"
+				height="40"
+				class="img-circle"
 				alt="<%= comment.author_name || 'Anonymous' %>">
 			</div>
 		<% end %>
@@ -19,7 +21,7 @@
 			<%= comment.author_name || 'Anonymous' %>
 		</div>
 		<div class="juvia-creation-date">
-			<%= comment.created_at.strftime("%B %d %Y, %H:%M") %>
+			<%= distance_of_time_in_words(Time.now, comment.created_at) + " ago"%>
 		</div>
 		<div class="juvia-end"></div>
 	</div>
