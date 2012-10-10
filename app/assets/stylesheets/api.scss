@@ -3,7 +3,31 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.juvia-vote-to-comment, .juvia-vote-to-topic, .juvia-reply-to-comment{
+	width:60px !important;
+}
 
+.juvia-vote-to-comment:hover,  .juvia-vote-to-topic:hover, .juvia-reply-to-comment:hover{
+	cursor:pointer;
+	text-decoration: underline;
+}
+
+.juvia-reply-to-comment a{
+    color: #707070 !important;
+    font-size: 14.6667px;
+}
+
+.votes-up-active, .votes-down-active{
+	color:#DA4F49;
+}
+
+#vote_for_unlike{
+    width:80px !important;
+}
+
+.juvia-topic h3{
+	margin:1em 0;
+}
 
 .juvia-container {
 	font-family: 'Helvetica', 'Arial', 'Sans Serif';
@@ -48,16 +72,17 @@
 	background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%); /* W3C */
 	margin-bottom: 0.5em;
 	padding: 8px;
+	border-radius: 3px 3px 3px 3px;
 }
 
 .juvia-comment .juvia-avatar {
 	float: left;
 	margin-top: -8px;
-	margin-left: -92px;
-}
-
-.juvia-avatar img{
-   border-radius: 6px 6px 6px 6px;
+	margin-left: -60px;
+	img{
+     border-radius: 6px 6px 6px 6px;
+     width:40px;
+   }
 }
 
 .juvia-comment .juvia-author {
@@ -72,11 +97,11 @@
 }
 
 .juvia-comment .juvia-metadata {
-	margin-left: 84px;
+	margin-left: 52px;
 }
 
 .juvia-comment .juvia-data {
-	margin-left: 92px;
+	margin-left: 55px;
 }
 
 .juvia-moderating {
@@ -156,6 +181,8 @@
 
 .juvia-preview h4 {
 	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+	color:#707070;
 }
 
 .juvia-preview-content {

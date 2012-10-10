@@ -82,6 +82,22 @@ if (!Juvia) {
 				self.replyToComment(comment);
 			});
 		});
+
+		$('.juvia-vote-to-comment').each(function() {
+			var $this = $(this);
+			//$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function(event) {
+				self.voteComment(event, this);
+			});
+		});
+
+		$('.juvia-vote-to-topic').each(function() {
+			var $this = $(this);
+			//$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function(event) {
+				self.voteTopic(event, this);
+			});
+		});
 	}
 	
 	Juvia.findContainer = function(options) {
@@ -134,6 +150,34 @@ if (!Juvia) {
 			(document.getElementsByTagName('head')[0] ||
 			 document.getElementsByTagName('body')[0]).appendChild(s);
 		}
+	}
+
+	Juvia.loadJsScript = function(path, options) {
+		var url = '<%= escape_javascript(request.protocol + request.host_with_port) %>';
+		url += path;
+		url += '.js';
+		
+		// Makes sure that each loadScript() call generates a unique URL,
+		// otherwise the browser may not actually perform the request.
+		url += '?_c=' + window._juviaRequestCounter;
+		window._juviaRequestCounter++;
+		
+		var paramString = $.param(options);
+		if (paramString.length > 0) {
+			url += '&';
+			url += paramString;
+		}
+		
+		$('script.juvia').remove();
+		
+		var s       = document.createElement('script');
+		s.async     = true;
+		s.type      = 'text/javascript';
+		s.className = 'juvia';
+		s.src       = url;
+		(document.getElementsByTagName('head')[0] ||
+		 document.getElementsByTagName('body')[0]).appendChild(s);
+
 	}
 	
 	Juvia.handleResponse = function(response) {
@@ -231,6 +275,105 @@ if (!Juvia) {
 			author_email: $('input[name="author_email"]', form).val(),
 			content     : this.compress($('textarea[name="content"]', form).val())
 		});
+	}
+
+	Juvia.voteComment = function(event, this_obj) {
+		var $this = $(this_obj);
+		var form = event.target;
+		var $container = $(form).closest('.juvia-container');
+		var up_down = 1
+		if ($this.hasClass('icon-thumbs-up')){
+			$this.removeClass('icon-thumbs-up');
+			$this.addClass('icon-thumbs-down');
+			$this.html(" Liked");
+			up_down = 1
+		}else{
+			$this.removeClass('icon-thumbs-down');
+			$this.addClass('icon-thumbs-up');
+			$this.html(" Like");
+			up_down = 0
+		}
+		// this.loadJsScript('/api/post/vote', {
+		// 	site_key    : $container.data('site-key'),
+		// 	topic_key   : $container.data('topic-key'),
+		// 	topic_url   : $container.data('topic-url'),
+		// 	comment_key : $this.data('comment-id'),
+		// 	author_name : $('input[name="author_name"]', $container).val(),
+		// 	author_email: $('input[name="author_email"]', $container).val(),
+		// 	vote     : up_down
+		// });
+		var a_name = $('input[name="author_name"]', $container).val();
+		var a_email = $('input[name="author_email"]', $container).val();
+		var opt1 = {
+			site_key    : $container.data('site-key'),
+			topic_key   : $container.data('topic-key'),
+			topic_url   : $container.data('topic-url'),
+			comment_key : $this.data('comment-id'),
+			vote     : up_down
+		}
+		var opt2 = {}
+		if(typeof a_email != "undefined"){
+			opt2 = {
+				author_name : a_name, 
+				author_email: a_email
+			}
+		}
+		this.loadJsScript('/api/post/vote', $.extend(opt1, opt2));
+	}
+
+	Juvia.voteTopic = function(event, this_obj) {
+		var $this = $(this_obj);
+		var form = event.target;
+		var $container = $(form).closest('.juvia-container');
+		$unlike = $('#vote_for_unlike');
+		$like = $('#vote_for_like')
+		if ($this.hasClass('icon-thumbs-up')){
+			if ($this.hasClass('votes-up-active')){
+		        up_down = 0;
+		        $this.removeClass('votes-up-active');
+		        $this.html(" Like");
+			}else{
+		        up_down = 1;
+		        if($unlike.hasClass('votes-down-active')){
+		           $unlike.removeClass('votes-down-active');
+		           $unlike.html(" Unlike");
+		        }else{
+		           $this.addClass('votes-up-active');
+		           $this.html(" Liked");
+		        }
+			}
+		}else{
+			if ($this.hasClass('votes-down-active')){
+		        up_down = 1;
+		        $this.removeClass('votes-down-active');
+		        $this.html(" Unlike");
+			}else{
+		        up_down = 0;
+		        if($like.hasClass('votes-up-active')){
+		           $like.removeClass('votes-up-active');
+		           $like.html(" Like");
+		        }else{
+		           $this.addClass('votes-down-active');
+		           $this.html(" Unliked");
+		        }
+			}
+		}
+		var a_name = $('input[name="author_name"]', $container).val();
+		var a_email = $('input[name="author_email"]', $container).val();
+		var opt1 = {
+			site_key    : $container.data('site-key'),
+			topic_key   : $container.data('topic-key'),
+			topic_url   : $container.data('topic-url'),
+			vote     : up_down
+		}
+		var opt2 = {}
+		if(typeof a_email != "undefined"){
+			opt2 = {
+				author_name : a_name, 
+				author_email: a_email
+			}
+		}
+		this.loadJsScript('/api/topic/vote', $.extend(opt1, opt2));
 	}
 	
 	Juvia.previewComment = function(formElement) {

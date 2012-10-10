@@ -7,6 +7,7 @@ class Comment < ActiveRecord::Base
   end
 
   belongs_to :topic, :inverse_of => :comments
+  has_many :votes, :as => :votable
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam]
   
@@ -20,7 +21,9 @@ class Comment < ActiveRecord::Base
   before_create :set_moderation_status
   after_create :update_topic_timestamp
   after_create :notify_moderators
-  
+
+  include Like
+
   def site
     topic.site
   end

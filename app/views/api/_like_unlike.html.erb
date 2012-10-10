@@ -1,0 +1,28 @@
+<div class="juvia-topic-vote">
+  <div class="row">
+  	<div class="span1">
+      <p class="juvia-vote-to-topic icon-thumbs-up" id="vote_for_like" > Like</p>
+    </div>
+    <div class="span1" style="margin-left:2px;">
+      <p class="juvia-vote-to-topic icon-thumbs-down" id="vote_for_unlike" > Unlike</p>
+    </div>
+    <div class="span6">
+    	<p><span id="liked_pages"><%=@topic.total_like %></span></p>
+    </div>
+  </div>
+</div>
+
+<% if @topic.liked?(@username, @user_email) %>
+<!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
+  <script type="text/javascript">
+    $like = $('#vote_for_like')
+    $like.addClass('votes-up-active');
+    $like.html(" Liked");
+  </script>
+<% elsif @topic.unliked?(@username, @user_email)%>
+  <script type="text/javascript">
+    $unlike = $('#vote_for_unlike');
+    $this.addClass('votes-down-active');
+    $this.html(" Unliked");
+  </script>
+<% end %>

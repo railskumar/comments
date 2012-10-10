@@ -1,5 +1,7 @@
 Juvia::Application.routes.draw do
   match 'api/:action(.:format)', :to => 'api'
+  match 'api/post/vote' => 'api#posts_vote'
+  match 'api/topic/vote' => 'api#topics_vote'
   root :to => 'admin/dashboard#index'
   
   devise_for :users

@@ -6,12 +6,15 @@
 <div class="juvia-topic">
 	<% if @require_external_user %>
 	  <% if @user_logged_in %> 
+	    <%= render :partial => 'like_unlike'%>
 	    <h3>Add comment</h3>
 	    <%= render :partial => 'user_form' %>
 	  <% else %>
 	    <h3><%= @logged_in_message.html_safe %></h3>
+	    <%= render :partial => 'like_unlike'%>
 	  <% end %>
     <% else %>
+      <%= render :partial => 'like_unlike'%>
       <h3>Add comment</h3>
       <%= render :partial => 'form' %>
     <% end %>
@@ -22,7 +25,7 @@
 			<%= render :partial => 'comment', :collection => comments %>
 		</div>
 	<% elsif comments.size > 1 %>
-		<h3 class="juvia-comment-count-header"><%= comments.size %> comments</h3>
+		<h3 class="juvia-comment-count-header">Showing <%= comments.size %> comments</h3>
 		<div class="juvia-comments">
 			<%= render :partial => 'comment', :collection => comments %>
 		</div>

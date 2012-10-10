@@ -1,10 +1,10 @@
-<div class="juvia-comment" id="juvia-comment-<%= comment.id %>">
+<div class="juvia-comment" id="juvia-comment-<%= comment.id %>" >
 	<div class="juvia-metadata">
 		<% if comment.author_email %>
 			<div class="juvia-avatar">
 				<img src="//www.gravatar.com/avatar/<%= comment.author_email_md5 %>?s=64"
 				width="64"
-				height="40"
+				height="38"
 				class="img-circle"
 				alt="<%= comment.author_name || 'Anonymous' %>">
 			</div>
@@ -12,7 +12,7 @@
 			<div class="juvia-avatar">
 				<img src="http://www.gravatar.com/avatar/generic?s=64"
 				width="64"
-				height="40"
+				height="38"
 				class="img-circle"
 				alt="<%= comment.author_name || 'Anonymous' %>">
 			</div>
@@ -21,7 +21,6 @@
 			<%= comment.author_name || 'Anonymous' %>
 		</div>
 		<div class="juvia-creation-date">
-			<%= distance_of_time_in_words(Time.now, comment.created_at) + " ago"%>
 		</div>
 		<div class="juvia-end"></div>
 	</div>
@@ -35,7 +34,30 @@
 				</p>
 			<% end %>
 			<div class="juvia-comment-pure-content"><%= render_markdown(comment.content) %></div>
-			<p class="juvia-reply-to-comment"><a href="javascript:void(0)">Reply to this comment</a></p>
+			<div class="row">
+			  <div class="span6">
+			  	<p>
+			  	  <%= distance_of_time_in_words(Time.now, comment.created_at) + " ago"%>
+			  	  <span id="comment-vote-<%=comment.id.to_s%>" style="margin-left:15px;">
+			  	    <%=comment.total_like%>
+			  	  <span>
+			    </p>
+			  </div>
+			  <div class="span1">
+			    <p class="juvia-vote-to-comment icon-thumbs-up" id="comment-vote-icon-<%= comment.id.to_s %>" data-comment-id="<%= comment.id %>" > Like</p>
+			  </div>
+			  <div class="span1">
+			    <p class="juvia-reply-to-comment"><a href="javascript:void(0)">Reply</a></p>
+			  </div>
+			</div>
 		</div>
 	</div>
 </div>
+<% if comment.liked?(@username, @user_email) %>
+<!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
+  <script type="text/javascript">
+    $like = $('#comment-vote-icon-<%= comment.id.to_s %>')
+	$like.addClass('icon-thumbs-down');
+    $like.html(" Liked");
+  </script>
+<% end %>
