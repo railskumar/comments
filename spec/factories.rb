@@ -55,6 +55,13 @@ FactoryGirl.define do
     author_user_agent 'Firefox'
     referer 'http://www.google.com/'
   end
+
+  factory :vote do
+    author_ip '127.0.0.1'
+    author_user_agent 'Firefox'
+    referer 'http://www.google.com/'
+  end
+
 end
 
 module FactoryHelpers
