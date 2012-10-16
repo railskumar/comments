@@ -73,8 +73,11 @@ if (!Juvia) {
 				}, 1);
 			});
 		});
+	}
 
-		$('.juvia-reply-to-comment a:not(.juvia-installed-behavior)').each(function() {
+	Juvia.bindFunction = function(){
+	  var self = this;
+      $('.juvia-reply-to-comment a:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
 			$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function() {
@@ -92,6 +95,34 @@ if (!Juvia) {
 		});
 
 		$('.juvia-vote-to-topic').each(function() {
+			var $this = $(this);
+			//$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function(event) {
+				self.voteTopic(event, this);
+			});
+		});
+	}
+
+	Juvia.bindFunctionInDom = function(dom_ele){
+	  var self = this;
+      $('.juvia-reply-to-comment a:not(.juvia-installed-behavior)', dom_ele).each(function() {
+			var $this = $(this);
+			$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function() {
+				var comment = $(this).closest('.juvia-comment');
+				self.replyToComment(comment);
+			});
+		});
+
+		$('.juvia-vote-to-comment', dom_ele).each(function() {
+			var $this = $(this);
+			//$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function(event) {
+				self.voteComment(event, this);
+			});
+		});
+
+		$('.juvia-vote-to-topic', dom_ele).each(function() {
 			var $this = $(this);
 			//$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function(event) {
@@ -184,6 +215,10 @@ if (!Juvia) {
 		this['handle' + response.action](response);
 		this.reinstallBehavior();
 	}
+
+	Juvia.handleResponsOffCallback = function(response) {
+		this['handle' + response.action](response);
+	}
 	
 	Juvia.handleLoadTopic = function(options) {
 		var $container = $(options.container);
@@ -202,6 +237,11 @@ if (!Juvia) {
 			$(style).appendTo(document.head || $('head')[0] || document.body);
 		}
 	}
+
+	Juvia.handleLoadComment = function(options) {
+		this.rdf_comment_box(options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked);
+	}
+	
 	
 	Juvia.handleAddComment = function(options) {
 		var container = this.findContainer(options);
@@ -221,6 +261,7 @@ if (!Juvia) {
 		this.saveCommentBox(container);
 		this.smoothlyScrollTo(comment.offset().top - 20);
 		comment.hide().fadeIn(2000);
+		this.bindFunctionInDom(comment);
 	}
 	
 	Juvia.handlePreviewComment = function(options) {
@@ -629,6 +670,109 @@ if (!Juvia) {
 			return Base64.encode(data);
 		}
 	}
+
+	Juvia.rdf_comment_box = function(comment_id, user_image, user_name, comment_text, creation_date, comment_votes, liked){
+      var a = document.createElement("div");
+      a.className = "juvia-comment";
+      a.id = comment_id;
+      var aa = document.createElement("div");
+      aa.className = "juvia-metadata";
+      a.appendChild(aa);
+
+      var aaa = document.createElement("div");
+      aaa.className = "juvia-avatar";
+      aa.appendChild(aaa);
+
+      var aaaa = document.createElement("img");
+      aaaa.className = "img-circle";
+      aaaa.src = user_image;
+      aaaa.height = "38";
+      aaaa.width = "64";
+      aaa.appendChild(aaaa);
+
+      var aab = document.createElement("div");
+      aab.className = "juvia-author juvia-author-without-email";
+      aab.appendChild(document.createTextNode(user_name));
+      aa.appendChild(aab);
+
+      var aac = document.createElement("div");
+      aac.className = "juvia-creation-date";
+      aa.appendChild(aac);
+
+      var aad = document.createElement("div");
+      aad.className = "juvia-end";
+      aa.appendChild(aad);
+
+      var ab = document.createElement("div");
+      ab.className = "juvia-data";
+      a.appendChild(ab);
+
+      var aba = document.createElement("div");
+      aba.className = "juvia-comment-content";
+      ab.appendChild(aba);
+
+      var abaa = document.createElement("div");
+      abaa.className = "juvia-comment-pure-content";
+      aba.appendChild(abaa);
+
+      var abaaa = document.createElement("p");
+      abaaa.appendChild(document.createTextNode(comment_text));
+      abaa.appendChild(abaaa);
+
+      var abab = document.createElement("div");
+      abab.className = "row";
+      aba.appendChild(abab);
+
+      var ababa = document.createElement("div");
+      ababa.className = "span6";
+      abab.appendChild(ababa);
+
+      var ababaa_p = document.createElement("p");
+      ababa.appendChild(ababaa_p);
+
+      var ababaaa_span = document.createElement("span");
+      ababaaa_span.appendChild(document.createTextNode(creation_date));
+      ababaa_p.appendChild(ababaaa_span);
+
+      var ababaab_span = document.createElement("span");
+      ababaab_span.id = "comment-vote-" + comment_id;
+      ababaab_span.setAttribute("style", "margin-left:15px");
+      ababaab_span.appendChild(document.createTextNode(comment_votes));
+      ababaa_p.appendChild(ababaab_span);
+
+      var ababb = document.createElement("div");
+      ababb.className = "span1";
+      abab.appendChild(ababb);
+
+      var ababba = document.createElement("p");
+      if(liked == "liked"){
+        ababba.className = "juvia-vote-to-comment icon-thumbs-down";
+        ababba.appendChild(document.createTextNode(" Liked"));
+      }else{
+        ababba.className = "juvia-vote-to-comment icon-thumbs-up";
+        ababba.appendChild(document.createTextNode(" Like"));
+      }
+      ababba.id = "comment-vote-icon-" + comment_id;
+      ababba.setAttribute("data-comment-id", comment_id);
+      ababb.appendChild(ababba);
+
+      var ababc = document.createElement("div");
+      ababc.className = "span1";
+      abab.appendChild(ababc);
+
+      var ababca = document.createElement("p");
+      ababca.className = "juvia-reply-to-comment";
+      ababc.appendChild(ababca);
+
+      var ababcaa = document.createElement("a");
+      //ababcaa.className = "juvia-installed-behavior";
+      ababcaa.setAttribute("href", "javascript:void(0)");
+      ababcaa.appendChild(document.createTextNode("Reply"));
+      ababca.appendChild(ababcaa);
+
+
+      $('#juvia-comments-box').append(a);
+    }
 	
 	
 	/********* Initialization *********/

@@ -7,4 +7,24 @@
   }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body if @include_css
 %>
-<%= juvia_handle_response(options) %>
+<%= juvia_respond(options) %>
+
+<% if (comments = @topic.comments.visible.to_a).size > 0 %>
+  <% comments.each do |comment| %>
+    <%
+      options = {
+      	:action    => 'LoadComment',
+      	:comment_id => comment.id,
+      	:user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
+      	:user_name => comment.author_name,
+      	:comment_text => render_markdown(comment.content),
+      	:creation_date => distance_of_time_in_words(Time.now, comment.created_at) + ' ago',
+      	:comment_votes => comment.total_like,
+      	:liked => (comment.liked?(@username, @user_email) ? "liked" : "unliked")
+      }
+    %>
+    <%= juvia_respond(options)%>
+  <% end %>
+<% end %>
+<%= juvia_reinstall_behavior %>
+Juvia.bindFunction();
