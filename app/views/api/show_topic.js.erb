@@ -7,7 +7,7 @@
   }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body if @include_css
 %>
-<%= juvia_respond(options) %>
+<%= juvia_handle_response(options) %>
 
 <% if (comments = @topic.comments.visible.to_a).size > 0 %>
   <% comments.each do |comment| %>
@@ -23,8 +23,6 @@
       	:liked => (comment.liked?(@username, @user_email) ? "liked" : "unliked")
       }
     %>
-    <%= juvia_respond(options)%>
+    <%= juvia_handle_response(options) %>
   <% end %>
 <% end %>
-<%= juvia_reinstall_behavior %>
-Juvia.bindFunction();

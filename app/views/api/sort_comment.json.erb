@@ -1,0 +1,22 @@
+<% comments = {} %>
+<% @comments.each do |comment| %>
+    <%
+      options = {
+      	:comment_id => comment.id,
+      	:user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
+      	:user_name => comment.author_name,
+      	:comment_text => render_markdown(comment.content),
+      	:creation_date => distance_of_time_in_words(Time.now, comment.created_at) + ' ago',
+      	:comment_votes => comment.total_like,
+      	:liked => (comment.liked?(@username, @user_email) ? "liked" : "unliked")
+      }
+      comments.merge!({comment.id => options})
+    %>
+<% end %>
+<%= {
+  :status    => 'ok',
+  :action    => 'SortComments',
+  :site_key  => @site_key,
+  :topic_key => @topic_key,
+  :comments      => comments
+}.to_json.html_safe %>

@@ -113,6 +113,29 @@ class ApiController < ApplicationController
       end
     end
   end
+
+  def sort_comment
+    @username = params[:author_name]
+    @user_email = params[:author_email]
+    prepare!(
+      [:site_key, :topic_key, :topic_url, :topic_title, :sort],
+      [:html, :js, :json]
+    )
+    if @topic = Topic.lookup(@site_key, @topic_key)
+      if params[:sort] == "newest"
+        @comments = @topic.topic_comments.newest.visible.to_a
+      elsif params[:sort] == "oldest"
+        @comments = @topic.topic_comments.oldest.visible.to_a
+      elsif params[:sort] == "hot"
+        @comments = @topic.topic_comments.hot_visible.to_a
+      else
+        @comments = @topic.comments.visible.to_a
+      end
+      render
+    else
+      render :partial => 'site_not_found'
+    end
+  end
   
   def add_comment
     prepare!(

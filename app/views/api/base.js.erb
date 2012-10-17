@@ -73,11 +73,16 @@ if (!Juvia) {
 				}, 1);
 			});
 		});
-	}
 
-	Juvia.bindFunction = function(){
-	  var self = this;
-      $('.juvia-reply-to-comment a:not(.juvia-installed-behavior)').each(function() {
+        $('.juvia-sort-select select:not(.juvia-installed-behavior)').each(function() {
+			var $this = $(this);
+			$this.addClass('juvia-installed-behavior');
+			$this.bind('change', function(event) {
+				self.sortComments(event, this);
+			});
+		});
+
+		$('.juvia-reply-to-comment a:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
 			$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function() {
@@ -88,49 +93,26 @@ if (!Juvia) {
 
 		$('.juvia-vote-to-comment').each(function() {
 			var $this = $(this);
-			//$this.addClass('juvia-installed-behavior');
-			$this.bind('click', function(event) {
-				self.voteComment(event, this);
-			});
+			if(!($this.hasClass("juvia-installed-behavior"))){
+			  $this.addClass('juvia-installed-behavior');
+			  $this.bind('click', function(event) {
+				  self.voteComment(event, this);
+			  });
+			}
 		});
 
 		$('.juvia-vote-to-topic').each(function() {
 			var $this = $(this);
-			//$this.addClass('juvia-installed-behavior');
-			$this.bind('click', function(event) {
-				self.voteTopic(event, this);
-			});
+			if(!($this.hasClass("juvia-installed-behavior"))){
+			  $this.addClass('juvia-installed-behavior');
+			  $this.bind('click', function(event) {
+				  self.voteTopic(event, this);
+			  });
+			}
 		});
+
 	}
 
-	Juvia.bindFunctionInDom = function(dom_ele){
-	  var self = this;
-      $('.juvia-reply-to-comment a:not(.juvia-installed-behavior)', dom_ele).each(function() {
-			var $this = $(this);
-			$this.addClass('juvia-installed-behavior');
-			$this.bind('click', function() {
-				var comment = $(this).closest('.juvia-comment');
-				self.replyToComment(comment);
-			});
-		});
-
-		$('.juvia-vote-to-comment', dom_ele).each(function() {
-			var $this = $(this);
-			//$this.addClass('juvia-installed-behavior');
-			$this.bind('click', function(event) {
-				self.voteComment(event, this);
-			});
-		});
-
-		$('.juvia-vote-to-topic', dom_ele).each(function() {
-			var $this = $(this);
-			//$this.addClass('juvia-installed-behavior');
-			$this.bind('click', function(event) {
-				self.voteTopic(event, this);
-			});
-		});
-	}
-	
 	Juvia.findContainer = function(options) {
 		return $('.juvia-container[data-site-key="' +
 			options.site_key +
@@ -242,7 +224,6 @@ if (!Juvia) {
 		this.rdf_comment_box(options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked);
 	}
 	
-	
 	Juvia.handleAddComment = function(options) {
 		var container = this.findContainer(options);
 		var comments = $('.juvia-comments', container);
@@ -261,7 +242,6 @@ if (!Juvia) {
 		this.saveCommentBox(container);
 		this.smoothlyScrollTo(comment.offset().top - 20);
 		comment.hide().fadeIn(2000);
-		this.bindFunctionInDom(comment);
 	}
 	
 	Juvia.handlePreviewComment = function(options) {
@@ -301,6 +281,16 @@ if (!Juvia) {
 		this.showFormError(container, options.text);
 		this.setSubmitting(container, false);
 	}
+
+	Juvia.handleSortComments = function(options) {
+		juvia_cls = this;
+		var container = juvia_cls.findContainer(options);
+		$('#juvia-comments-box').html("");
+        $.each( options.comments, function(k, v){
+           juvia_cls.handleLoadComment(options.comments[k]);
+        });
+		
+	}
 	
 	Juvia.submitComment = function(event) {
 		var form = event.target;
@@ -315,6 +305,20 @@ if (!Juvia) {
 			author_name : $('input[name="author_name"]', form).val(),
 			author_email: $('input[name="author_email"]', form).val(),
 			content     : this.compress($('textarea[name="content"]', form).val())
+		});
+	}
+
+	Juvia.sortComments = function(event, this_obj) {
+		var form = event.target;
+		var $container = $(form).closest('.juvia-container');
+		this.loadScript('/api/sort_comment', {
+			site_key    : $container.data('site-key'),
+			topic_key   : $container.data('topic-key'),
+			topic_title : $container.data('topic-title'),
+			topic_url   : $container.data('topic-url'),
+			author_name : $('input[name="author_name"]', $container).val(),
+			author_email: $('input[name="author_email"]', $container).val(),
+			sort     : this_obj.value
 		});
 	}
 
