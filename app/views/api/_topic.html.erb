@@ -20,13 +20,13 @@
     <% end %>
 	<% comments = topic.comments.visible.to_a %>
 	<% if comments.size == 1 %>
-	    <%=render :partial=>"sorting", :locals => {:total_comments =>"1 comment"}%>
+	    <%=render :partial=>"sorting", :locals => {:total_comments =>"1 comment", :sorting_option => false}%>
 		<div class="juvia-comments" id="juvia-comments-box"></div>
 	<% elsif comments.size > 1 %>
-		<%=render :partial=>"sorting", :locals => { :total_comments =>"Showing #{comments.size.to_s} comments"}%>
+		<%=render :partial=>"sorting", :locals => { :total_comments =>"Showing #{comments.size.to_s} comments" , :sorting_option => true}%>
 		<div class="juvia-comments" id="juvia-comments-box"></div>
 	<% else %>
-	    <%=render :partial=>"sorting", :locals => {:total_comments =>""}%>
+	    <%=render :partial=>"sorting", :locals => {:total_comments =>"", :sorting_option => false}%>
 		<div class="juvia-comments juvia-no-comments" id="juvia-comments-box">There are no comments yet.</div>
 	<% end %>
 </div>
