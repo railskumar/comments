@@ -3,6 +3,11 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.juvia-comment-content p.icon-flag{
+	width:100%;
+	cursor: pointer;
+}
+
 .juvia-vote-to-comment, .juvia-vote-to-topic, .juvia-reply-to-comment{
 	width:60px !important;
 }

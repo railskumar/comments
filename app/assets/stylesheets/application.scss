@@ -276,7 +276,6 @@ footer {
 
 		> .shell {
 			margin-left: $avatar_size + $spacing;
-			background: #efefef;
 			@include BorderRadius(3px);
 			@include BoxShadow(1px 1px 2px #555555);
 			margin-right: 2px; // So that the shadow isn't cut off.
@@ -362,6 +361,24 @@ footer {
 	> .actions:last-child {
 		margin-top: 1em;
 	}
+}
+
+.root_shell {
+    margin: 10px;
+	@include BorderRadius(3px);
+	@include BoxShadow(1px 1px 2px #555555);
+	margin-right: 20px; // So that the shadow isn't cut off.
+	// Prevent the .actions bottom margin from collapsing with another element.
+	padding: 5px;
+}
+
+.flag_notice{
+	margin-bottom:10px;
+}
+
+.j-left{
+	float:left;
+	width:30%;
 }
 
 #error_explanation {
