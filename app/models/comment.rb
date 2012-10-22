@@ -8,6 +8,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable
+  has_many :flags, :dependent => :destroy
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam]
   
@@ -34,6 +35,27 @@ class Comment < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  def total_flags_str
+    flag_comments = flags.select{|flag| flag.author_email.present?}
+    
+    return_str1 = ""
+    return_str1 << "#{flag_comments.size.to_s} users " if flag_comments.size > 1
+    return_str1 << "One user " if flag_comments.size == 1
+     
+    guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+    return_str2 = ""
+    return_str2 << "#{guest_votes.to_s} guests " if guest_votes > 1
+    return_str2 << "One guest " if guest_votes == 1
+
+    return_str = ""
+    return_str << return_str1
+    return_str << "and " if !return_str.blank? and !return_str2.blank?
+    return_str << return_str2 unless return_str2.blank?
+
+    return_str << "flaged this." unless return_str.blank?
+    return return_str
   end
   
   def spam?

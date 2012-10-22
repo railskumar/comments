@@ -7,7 +7,7 @@
         </div>
       <% end %>
       <% if can?(:read, Comment) %>
-        <div class="section <%= maybe_active(:comments) %>">
+        <div class="section <%= maybe_active(:comments) if params[:action] != "flags" %>">
           <% counter = Comment.accessible_by(current_ability).requiring_moderation.count %>
           <% if counter == 0 %>
             <%= link_to "Comments", admin_comments_path %>
@@ -16,6 +16,9 @@
           <% end %>
         </div>
       <% end %>
+     <div class="section <%= maybe_active(:comments) if params[:action] == "flags" %>">
+        <%= link_to "Flags", flags_admin_comments_path %>
+     </div>
       <% if can?(:list, User) %>
         <div class="section <%= maybe_active(:users) %>">
           <%= link_to "Users", admin_users_path %>

@@ -111,6 +111,33 @@ if (!Juvia) {
 			}
 		});
 
+		$('.juvia-comment-function p.icon-flag:not(.juvia-installed-behavior)').each(function() {
+			var $this = $(this);
+			$this.addClass('juvia-installed-behavior');
+			$this.bind('click', function(event) {
+				self.reportComment(event, this);
+			});
+		});
+
+		$('.juvia-comment-function').each(function() {
+			var $this = $(this);
+			if(!($this.hasClass("juvia-installed-behavior"))){
+			  $this.addClass('juvia-installed-behavior');
+			  $this.bind({
+                mouseenter: function(e) {
+                  $('.icon-flag',$this).each(function() {
+                  	$(this).css("visibility", "visible");
+                  });
+                },
+                mouseleave: function(e) {
+                  $('.icon-flag',$this).each(function() {
+                  	$(this).css("visibility", "hidden");
+                  });
+                }
+			  });
+			}
+		});
+
 	}
 
 	Juvia.findContainer = function(options) {
@@ -289,7 +316,14 @@ if (!Juvia) {
         $.each( options.comments, function(k, v){
            juvia_cls.handleLoadComment(options.comments[k]);
         });
-		
+	}
+
+	Juvia.handleReportComment = function(options) {
+		if(options.status == "ok"){
+		  alert("Thank you. This comment has been flagged for moderator attention. ");
+		}else{
+		  alert("Something went wrong!");
+		}
 	}
 	
 	Juvia.submitComment = function(event) {
@@ -421,6 +455,22 @@ if (!Juvia) {
 		this.loadJsScript('/api/topic/vote', $.extend(opt1, opt2));
 	}
 	
+	Juvia.reportComment = function(event, this_obj) {
+        var $this = $(this_obj);
+		var form = event.target;
+		var $container = $(form).closest('.juvia-container');
+		this.loadScript('/api/post/flag', {
+			site_key    : $container.data('site-key'),
+			topic_key   : $container.data('topic-key'),
+			topic_title : $container.data('topic-title'),
+			topic_url   : $container.data('topic-url'),
+			comment_key : $this.data('comment-id'),
+			author_name : $('input[name="author_name"]', $container).val(),
+			author_email: $('input[name="author_email"]', $container).val()
+		});
+		return false;
+	}
+
 	Juvia.previewComment = function(formElement) {
 		var $container = $(formElement).closest('.juvia-container');
 		this.saveCommentBox($container);
@@ -724,11 +774,11 @@ if (!Juvia) {
       abaa.appendChild(abaaa);
 
       var abab = document.createElement("div");
-      abab.className = "row";
+      abab.className = "row juvia-comment-function";
       aba.appendChild(abab);
 
       var ababa = document.createElement("div");
-      ababa.className = "span6";
+      ababa.className = "span5";
       abab.appendChild(ababa);
 
       var ababaa_p = document.createElement("p");
@@ -743,6 +793,17 @@ if (!Juvia) {
       ababaab_span.setAttribute("style", "margin-left:15px");
       ababaab_span.appendChild(document.createTextNode(comment_votes));
       ababaa_p.appendChild(ababaab_span);
+
+      var ababb_flag = document.createElement("div");
+      ababb_flag.className = "span1";
+      var ababb_flag_p = document.createElement("p");
+      ababb_flag_p.appendChild(document.createTextNode(" Flag"));
+      ababb_flag_p.className = "icon-flag";
+      ababb_flag_p.setAttribute("data-comment-id", comment_id);
+      $(ababb_flag_p).css("visibility", "hidden");
+      ababb_flag.appendChild(ababb_flag_p);
+
+      abab.appendChild(ababb_flag);
 
       var ababb = document.createElement("div");
       ababb.className = "span1";

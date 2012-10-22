@@ -1,6 +1,7 @@
 Juvia::Application.routes.draw do
   match 'api/:action(.:format)', :to => 'api'
   match 'api/post/vote' => 'api#posts_vote'
+  match 'api/post/flag' => 'api#post_report'
   match 'api/topic/vote' => 'api#topics_vote'
   root :to => 'admin/dashboard#index'
   
@@ -9,10 +10,11 @@ Juvia::Application.routes.draw do
   namespace :admin do
     resources :comments do
       collection do
-        get :preview
+        get :preview, :flags
       end
       member do
         put :approve
+        delete :destroy_flag
       end
     end
     resources :sites do

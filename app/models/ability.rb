@@ -33,6 +33,8 @@ class Ability
     if user.admin?
       can crud, :all
       can :list, :all
+      can :flags, Comment
+      can :destroy_flag , Comment
       can :make_admin, User
     else
       can [:read, :update, :destroy], User, :id => user.id

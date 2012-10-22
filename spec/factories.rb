@@ -63,6 +63,12 @@ FactoryGirl.define do
     referer 'http://www.google.com/'
   end
 
+  factory :flag do
+    author_ip '127.0.0.1'
+    author_user_agent 'Firefox'
+    referer 'http://www.google.com/'
+  end
+
 end
 
 module FactoryHelpers
