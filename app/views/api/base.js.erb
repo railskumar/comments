@@ -1,6 +1,6 @@
 // -*- Mode: SCSS; tab-width: 8; indent-tabs-mode: true; c-basic-offset: 8 -*-
 
-var Juvia;
+var Juvia;	
 if (!Juvia) {
 	Juvia = {};
 }
@@ -252,7 +252,7 @@ if (!Juvia) {
 	}
 
 	Juvia.handleLoadComment = function(options) {
-		this.rdf_comment_box(options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked);
+		this.rdf_comment_box(options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.comment_flags, options.liked);
 	}
 	
 	Juvia.handleAddComment = function(options) {
@@ -316,15 +316,17 @@ if (!Juvia) {
 	Juvia.handleSortComments = function(options) {
 		juvia_cls = this;
 		var container = juvia_cls.findContainer(options);
-		$('#juvia-comments-box').html("");
+		$('#juvia-comments-box').html(""); 
         $.each( options.comments, function(k, v){
-           juvia_cls.handleLoadComment(options.comments[k]);
+          juvia_cls.handleLoadComment(options.comments[k]);
         });
 	}
 
 	Juvia.handleReportComment = function(options) {
 		if(options.status == "ok"){
 		  alert("Thank you. This comment has been flagged for moderator attention. ");
+		  tempFlagsElement=$('#comment-flags-'+options.comment_id);
+		  tempFlagsElement.html(options.comment_flags);
 		}else{
 		  alert("Something went wrong!");
 		}
@@ -347,6 +349,7 @@ if (!Juvia) {
 	}
 
 	Juvia.sortComments = function(event, this_obj) {
+
 		var form = event.target;
 		var $container = $(form).closest('.juvia-container');
 		this.loadScript('/api/sort_comment', {
@@ -447,6 +450,7 @@ if (!Juvia) {
 			site_key    : $container.data('site-key'),
 			topic_key   : $container.data('topic-key'),
 			topic_url   : $container.data('topic-url'),
+			topic_title : $container.data('topic-title'),
 			vote     : up_down
 		}
 		var opt2 = {}
@@ -729,7 +733,7 @@ if (!Juvia) {
 		}
 	}
 
-	Juvia.rdf_comment_box = function(comment_id, user_image, user_name, comment_text, creation_date, comment_votes, liked){
+	Juvia.rdf_comment_box = function(comment_id, user_image, user_name, comment_text, creation_date, comment_votes, comment_flags, liked){
       var a = document.createElement("div");
       a.className = "juvia-comment";
       a.id = comment_id;
@@ -782,7 +786,7 @@ if (!Juvia) {
       aba.appendChild(abab);
 
       var ababa = document.createElement("div");
-      ababa.className = "span5";
+      ababa.className = "span comment-like-flag";
       abab.appendChild(ababa);
 
       var ababaa_p = document.createElement("p");
@@ -797,6 +801,12 @@ if (!Juvia) {
       ababaab_span.setAttribute("style", "margin-left:15px");
       ababaab_span.appendChild(document.createTextNode(comment_votes));
       ababaa_p.appendChild(ababaab_span);
+
+      var flags_span = document.createElement("span");
+      flags_span.id = "comment-flags-" + comment_id;
+      flags_span.setAttribute("style", "margin-left:15px");
+      flags_span.appendChild(document.createTextNode(comment_flags));
+      ababaa_p.appendChild(flags_span);
 
       var ababb_flag = document.createElement("div");
       ababb_flag.className = "span1";

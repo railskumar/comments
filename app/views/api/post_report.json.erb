@@ -1,4 +1,6 @@
 <%= {
   :status    => 'ok',
-  :action    => 'ReportComment'
+  :action    => 'ReportComment',
+  :comment_id => @comment.id,
+  :comment_flags => @comment.total_flags_str
 }.to_json.html_safe %>

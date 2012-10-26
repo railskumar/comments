@@ -20,6 +20,7 @@
       	:comment_text => render_markdown(comment.content),
       	:creation_date => distance_of_time_in_words(Time.now, comment.created_at) + ' ago',
       	:comment_votes => comment.total_like,
+        :comment_flags => comment.total_flags_str,
       	:liked => (comment.liked?(@username, @user_email) ? "liked" : "unliked")
       }
     %>

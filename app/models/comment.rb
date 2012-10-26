@@ -38,23 +38,11 @@ class Comment < ActiveRecord::Base
   end
 
   def total_flags_str
-    flag_comments = flags.select{|flag| flag.author_email.present?}
-    
-    return_str1 = ""
-    return_str1 << "#{flag_comments.size.to_s} users " if flag_comments.size > 1
-    return_str1 << "One user " if flag_comments.size == 1
-     
-    guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
-    return_str2 = ""
-    return_str2 << "#{guest_votes.to_s} guests " if guest_votes > 1
-    return_str2 << "One guest " if guest_votes == 1
-
     return_str = ""
-    return_str << return_str1
-    return_str << "and " if !return_str.blank? and !return_str2.blank?
-    return_str << return_str2 unless return_str2.blank?
-
-    return_str << "flaged this." unless return_str.blank?
+    flag_comments = flags.select{|flag| flag.author_email.present?}
+    guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+    total_flags = flag_comments.size + guest_votes
+    return_str = total_flags > 0 ? total_flags > 1 ? total_flags.to_s + " users flaged. " : total_flags.to_s + " user flaged. " : ""
     return return_str
   end
   

@@ -3,6 +3,9 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.juvia-container .comment-like-flag{
+	width: 425px !important;
+}
 .juvia-comment-content p.icon-flag{
 	width:100%;
 	cursor: pointer;
