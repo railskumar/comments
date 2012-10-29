@@ -4,7 +4,7 @@
 @import "lib/bootstrap_overrides";
 
 .juvia-container .comment-like-flag{
-	width: 378px !important;
+	width: 410px !important;
 }
 .juvia-container .flag{
 	width: 78px !important;	
@@ -21,11 +21,6 @@
 .juvia-vote-to-comment:hover,  .juvia-vote-to-topic:hover, .juvia-reply-to-comment:hover{
 	cursor:pointer;
 	text-decoration: underline;
-}
-
-.juvia-reply-to-comment a{
-    color: #707070 !important;
-    font-size: 14.6667px;
 }
 
 .votes-up-active, .votes-down-active{
@@ -78,7 +73,7 @@
 .juvia-comment .juvia-metadata {
 	position: relative;
 	background: #e2e2e2; /* Old browsers */
-	background: -moz-linear-gradient(top, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%); /* FF3.6+ */
+	background: none repeat scroll 0 0 whitesmoke !important; /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%); /* Opera11.10+ */
@@ -123,8 +118,15 @@
 	font-style: italic;
 }
 
-.juvia-reply-to-comment {
-	font-size: 80%;
+.juvia-comment-function{
+    color: #707070 !important;
+    font-size: 12.6px;
+    a{
+      color: #707070 !important;
+    }
+    .span1{
+      text-align:right;
+    }
 }
 
 .juvia-comment-content,
