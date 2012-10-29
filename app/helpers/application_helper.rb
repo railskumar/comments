@@ -17,7 +17,7 @@ module ApplicationHelper
   end
   
   def render_markdown(str)
-    BlueCloth.new(str, :escape_html => true, :strict_mode => false).to_html.html_safe
+    BlueCloth.new(str, :escape_html => false, :strict_mode => true).to_html.html_safe
   end
 
   def escape_js_string(str)

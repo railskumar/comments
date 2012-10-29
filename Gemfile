@@ -17,6 +17,7 @@ gem 'css3buttons'
 gem 'cancan'
 gem 'inherited_resources'
 
+
 # Deploy with Capistrano
 # gem 'capistrano'
 
@@ -49,4 +50,5 @@ group :assets do
   gem 'sass-rails',   '~> 3.1.5'
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'bootstrap-wysihtml5-rails'
 end

@@ -1,6 +1,7 @@
+<%= javascript_include_tag 'bootstrap-wysihtml5-all' %>
 <div class="juvia-data">
 	<div class="juvia-field juvia-textarea-field">
-		<textarea name="content" cols="80" rows="10"></textarea>
+		<textarea id="comment_textarea" name="content" cols="80" rows="10"></textarea>
 	</div>
 </div>
 
@@ -22,3 +23,8 @@
 	</div>
 	<div class="juvia-preview-content" style="display: none"></div>
 </div>
+<script type="text/javascript">
+ $(document).ready(function(){
+ $('#comment_textarea').wysihtml5({"html":true});
+ });
+</script>
