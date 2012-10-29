@@ -129,12 +129,12 @@ if (!Juvia) {
 			  $this.addClass('juvia-installed-behavior');
 			  $this.bind({
                 mouseenter: function(e) {
-                  $('.icon-flag',$this).each(function() {
+                  $('.blink_text',$this).each(function() {
                   	$(this).css("visibility", "visible");
                   });
                 },
                 mouseleave: function(e) {
-                  $('.icon-flag',$this).each(function() {
+                  $('.blink_text',$this).each(function() {
                   	$(this).css("visibility", "hidden");
                   });
                 }
@@ -252,7 +252,7 @@ if (!Juvia) {
 	}
 
 	Juvia.handleLoadComment = function(options) {
-		this.rdf_comment_box(options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.comment_flags, options.liked);
+		this.rdf_comment_box(options.comment_counter, options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked, options.flagged);
 	}
 	
 	Juvia.handleAddComment = function(options) {
@@ -325,8 +325,10 @@ if (!Juvia) {
 	Juvia.handleReportComment = function(options) {
 		if(options.status == "ok"){
 		  alert("Thank you. This comment has been flagged for moderator attention. ");
-		  tempFlagsElement=$('#comment-flags-'+options.comment_id);
-		  tempFlagsElement.html(options.comment_flags);
+		  tempFlagsElement=$('#flag-'+options.comment_id);
+		  tempFlagsElement.html(options.flagged);
+		  tempFlagsElement.removeClass('blink_text');
+		  tempFlagsElement.css("visibility","visible");
 		}else{
 		  alert("Something went wrong!");
 		}
@@ -508,7 +510,6 @@ if (!Juvia) {
 		for (i = 0; i < lines.length; i++) {
 			lines[i] = '> ' +lines[i];
 		}
-
 		var $textarea  = $('textarea', $container);
 		var authorName = $.trim($('.juvia-author', $comment).text());
 		var newContent = "*In reply to " + authorName + ":*\n" + lines.join("\n");
@@ -516,6 +517,7 @@ if (!Juvia) {
 			newContent += "\n\n";
 			newContent += $textarea.val();
 		}
+		
 		$textarea.val(newContent);
 		this.smoothlyScrollTo($textarea.offset().top);
 		$textarea.focus();
@@ -733,7 +735,7 @@ if (!Juvia) {
 		}
 	}
 
-	Juvia.rdf_comment_box = function(comment_id, user_image, user_name, comment_text, creation_date, comment_votes, comment_flags, liked){
+	Juvia.rdf_comment_box = function(comment_counter, comment_id, user_image, user_name, comment_text, creation_date, comment_votes, liked, flagged){
       var a = document.createElement("div");
       a.className = "juvia-comment";
       a.id = comment_id;
@@ -753,8 +755,12 @@ if (!Juvia) {
       aaa.appendChild(aaaa);
 
       var aab = document.createElement("div");
+      var comment_span = document.createElement("span");
       aab.className = "juvia-author juvia-author-without-email";
       aab.appendChild(document.createTextNode(user_name));
+      comment_span.appendChild(document.createTextNode(comment_counter));
+      aab.appendChild(comment_span);
+      comment_span.className='floatright';
       aa.appendChild(aab);
 
       var aac = document.createElement("div");
@@ -802,23 +808,22 @@ if (!Juvia) {
       ababaab_span.appendChild(document.createTextNode(comment_votes));
       ababaa_p.appendChild(ababaab_span);
 
-      var flags_span = document.createElement("span");
-      flags_span.id = "comment-flags-" + comment_id;
-      flags_span.setAttribute("style", "margin-left:15px");
-      flags_span.appendChild(document.createTextNode(comment_flags));
-      ababaa_p.appendChild(flags_span);
-
       var ababb_flag = document.createElement("div");
-      ababb_flag.className = "span1";
+      ababb_flag.className = "span flag";
       var ababb_flag_p = document.createElement("p");
-      ababb_flag_p.appendChild(document.createTextNode(" Flag"));
-      ababb_flag_p.className = "icon-flag";
+      ababb_flag_p.id = "flag-" + comment_id;
+      if(flagged == 'Flagged'){
+      	ababb_flag_p.appendChild(document.createTextNode(" Flagged"));
+      	ababb_flag_p.className = "icon-flag";
+      }else{
+        ababb_flag_p.appendChild(document.createTextNode(" Flag"));
+	  	$(ababb_flag_p).css("visibility", "hidden");
+	    ababb_flag_p.className = "blink_text icon-flag";		
+	  }
       ababb_flag_p.setAttribute("data-comment-id", comment_id);
-      $(ababb_flag_p).css("visibility", "hidden");
       ababb_flag.appendChild(ababb_flag_p);
 
       abab.appendChild(ababb_flag);
-
       var ababb = document.createElement("div");
       ababb.className = "span1";
       abab.appendChild(ababb);
@@ -844,7 +849,6 @@ if (!Juvia) {
       ababc.appendChild(ababca);
 
       var ababcaa = document.createElement("a");
-      //ababcaa.className = "juvia-installed-behavior";
       ababcaa.setAttribute("href", "javascript:void(0)");
       ababcaa.appendChild(document.createTextNode("Reply"));
       ababca.appendChild(ababcaa);

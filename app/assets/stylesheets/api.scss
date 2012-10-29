@@ -4,7 +4,10 @@
 @import "lib/bootstrap_overrides";
 
 .juvia-container .comment-like-flag{
-	width: 425px !important;
+	width: 378px !important;
+}
+.juvia-container .flag{
+	width: 78px !important;	
 }
 .juvia-comment-content p.icon-flag{
 	width:100%;

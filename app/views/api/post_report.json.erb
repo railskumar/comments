@@ -2,5 +2,5 @@
   :status    => 'ok',
   :action    => 'ReportComment',
   :comment_id => @comment.id,
-  :comment_flags => @comment.total_flags_str
+  :flagged => (@comment.flagged)
 }.to_json.html_safe %>
