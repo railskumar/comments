@@ -3,6 +3,10 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.juvia-avatar img:hover{
+  cursor: pointer;
+}
+
 .juvia-container .comment-like-flag{
 	width: 410px !important;
 }

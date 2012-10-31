@@ -2,7 +2,9 @@
 
 var Juvia;	
 if (!Juvia) {
-	Juvia = {};
+	Juvia = {
+	  user_logged_in: false
+	};
 }
 
 (function(Juvia) {
@@ -16,7 +18,7 @@ if (!Juvia) {
 	
 	Juvia.reinstallBehavior = function() {
 		var self = this;
-		
+
 		if (!$(document.body).hasClass('juvia-installed-behavior')) {
 			$(document.body).addClass('juvia-installed-behavior');
 			$(document.body).bind('mousedown touchdown', function(event) {
@@ -141,6 +143,14 @@ if (!Juvia) {
 			  });
 			}
 		});
+
+        $('.juvia-avatar img:not(.juvia-installed-behavior)').each(function(index){
+          var $this = $(this);
+          $this.addClass('juvia-installed-behavior');
+		  $this.bind('click', function() {
+		    window.location = "/users?juvia=true&search=" + $this.data('user-email');
+		  });  
+        });
 		
         $('.comment_index').each(function(index){
           var $this = $(this);
@@ -256,7 +266,7 @@ if (!Juvia) {
 	}
 
 	Juvia.handleLoadComment = function(options) {
-		var dom_ele = this.rdf_comment_box(options.comment_counter, options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked, options.flagged);
+		var dom_ele = this.rdf_comment_box(options);
 		this.appendComment(dom_ele);
 	}
 	
@@ -265,15 +275,7 @@ if (!Juvia) {
 		var comments = $('.juvia-comments', container);
 		
 		var comment_obj = options.comment_option;
-		var dom_ele = this.rdf_comment_box(comment_obj.comment_counter, 
-		  comment_obj.comment_id, 
-		  comment_obj.user_image, 
-		  comment_obj.user_name, 
-		  comment_obj.comment_text, 
-		  comment_obj.creation_date, 
-		  comment_obj.comment_votes, 
-		  comment_obj.liked, 
-		  comment_obj.flagged);
+		var dom_ele = this.rdf_comment_box(comment_obj);
 		var comment = $(dom_ele);
 		this.prependComment(comment);
 		if (comments.hasClass('juvia-no-comments')) {
@@ -751,7 +753,18 @@ if (!Juvia) {
 		}
 	}
 
-	Juvia.rdf_comment_box = function(comment_counter, comment_id, user_image, user_name, comment_text, creation_date, comment_votes, liked, flagged){
+	Juvia.rdf_comment_box = function(option){
+	  var comment_counter = option.comment_counter;
+	  var comment_id = option.comment_id;
+	  var user_image = option.user_image;
+	  var user_name = option.user_name;
+	  var comment_text = option.comment_text;
+	  var creation_date = option.creation_date;
+	  var comment_votes = option.comment_votes;
+	  var liked = option.liked;
+	  var flagged = option.flagged;
+	  var comment_user_email = option.user_email;
+	  
       var a = document.createElement("div");
       a.className = "juvia-comment";
       a.id = comment_id;
@@ -765,6 +778,7 @@ if (!Juvia) {
 
       var aaaa = document.createElement("img");
       aaaa.className = "img-circle";
+      aaaa.setAttribute("data-user-email", comment_user_email);
       aaaa.src = user_image;
       aaaa.height = "38";
       aaaa.width = "64";
@@ -863,11 +877,12 @@ if (!Juvia) {
       var ababca = document.createElement("p");
       ababca.className = "juvia-reply-to-comment";
       ababc.appendChild(ababca);
-
-      var ababcaa = document.createElement("a");
-      ababcaa.setAttribute("href", "javascript:void(0)");
-      ababcaa.appendChild(document.createTextNode("Reply"));
-      ababca.appendChild(ababcaa);
+      if(this.user_logged_in){
+        var ababcaa = document.createElement("a");
+        ababcaa.setAttribute("href", "javascript:void(0)");
+        ababcaa.appendChild(document.createTextNode("Reply"));
+        ababca.appendChild(ababcaa);
+      }
       return a;
     }
     
