@@ -141,7 +141,11 @@ if (!Juvia) {
 			  });
 			}
 		});
-
+		
+        $('.comment_index').each(function(index){
+          var $this = $(this);
+          $this.html(index + 1);    
+        });
 	}
 
 	Juvia.findContainer = function(options) {
@@ -252,19 +256,31 @@ if (!Juvia) {
 	}
 
 	Juvia.handleLoadComment = function(options) {
-		this.rdf_comment_box(options.comment_counter, options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked, options.flagged);
+		var dom_ele = this.rdf_comment_box(options.comment_counter, options.comment_id, options.user_image, options.user_name, options.comment_text, options.creation_date, options.comment_votes, options.liked, options.flagged);
+		this.appendComment(dom_ele);
 	}
 	
 	Juvia.handleAddComment = function(options) {
 		var container = this.findContainer(options);
 		var comments = $('.juvia-comments', container);
 		
-		var comment = $(options.html);
+		var comment_obj = options.comment_option;
+		var dom_ele = this.rdf_comment_box(comment_obj.comment_counter, 
+		  comment_obj.comment_id, 
+		  comment_obj.user_image, 
+		  comment_obj.user_name, 
+		  comment_obj.comment_text, 
+		  comment_obj.creation_date, 
+		  comment_obj.comment_votes, 
+		  comment_obj.liked, 
+		  comment_obj.flagged);
+		var comment = $(dom_ele);
+		this.prependComment(comment);
 		if (comments.hasClass('juvia-no-comments')) {
 			comments.removeClass('juvia-no-comments');
 			comments.html('');
 		}
-		comment.prependTo(comments);
+		//comment.prependTo(comments);
 		$('.juvia-preview-empty', container).show();
 		$('.juvia-preview-content', container).hide();
 		
@@ -758,9 +774,9 @@ if (!Juvia) {
       var comment_span = document.createElement("span");
       aab.className = "juvia-author juvia-author-without-email";
       aab.appendChild(document.createTextNode(user_name));
-      comment_span.appendChild(document.createTextNode(comment_counter));
+      //comment_span.appendChild(document.createTextNode(comment_counter));
       aab.appendChild(comment_span);
-      comment_span.className='floatright';
+      comment_span.className='floatright comment_index';
       aa.appendChild(aab);
 
       var aac = document.createElement("div");
@@ -852,9 +868,15 @@ if (!Juvia) {
       ababcaa.setAttribute("href", "javascript:void(0)");
       ababcaa.appendChild(document.createTextNode("Reply"));
       ababca.appendChild(ababcaa);
-
-
-      $('#juvia-comments-box').append(a);
+      return a;
+    }
+    
+    Juvia.appendComment = function(dom_element) {
+      $('#juvia-comments-box').append(dom_element);
+    }
+    
+    Juvia.prependComment = function(dom_element) {
+      $(dom_element).prependTo($('#juvia-comments-box'));
     }
 	
 	
