@@ -1,4 +1,3 @@
-<%= javascript_include_tag 'bootstrap-wysihtml5-all' %>
 <div class="juvia-data">
 	<div class="juvia-field juvia-textarea-field">
 		<textarea id="comment_textarea" name="content" cols="80" rows="10"></textarea>
@@ -18,13 +17,8 @@
 <div class="juvia-preview">
 	<h4>Preview</h4>
 	<div class="juvia-preview-empty">
-		<!-- Comments can be styled with <a href="http://daringfireball.net/projects/markdown/basics">Markdown</a>.
-		Type something and a preview will show up here. -->
+		Comments can be styled with <a href="http://daringfireball.net/projects/markdown/basics" target="_blank">Markdown</a>.
+		Type something and a preview will show up here.
 	</div>
 	<div class="juvia-preview-content" style="display: none"></div>
 </div>
-<script type="text/javascript">
- $(document).ready(function(){
- $('#comment_textarea').wysihtml5({"html":true});
- });
-</script>
