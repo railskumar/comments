@@ -14,6 +14,7 @@ if (!Juvia) {
 	<%= File.read("#{Rails.root}/app/assets/javascripts/jquery.example.min.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/rawdeflate.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/base64.js").html_safe %>
+	<%= File.read("#{Rails.root}/app/assets/javascripts/bootstrap_juvia_tooltip.js").html_safe %>
 	var $ = Juvia.$ = window.jQuery.noConflict(true);
 	
 	Juvia.reinstallBehavior = function() {
@@ -92,6 +93,13 @@ if (!Juvia) {
 				self.replyToComment(comment);
 			});
 		});
+    
+    $('.juvia-preview a:not(.juvia-installed-behavior)').each(function() {
+			var $this = $(this);
+			$this.addClass('juvia-installed-behavior');
+        $this.juviatooltip({html: true});
+		});
+    
 
 		$('.juvia-vote-to-comment').each(function() {
 			var $this = $(this);

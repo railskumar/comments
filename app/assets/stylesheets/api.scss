@@ -3,6 +3,22 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.juvia-container .tooltip-inner{
+  max-width: 500px;
+}
+
+.tooltip-inner{
+  h1{
+    font-size:125%;
+  }
+  h2{
+    font-size:110%;
+  }
+  h3{
+    font-size:100%;
+  }
+}
+
 .juvia-avatar img:hover{
   cursor: pointer;
 }
