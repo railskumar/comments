@@ -15,6 +15,8 @@ if (!Juvia) {
 	<%= File.read("#{Rails.root}/app/assets/javascripts/rawdeflate.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/base64.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/bootstrap_juvia_tooltip.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
+  
 	var $ = Juvia.$ = window.jQuery.noConflict(true);
 	
 	Juvia.reinstallBehavior = function() {
@@ -164,6 +166,21 @@ if (!Juvia) {
           var $this = $(this);
           $this.html(index + 1);    
         });
+        
+        $('.collapse_link_class:not(.juvia-installed-behavior)').each(function(){
+          var $this = $(this);
+          $this.addClass('juvia-installed-behavior');
+          $this.bind('click', function() {
+            if( $('#' +this.dataset.divid).hasClass('in')){
+              $("#comment_sign_"+this.dataset.divid).addClass("icon-plus");
+              $("#comment_sign_"+this.dataset.divid).removeClass("icon-minus");
+            }else{
+              $("#comment_sign_"+this.dataset.divid).addClass("icon-minus");
+              $("#comment_sign_"+this.dataset.divid).removeClass("icon-plus");
+            }
+           });  
+        });
+
 	}
 
 	Juvia.findContainer = function(options) {
@@ -793,12 +810,27 @@ if (!Juvia) {
       aaa.appendChild(aaaa);
 
       var aab = document.createElement("div");
+      aab.className = "header_com juvia-author juvia-author-without-email row";
+      var left_div = document.createElement("div");
+      left_div.className = "span8";
+      left_div.appendChild(document.createTextNode(user_name));
       var comment_span = document.createElement("span");
-      aab.className = "juvia-author juvia-author-without-email";
-      aab.appendChild(document.createTextNode(user_name));
-      //comment_span.appendChild(document.createTextNode(comment_counter));
-      aab.appendChild(comment_span);
       comment_span.className='floatright comment_index';
+      left_div.appendChild(comment_span);
+      var right_div = document.createElement("div");
+      right_div.className = "span1";
+      var collapse_link = document.createElement("a");
+      collapse_link.setAttribute("data-divid", "divid"+comment_id)
+      collapse_link.setAttribute("class",  "collapse_link_class");
+      collapse_link.setAttribute("href", "#divid"+comment_id);
+      collapse_link.setAttribute("data-toggle", "jcollapse");
+      var collapse_sign_span = document.createElement("span");
+      collapse_sign_span.className = 'floatright icon-minus';
+      collapse_sign_span.setAttribute('id', 'comment_sign_divid'+comment_id);
+      collapse_link.appendChild(collapse_sign_span);
+      right_div.appendChild(collapse_link);
+      aab.appendChild(left_div);
+      aab.appendChild(right_div);
       aa.appendChild(aab);
 
       var aac = document.createElement("div");
@@ -810,7 +842,8 @@ if (!Juvia) {
       aa.appendChild(aad);
 
       var ab = document.createElement("div");
-      ab.className = "juvia-data";
+      ab.className = "juvia-data in jcollapse";
+      ab.setAttribute("id","divid"+comment_id);
       a.appendChild(ab);
 
       var aba = document.createElement("div");

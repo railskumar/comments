@@ -2073,7 +2073,7 @@
 .juvia-container .fade.in {
   opacity: 1;
 }
-.juvia-container .collapse {
+.juvia-container .jcollapse {
   position: relative;
   height: 0;
   overflow: hidden;
@@ -2083,7 +2083,7 @@
   -o-transition: height 0.35s ease;
   transition: height 0.35s ease;
 }
-.juvia-container .collapse.in {
+.juvia-container .jcollapse.in {
   height: auto;
 }
 .juvia-container .close {
