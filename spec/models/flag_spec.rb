@@ -26,18 +26,18 @@ describe "Flag" do
 
   it 'Comment: flag message' do
   	flag = @comment.flags.create flag_attributes.merge({:guest_count => 1})
-  	@comment.total_flags_str.should eql("One guest flaged this.")
+  	@comment.total_flags_str.should eql("1 user flagged. ")
   end
 
   it 'Comment: User and guest flaged this.' do
   	@comment.flags.create flag_attributes.merge({:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
-  	@comment.total_flags_str.should eql("One user flaged this.")
+  	@comment.total_flags_str.should eql("1 user flagged. ")
   	@comment.flags.create flag_attributes.merge({:guest_count => 1})
-  	@comment.total_flags_str.should eql("One user and One guest flaged this.")
+  	@comment.total_flags_str.should eql("2 users flagged. ")
   	@comment.flags.create flag_attributes.merge({:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
-  	@comment.total_flags_str.should eql("2 users and One guest flaged this.")
+  	@comment.total_flags_str.should eql("3 users flagged. ")
   end
 
 end

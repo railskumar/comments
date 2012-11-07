@@ -37,6 +37,15 @@ class Comment < ActiveRecord::Base
     end
   end
 
+   def total_flags_str
+     return_str = ""
+     flag_comments = flags.select{|flag| flag.author_email.present?}
+     guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+     total_flags = flag_comments.size + guest_votes
+     return_str = total_flags > 0 ? total_flags > 1 ? total_flags.to_s + " users flagged. " : total_flags.to_s + " user flagged. " : ""
+     return return_str
+   end
+
   def flagged
     return_str = ""
     flag_comments = flags.select{|flag| flag.author_email.present?}

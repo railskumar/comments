@@ -20,7 +20,8 @@
       options = comment_hash(comment, @username, @user_email)
       options.merge!({'action' => 'LoadComment'})
     %>
-    <%= juvia_handle_response(options) %>
+    <%= juvia_handle_load_comment(options) %>
   <% end %>
 <% end %>
+<%= juvia_reinstall_behavior %>
 
