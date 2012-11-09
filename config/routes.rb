@@ -3,6 +3,7 @@ Juvia::Application.routes.draw do
   match 'api/post/vote' => 'api#posts_vote'
   match 'api/post/flag' => 'api#post_report'
   match 'api/topic/vote' => 'api#topics_vote'
+  get 'admin/sites_topics', :to => 'admin/topics#sites_topics'
   root :to => 'admin/dashboard#index'
   
   devise_for :users

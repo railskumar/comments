@@ -6,6 +6,9 @@
           <%= link_to "Sites", admin_sites_path %>
         </div>
       <% end %>
+      <div class="section <%= maybe_active(:topics) %>">
+        <%= link_to "Topics", admin_sites_topics_path %>
+      </div>
       <% if can?(:read, Comment) %>
         <div class="section <%= maybe_active(:comments) if params[:action] != "flags" %>">
           <% counter = Comment.accessible_by(current_ability).requiring_moderation.count %>

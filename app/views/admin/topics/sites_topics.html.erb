@@ -1,0 +1,23 @@
+<div class='search-div'>
+  <form class="well form-search" action="/admin/sites_topics" method="get">  
+    <select id='sites' name="id" class= "dropdown_box_class">
+      <% @sites.each_with_index do | site, index | %>
+        <% if @site.id == site.id %>
+          <option selected= "selected" value= <%= site.id %>><%= site.name %></option>
+        <% else %>
+          <option value= <%= site.id %>><%= site.name %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <button type = "submit" class = "search-button">Go</button>  
+  </form>  
+</div>
+<h3>Topics </h3>
+<% if @site.topics.blank? %>
+  <p>This site doesn't have any topics yet.</p>
+<% else %>
+  <div class="topics resources list">
+      <%= render :partial => 'admin/topics/topic', :collection => @site.topics %>
+  </div>
+<% end %>
+
