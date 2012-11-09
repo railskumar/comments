@@ -3,6 +3,47 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.markdown_child_div{
+  height: 420px;
+  border-style: solid;
+  border-width: 1px;
+}
+.markdown_div{
+  height: 380px;
+  overflow: hidden;
+}
+
+#markdown_upper_div{
+  height: 245px;
+  padding-left: 10px;
+}
+
+#markdown_lower_div{
+  height: 125px;
+  padding-left: 10px;
+}
+
+pre {
+    border: 1px solid #DDDDDD;
+    margin: 0 0 20px;
+    padding: 5px;
+}
+
+.format_list_div{
+  float: left;
+  margin-right: 5px;
+  padding: 0 0 10px;
+  width: 348px;
+}
+
+.miscellaneous_div{
+  float: left;
+  margin-right: 5px;
+  padding: 0 0 10px;
+  width: 230px;
+}
+
+
 .header_com{
 	padding: 4px 0px 0px 4px;
 }
