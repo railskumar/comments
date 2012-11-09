@@ -39,8 +39,8 @@ class Admin::TopicsController < InheritedResources::Base
     authorize! :read, Site
     @sites = Site.accessible_by(current_ability, :read).order('created_at ASC').page(params[:page])
     redirect_to admin_sites_path , notice: "There are no sites available" and return if @sites.blank?
-    @site = if( !params[:id].blank? )
-      @sites.where( :id => params[:id])[0]
+    @site = if( !params[:site_id].blank? )
+      @sites.where( :id => params[:site_id])[0]
     else
       @sites[0]
     end

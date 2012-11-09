@@ -1,6 +1,6 @@
 <div class='search-div'>
   <form class="well form-search" action="/admin/sites_topics" method="get">  
-    <select id='sites' name="id" class= "dropdown_box_class">
+    <select id='sites' name="site_id" class= "dropdown_box_class">
       <% @sites.each_with_index do | site, index | %>
         <% if @site.id == site.id %>
           <option selected= "selected" value= <%= site.id %>><%= site.name %></option>
