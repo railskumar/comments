@@ -1,0 +1,91 @@
+<% if params[:q] == "1" %>
+
+var RDFWIDGETS;
+
+if (typeof RDFWIDGETS != 'undefined')
+{
+  RDFWIDGETS.displayCount(
+  {
+    "showReactions": false,
+    "text": {
+      "and": "and",
+      "reactions": {
+        "zero": "",
+        "multiple": "",
+        "one": ""
+      },
+      "comments": {
+        "zero": "0",
+        "multiple": "{num}",
+        "one": "1"
+      }
+    },
+    "counts": [
+    <%@comments_arr.each do |comment_obj|%>
+      {
+        "uid": <%=comment_obj["uid"]%>,
+        "comments": <%=comment_obj["comments"]%>
+      },
+    <% end %>
+      {
+        "uid": "last",
+        "comments": "last one"
+      }
+    ]
+  });
+}
+
+
+
+
+
+<% else %>
+var RDFWIDGETS, rdf_domain, rdf_shortname;
+typeof RDFWIDGETS == "undefined" && (RDFWIDGETS = function ()
+{
+  var c = {}, m = document.getElementsByTagName("HEAD")[0] || document.body,
+    n = 0,
+    h = {}, k = {
+      identifier: 1,
+      url: 2,
+      slug: 3
+    };
+  c.domain = "disqus.com";
+  c.forum = "";
+  c.getCount = function ()
+  {
+    var a, b, l = [],
+      e = 0,
+      g = 10;
+    b = document.getElementsByTagName("A");
+    for (var f = 0; f < b.length; f++) if (b[f].href.indexOf("#rdf_thread") >= 0)
+    {
+      var d = b[f],
+        i = void 0,
+        j = void 0;
+      (d.hasAttribute ? d.hasAttribute("data-rdf-identifier") : d.getAttribute("data-rdf-identifier") !== null) ? (i = k.identifier,
+      j = d.getAttribute("data-rdf-identifier")) : (d.hasAttribute ? d.hasAttribute("data-rdf-slug") : d.getAttribute("data-rdf-slug") !== null) ? (i = k.slug, j = d.getAttribute("data-rdf-slug")) : (i = k.url, j = d.href.replace("#rdf_thread", ""));
+      h[n++] = {
+        element: d,
+        type: i,
+        value: j
+      }
+    }
+    for (a in h) h.hasOwnProperty(a) && l.push(encodeURIComponent(a) + "=" + encodeURIComponent(h[a].type) + "," + encodeURIComponent(h[a].value));
+    for (a = l.slice(e, g); a.length > 0;) b = document.createElement("script"), b.type = "text/javascript", b.async = !0,
+    b.src = "<%="http://#{request.host}:#{request.port}"%>" + "/api/comments_count.js?site_key=<%=@site_key%>&q=1&" + a.join("&"), m.appendChild(b), e += 10, g += 10, a = l.slice(e, g)
+  };
+  c.displayCount = function (a)
+  {
+    for (var b, c, e, g, f = 0; f < a.counts.length; f++) if (b = a.counts[f], c = h[b.uid]) e = b.comments === 0 ? a.text.comments.zero : b.comments == 1 ? a.text.comments.one : a.text.comments.multiple, g = e.replace("{num}", b.comments), a.showReactions && (e = b.reactions === 0 ? a.text.reactions.zero : b.reactions == 1 ? a.text.reactions.one : a.text.reactions.multiple, e !== "" && (g += " " + a.text.and +
+      " " + e.replace("{num}", b.reactions))), c.element.innerHTML = g
+  };
+  return c
+}());
+(function ()
+{
+  if (typeof rdf_domain != "undefined") RDFWIDGETS.domain = rdf_domain;
+  RDFWIDGETS.forum = rdf_shortname;
+  RDFWIDGETS.getCount()
+})();
+<% end %>

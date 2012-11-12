@@ -41,6 +41,29 @@ class ApiController < ApplicationController
       render :partial => 'site_not_found'
     end
   end
+  
+  def comments_count
+    prepare!(
+      [:site_key],
+      [:html, :js]
+    )
+    if params[:q] == "1"
+      @comments_arr = []
+      params.each do |key, value|
+        if key == "0" or key.to_i > 0
+          @comments_arr.push({
+            "uid" => "#{key}",
+            "comments" => "#{key}"
+          })
+        end
+      end
+    end
+    if @site = Site.where(site_key: @site_key)
+      render
+    else
+      render :partial => 'site_not_found'
+    end
+  end
 
   def posts_vote
     prepare!(
