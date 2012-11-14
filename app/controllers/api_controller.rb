@@ -53,7 +53,7 @@ class ApiController < ApplicationController
         if key == "0" or key.to_i > 0
           @comments_arr.push({
             "uid" => "#{key}",
-            "comments" => "#{key}"
+            "comments" => "#{(Topic.topic_comments_size(value.split(",")[1]) rescue 0)}"
           })
         end
       end

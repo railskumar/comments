@@ -23,6 +23,10 @@ class Topic < ActiveRecord::Base
 
   include Like  
 
+  def self.topic_comments_size(topic_id)
+    Topic.where(key: topic_id)[0].comments.size rescue 0
+  end
+
   def self.lookup(site_key, topic_key)
     topic = find_by_site_key_and_topic_key(site_key, topic_key)
     if topic
