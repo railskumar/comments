@@ -302,12 +302,11 @@ if (!Juvia) {
 		var comment_obj = options.comment_option;
 		var dom_ele = this.rdf_comment_box(comment_obj);
 		var comment = $(dom_ele);
-		this.prependComment(comment);
 		if (comments.hasClass('juvia-no-comments')) {
 			comments.removeClass('juvia-no-comments');
 			comments.html('');
 		}
-		//comment.prependTo(comments);
+		this.prependComment(comment);
 		$('.juvia-preview-empty', container).show();
 		$('.juvia-preview-content', container).hide();
 		
