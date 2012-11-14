@@ -8,8 +8,8 @@
 	  <% if @user_logged_in %> 
 	    <%= render :partial => 'like_unlike'%>
 	    <h3>Add comment</h3>
-      <%= render :partial => 'markdown_help' %>
 	    <%= render :partial => 'user_form' %>
+      <%= render :partial => 'markdown_help' %>
 	  <% else %>
 	    <h3><%= @logged_in_message.html_safe %></h3>
 	    <%= render :partial => 'like_unlike'%>
@@ -17,8 +17,8 @@
     <% else %>
       <%= render :partial => 'like_unlike'%>
       <h3>Add comment</h3>
-      <%= render :partial => 'markdown_help' %>
       <%= render :partial => 'form' %>
+      <%= render :partial => 'markdown_help' %>
     <% end %>
 	<% comments = topic.comments.visible.to_a %>
 	<% if comments.size == 1 %>
