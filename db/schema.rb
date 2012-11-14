@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110804201102) do
+ActiveRecord::Schema.define(:version => 20121019110313) do
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -63,6 +64,32 @@ ActiveRecord::Schema.define(:version => 20110804201102) do
     t.datetime "created_at",                       :null => false
     t.index ["topic_id"], :name => "index_comments_on_topic_id"
     t.foreign_key ["topic_id"], "topics", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "comments_ibfk_1"
+  end
+
+  create_table "flags", :force => true do |t|
+    t.integer  "comment_id"
+    t.string   "author_name"
+    t.string   "author_email"
+    t.string   "author_ip"
+    t.string   "author_user_agent"
+    t.string   "referer"
+    t.integer  "guest_count"
+    t.datetime "created_at",        :null => false
+    t.index ["comment_id"], :name => "index_flags_on_comment_id"
+    t.foreign_key ["comment_id"], "comments", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "flags_ibfk_1"
+  end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "votable_id"
+    t.string   "votable_type",      :default => "Topic"
+    t.string   "author_name"
+    t.string   "author_email"
+    t.string   "author_ip"
+    t.string   "author_user_agent"
+    t.string   "referer"
+    t.integer  "like"
+    t.integer  "unlike"
+    t.datetime "created_at",                             :null => false
   end
 
 end
