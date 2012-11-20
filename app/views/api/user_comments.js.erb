@@ -1,0 +1,14 @@
+<%= render :template => 'api/base.js'%>
+
+<%
+  options = {
+    :action    => 'LoadUserComment',
+    :container => @container,
+    :html      => render(:partial => 'comment_index.html', :locals => { :comments => @comments })
+  }
+  options[:css] = Juvia::Application.assets.find_asset('api.css').body
+%>
+
+<%= juvia_handle_response(options) %>
+
+

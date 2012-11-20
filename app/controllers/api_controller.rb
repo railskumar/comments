@@ -41,6 +41,15 @@ class ApiController < ApplicationController
       render :partial => 'site_not_found'
     end
   end
+
+  def user_comments
+    prepare!(
+      [:site_key, :username, :user_email, :container],
+      [:html, :js]
+    )
+
+    @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?", params[:username], params[:user_email]).order("created_at DESC") rescue [])
+  end 
   
   def comments_count
     prepare!(

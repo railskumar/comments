@@ -158,7 +158,7 @@ if (!Juvia) {
           var $this = $(this);
           $this.addClass('juvia-installed-behavior');
 		  $this.bind('click', function() {
-		    window.location = "/users?juvia=true&search=" + $this.data('user-email');
+		    window.location = "/users?juvia=true&email=" + $this.data('user-email');
 		  });  
         });
 		
@@ -289,6 +289,24 @@ if (!Juvia) {
 			$(style).appendTo(document.head || $('head')[0] || document.body);
 		}
 	}
+  
+  Juvia.handleLoadUserComment = function(options) {
+    var $container = $(options.container);
+    $container.html(options.html);
+    this.restoreCommentBox($container.find('> .juvia-container'));
+    if (options.css && $('style.juvia').length == 0) {
+      var style = document.createElement('style');
+      var rules = document.createTextNode(options.css);
+      style.type = 'text/css';
+      style.className = 'juvia';
+      if (style.styleSheet) {
+        style.styleSheet.cssText = rules.nodeValue;
+      } else {
+        style.appendChild(rules);
+      }
+      $(style).appendTo(document.head || $('head')[0] || document.body);
+    }
+  }
 
 	Juvia.handleLoadComment = function(options) {
 		var dom_ele = this.rdf_comment_box(options);
@@ -887,9 +905,9 @@ if (!Juvia) {
       	ababb_flag_p.className = "icon-flag";
       }else{
         ababb_flag_p.appendChild(document.createTextNode(" Flag"));
-	  	$(ababb_flag_p).css("visibility", "hidden");
-	    ababb_flag_p.className = "blink_text icon-flag";		
-	  }
+        $(ababb_flag_p).css("visibility", "hidden");
+        ababb_flag_p.className = "blink_text icon-flag";
+      }
       ababb_flag_p.setAttribute("data-comment-id", comment_id);
       ababb_flag.appendChild(ababb_flag_p);
 

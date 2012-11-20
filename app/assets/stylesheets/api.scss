@@ -3,6 +3,15 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+juvia-container [class^="icon-"], .juvia-container [class*=" icon-"]{
+ line-height: 24px;
+}
+
+.juvia-comment-date{
+  font-size:12px;
+  color:#818181;
+}
+
 .juvia-topic .row-markdown{
   margin-bottom: 1em;
 }
