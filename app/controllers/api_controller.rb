@@ -4,12 +4,12 @@ require 'zlib'
 
 class ApiController < ApplicationController
   layout nil
-  
+  PER_PAGE = 20
   skip_before_filter :verify_authenticity_token
   skip_before_filter :authenticate_user!
   before_filter :handle_cors
   before_filter :populate_variables
-
+  
   class MissingParameter < StandardError
   end
   class UnacceptableFormat < StandardError
@@ -27,27 +27,41 @@ class ApiController < ApplicationController
     @topic_url   = params[:topic_url]
     @include_base = get_boolean_param(:include_base, true)
     @include_css  = get_boolean_param(:include_css, true)
-    # Must come before error checking because the error
+     # Must come before error checking because the error
     # templates depend on @include_base/@include_css.
-
-    prepare!(
+      prepare!(
       [:site_key, :topic_key, :container, :topic_title, :topic_url],
       [:html, :js]
     )
-
-    if @topic = Topic.lookup(@site_key, @topic_key)
-      render
+    
+   @topic = Topic.lookup(@site_key, @topic_key)
+   @comments = (@topic.comments).paginate(page: 1 , per_page: PER_PAGE)
+    if @topic
+      render 
     else
       render :partial => 'site_not_found'
     end
   end
-
+      
+def show_comments
+    prepare!(
+      [:site_key, :topic_key, :topic_url],
+      [:html, :js]
+    )
+    @topic = Topic.lookup(@site_key, @topic_key)
+    @comments = @topic.comments.paginate(page: params[:page], per_page: PER_PAGE)
+    if @comments 
+      render
+    else
+      render :partial => 'site_not_found'
+    end   
+  end
+  
   def user_comments
     prepare!(
       [:site_key, :username, :user_email, :container],
       [:html, :js]
     )
-
     @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?", params[:username], params[:user_email]).order("created_at DESC") rescue [])
   end 
   

@@ -5,15 +5,14 @@
 <% end %>
 
 <%
-  options = {
+  options = { 
     :action    => 'LoadTopic',
     :container => @container,
-    :html      => render(:partial => 'topic.html', :locals => { :topic => @topic })
+    :html      => render(:partial => 'topic.html', :locals => { :topic => @topic, :total_pages => @comments.total_pages })
   }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body if @include_css
 %>
 <%= juvia_handle_response(options) %>
-
 <% if (comments = @topic.comments.visible.to_a).size > 0 %>
   <% comments.each_with_index do |comment, index| %>
     <% 

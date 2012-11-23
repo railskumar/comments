@@ -15,7 +15,7 @@ if (!Juvia) {
 	<%= File.read("#{Rails.root}/app/assets/javascripts/rawdeflate.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/base64.js").html_safe %>
 	<%= File.read("#{Rails.root}/app/assets/javascripts/bootstrap_juvia_tooltip.js").html_safe %>
-  <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
+       <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
   
 	var $ = Juvia.$ = window.jQuery.noConflict(true);
 	
@@ -96,10 +96,10 @@ if (!Juvia) {
 			});
 		});
     
-    $('.juvia-preview a:not(.juvia-installed-behavior)').each(function() {
-			var $this = $(this);
-			$this.addClass('juvia-installed-behavior');
-        $this.juviatooltip({html: true});
+		$('.juvia-preview a:not(.juvia-installed-behavior)').each(function() {
+				    var $this = $(this);
+				    $this.addClass('juvia-installed-behavior');
+		    $this.juviatooltip({html: true});
 		});
     
 
@@ -180,10 +180,24 @@ if (!Juvia) {
             }
            });  
         });
+      }
+// END of reinstallBehavior
 
-	}
-
-	Juvia.findContainer = function(options) {
+      Juvia.showMoreComments = function(this_obj){
+	       $(".load_more_contain img").show();
+	       var $this = $(this_obj);
+	       $this.hide();
+	       var form = $("#juvia-sort-select");
+	       var $container = $(form).closest('.juvia-container');
+	       this.loadJsScript('/api/show_comments', {
+			site_key    : $container.data('site-key'),
+			topic_key  : $container.data('topic-key'),
+			topic_url   : $container.data('topic-url'),
+			page           : $this.attr('data-page')
+		});
+      }
+	
+      Juvia.findContainer = function(options) {
 		return $('.juvia-container[data-site-key="' +
 			options.site_key +
 			'"][data-topic-key="' +
