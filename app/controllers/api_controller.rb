@@ -35,7 +35,7 @@ class ApiController < ApplicationController
     )
     
    @topic = Topic.lookup(@site_key, @topic_key)
-   @comments = (@topic.comments).paginate(page: 1 , per_page: PER_PAGE)
+   @comments = (@topic.comments.visible).paginate(page: 1 , per_page: PER_PAGE)
     if @topic
       render 
     else
