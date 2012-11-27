@@ -1,12 +1,10 @@
 <%= render :template => 'api/base.js'%>
-
 <%
-    options = {
-      :action    => 'LoadUserComment',
+   options = {
+      :action    => 'AppendUserComment',
       :container => @container,
-      :html      => render(:partial => 'comment_index.html', :locals => { 
+      :html      => render(:partial => 'append_user_comment.html', :locals => { 
         :comments => @comments, 
-        :site_key => params[:site_key],
         :total_pages => @comments.total_pages,
         :user_name => @comments[0].blank? ?  "" : @comments[0].author_name, 
         :user_email => @comments[0].blank? ?  "" : @comments[0].author_email
@@ -14,10 +12,14 @@
     }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body
 %>
+$(".load_more_contain img").hide();
+if( <%=@comments.total_pages.to_i%> != <%= params[:page].to_i %>) {
+    $("#append_user_comments").show();
+}
 <%= juvia_handle_response(options) %>
-  if($('#append_user_comments')){
-        $('#append_user_comments').attr('data-page', '<%= params[:page].to_i + 1%>');
-  }
+if($('#append_user_comments')){
+  $('#append_user_comments').attr('data-page', '<%= params[:page].to_i + 1%>');
+}
 
 
 

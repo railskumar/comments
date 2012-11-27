@@ -35,8 +35,8 @@ class ApiController < ApplicationController
     )
     
    @topic = Topic.lookup(@site_key, @topic_key)
-   @comments = (@topic.comments.visible).paginate(page: 1 , per_page: PER_PAGE)
     if @topic
+      @comments = (@topic.comments.visible).paginate(page: 1 , per_page: PER_PAGE)
       render 
     else
       render :partial => 'site_not_found'
@@ -49,8 +49,8 @@ def show_comments
       [:html, :js]
     )
     @topic = Topic.lookup(@site_key, @topic_key)
-    @comments = @topic.comments.paginate(page: params[:page], per_page: PER_PAGE)
-    if @comments 
+    if @topic
+     @comments = @topic.comments.paginate(page: params[:page], per_page: PER_PAGE)
       render
     else
       render :partial => 'site_not_found'
@@ -62,7 +62,30 @@ def show_comments
       [:site_key, :username, :user_email, :container],
       [:html, :js]
     )
-    @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?", params[:username], params[:user_email]).order("created_at DESC") rescue [])
+      @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?",
+      params[:username], 
+      params[:user_email]
+      ).order("created_at DESC").paginate(
+      page: 1, 
+      per_page: PER_PAGE
+      ) rescue []
+    )
+  end 
+  
+  def append_user_comments
+    prepare!(
+      [:site_key, :username, :user_email, :container],
+      [:html, :js]
+    )
+    @comments = (Site.where(key: params[:site_key])[0].comments.where(
+      "author_name =? AND author_email = ?",
+      params[:username], 
+      params[:user_email]
+      ).order("created_at DESC").paginate(
+      page: params[:page].to_i , 
+      per_page: PER_PAGE
+      ) rescue []
+    )
   end 
   
   def comments_count

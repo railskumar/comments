@@ -183,6 +183,19 @@ if (!Juvia) {
       }
 // END of reinstallBehavior
 
+      Juvia.showMoreUserComments = function(this_obj){
+	       $(".load_more_contain img").show();
+	       var $this = $(this_obj);
+	       $this.hide();
+	       this.loadJsScript('/api/append_user_comments', {
+			site_key    : $this.attr('data-site-key'),
+			username   : $this.attr('data-user-name'),
+			user_email : $this.attr('data-user-email'),
+			container    : '#show_user_comments',
+		        page  	    :  $this.attr('data-page')
+		});
+      }
+      
       Juvia.showMoreComments = function(this_obj){
 	       $(".load_more_contain img").show();
 	       var $this = $(this_obj);
@@ -264,7 +277,6 @@ if (!Juvia) {
 			url += '&';
 			url += paramString;
 		}
-		
 		$('script.juvia').remove();
 		
 		var s       = document.createElement('script');
@@ -304,7 +316,12 @@ if (!Juvia) {
 		}
 	}
   
-  Juvia.handleLoadUserComment = function(options) {
+  Juvia.handleAppendUserComment = function(options) { 
+      var $container = $(options.container);
+      $container.append(options.html);
+  }
+  
+  Juvia.handleLoadUserComment = function(options) { 
     var $container = $(options.container);
     $container.html(options.html);
     this.restoreCommentBox($container.find('> .juvia-container'));
