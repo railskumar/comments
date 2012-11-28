@@ -4,6 +4,10 @@
   Juvia.user_logged_in = true;
 <% end %>
 
+<% if @restrict_comment_length %> 
+  Juvia.restrict_comment_length = true;
+<% end %>
+
 <%
   options = { 
     :action    => 'LoadTopic',

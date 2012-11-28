@@ -3,7 +3,8 @@
 var Juvia;	
 if (!Juvia) {
 	Juvia = {
-	  user_logged_in: false
+	  user_logged_in: false,
+    restrict_comment_length: false
 	};
 }
 
@@ -439,6 +440,7 @@ if (!Juvia) {
 			topic_key   : $container.data('topic-key'),
 			topic_title : $container.data('topic-title'),
 			topic_url   : $container.data('topic-url'),
+      restrict_comment_length: this.restrict_comment_length,
 			author_name : $('input[name="author_name"]', form).val(),
 			author_email: $('input[name="author_email"]', form).val(),
 			content     : this.compress($('textarea[name="content"]', form).val())
@@ -582,6 +584,7 @@ if (!Juvia) {
 		this.loadScript('/api/preview_comment', {
 			site_key : $container.data('site-key'),
 			topic_key: $container.data('topic-key'),
+      restrict_comment_length: this.restrict_comment_length,
 			content  : this.compress($('textarea[name="content"]', $container).val())
 		});
 		return false;
@@ -967,7 +970,7 @@ if (!Juvia) {
       var ababca = document.createElement("p");
       ababca.className = "juvia-reply-to-comment";
       ababc.appendChild(ababca);
-      if(this.user_logged_in){
+      if(this.user_logged_in && !this.restrict_comment_length){
         var ababcaa = document.createElement("a");
         ababcaa.setAttribute("href", "javascript:void(0)");
         ababcaa.appendChild(document.createTextNode("Reply"));

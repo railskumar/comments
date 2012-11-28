@@ -245,7 +245,11 @@ def show_comments
       [:html, :js, :json]
     )
     begin
-      @content = decompress(params[:content]).to_s[0..139]
+      @content = if params["restrict_comment_length"] == "true"
+        decompress(params[:content]).to_s[0..139]
+      else
+        decompress(params[:content]).to_s
+      end
       
       if @content.blank?
         render :partial => 'content_may_not_be_blank'
@@ -280,7 +284,11 @@ def show_comments
 
   def preview_comment
     prepare!([], [:html, :js, :json])
-    @content = decompress(params[:content]).to_s[0..139]
+    @content = if params["restrict_comment_length"] == "true"
+      decompress(params[:content]).to_s[0..139]
+    else
+      decompress(params[:content]).to_s
+    end
   end
 
   def list_topics
@@ -310,6 +318,7 @@ private
     @jsonp          = params[:jsonp]
     if @require_external_user = ( params[:use_my_user] == "true" )
       if @user_logged_in = ( params[:user_logged_in] == "true" )
+        @restrict_comment_length = ( params[:restrict_comment_length] == "true" )
         @username = params[:username]
         @user_email = params[:user_email]
         @user_image = params[:user_image]

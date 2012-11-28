@@ -1,15 +1,22 @@
 <div class="juvia-data">
 	<div class="juvia-field juvia-textarea-field">
-		 <textarea data-provide="limit" data-counter="#counter" 
-   placeholder="Compose new comment.." id="comment_textarea" 
-   name="content"></textarea>
+      <% if @restrict_comment_length %> 
+		   <textarea data-provide="limit" data-counter="#counter" 
+         placeholder="Compose new comment.." id="comment_textarea" 
+         name="content"></textarea>
+      <% else %>
+        <textarea placeholder="Compose new comment.." id="comment_textarea" 
+         name="content"></textarea>
+      <% end %>
 	</div>
 </div>
 
 <div class="juvia-form-actions">
 	<div class="juvia-action juvia-submit-button">
 		<input type="submit" value="Submit" />
-		 <em id="counter" style="">140</em>
+    <% if @restrict_comment_length %> 
+      <em id="counter" style="">140</em>
+    <% end %>
 	</div>
 	<div class="juvia-action juvia-submitting-button" style="display: none">
 		<input type="submit" value="Submitting, please wait..." disabled />
