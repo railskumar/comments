@@ -127,6 +127,7 @@ if (!Juvia) {
 			var $this = $(this);
 			$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function(event) {
+			    $(this).css("top", "0px");
             if(confirm('Are you sure you wish to flag this comment')){
                   self.reportComment(event, this);
                 }else{
@@ -143,6 +144,8 @@ if (!Juvia) {
                 mouseenter: function(e) {
                   $('.blink_text',$this).each(function() {
                   	$(this).css("visibility", "visible");
+			$(this).css("position", "relative");
+			$(this).css("top", "-5px");
                   });
                 },
                 mouseleave: function(e) {
@@ -900,12 +903,9 @@ if (!Juvia) {
 
       var abaa = document.createElement("div");
       abaa.className = "juvia-comment-pure-content";
+      $(abaa).html(comment_text);
       aba.appendChild(abaa);
-
-      var abaaa = document.createElement("p");
-      $(abaaa).html(comment_text);
-      abaa.appendChild(abaaa);
-
+      
       var abab = document.createElement("div");
       abab.className = "row juvia-comment-function";
       aba.appendChild(abab);

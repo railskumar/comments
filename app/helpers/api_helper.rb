@@ -30,7 +30,7 @@ module ApiHelper
 	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
 	  :user_name => comment.author_name,
 	  :comment_text => render_markdown(comment.content),
-	  :creation_date => distance_of_time_in_words(Time.now, comment.created_at) + ' ago',
+	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => comment.total_like,
 	  :liked => (comment.liked?(username, user_email) ? "liked" : "unliked"),
 	  :flagged => (comment.flagged),

@@ -3,6 +3,33 @@
 @import "comment_content";
 @import "lib/bootstrap_overrides";
 
+.collapse_link_class span{
+  position:relative;
+  top:-4px;
+}
+
+.juvia-comment-function div{
+  margin-right: -20px;
+}
+
+.juvia-comment-content .juvia-comment-pure-content p{
+     margin-bottom: 0px !important;
+}
+
+.juvia-author {
+  .span8{
+    width: 640px !important;
+  }
+  .span1{
+    width: 28px !important;
+    margin-left: 0px !important;
+  }
+}
+
+.icon-minus, .icon-plus{
+  color: gray;
+  opacity: 0.7;
+}
 juvia-container [class^="icon-"], .juvia-container [class*=" icon-"]{
  line-height: 24px;
 }
@@ -103,7 +130,7 @@ pre {
 }
 
 .juvia-container .comment-like-flag{
-	width: 410px !important;
+	width: 485px !important;
 }
 
 .juvia-preview-empty{
@@ -112,6 +139,7 @@ pre {
 
 .juvia-container .flag{
 	width: 78px !important;	
+	line-height: 24px;
 }
 .juvia-comment-content p.icon-flag{
 	width:100%;
@@ -119,7 +147,7 @@ pre {
 }
 
 .juvia-vote-to-comment, .juvia-vote-to-topic, .juvia-reply-to-comment{
-	width:60px !important;
+	width: 55px !important;
 }
 
 .juvia-vote-to-comment:hover,  .juvia-vote-to-topic:hover, .juvia-reply-to-comment:hover{
@@ -170,8 +198,8 @@ pre {
 }
 
 .juvia-comment {
-	min-height: 64px;
-	margin-bottom: 30px;
+	min-height: 65px;
+	margin-bottom: 5px;
 }
 
 .juvia-comment .juvia-metadata {
@@ -184,9 +212,12 @@ pre {
 	background: -ms-linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%); /* IE10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#d1d1d1',GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%); /* W3C */
-	margin-bottom: 0.5em;
+	margin-bottom: 0px;
 	padding: 8px;
 	border-radius: 3px 3px 3px 3px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	height: 20px;
+	line-height: 14px;
 }
 
 .juvia-comment .juvia-avatar {
