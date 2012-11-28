@@ -245,7 +245,7 @@ def show_comments
       [:html, :js, :json]
     )
     begin
-      @content = decompress(params[:content])
+      @content = decompress(params[:content]).to_s[0..139]
       
       if @content.blank?
         render :partial => 'content_may_not_be_blank'
@@ -280,7 +280,7 @@ def show_comments
 
   def preview_comment
     prepare!([], [:html, :js, :json])
-    @content = decompress(params[:content])
+    @content = decompress(params[:content]).to_s[0..139]
   end
 
   def list_topics

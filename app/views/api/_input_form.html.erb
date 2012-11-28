@@ -1,12 +1,15 @@
 <div class="juvia-data">
 	<div class="juvia-field juvia-textarea-field">
-		<textarea id="comment_textarea" name="content" cols="80" rows="10"></textarea>
+		 <textarea data-provide="limit" data-counter="#counter" 
+   placeholder="Compose new comment.." id="comment_textarea" 
+   name="content"></textarea>
 	</div>
 </div>
 
 <div class="juvia-form-actions">
 	<div class="juvia-action juvia-submit-button">
 		<input type="submit" value="Submit" />
+		 <em id="counter" style="">140</em>
 	</div>
 	<div class="juvia-action juvia-submitting-button" style="display: none">
 		<input type="submit" value="Submitting, please wait..." disabled />
