@@ -29,7 +29,7 @@ describe "Flag" do
   	@comment.total_flags_str.should eql("1 user flagged. ")
   end
 
-  it 'Comment: User and guest flaged this.' do
+  it 'Comment: User and guest flagged this.' do
   	@comment.flags.create flag_attributes.merge({:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
   	@comment.total_flags_str.should eql("1 user flagged. ")
