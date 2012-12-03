@@ -1,11 +1,27 @@
-<% @title = "Comments" %>
+<div class='search-div'>
+  <form class="well form-search" action="/admin/comments" method="get">  
+    <select id='sites' name="site_id" class= "dropdown_box_class">
+      <% @sites.each_with_index do | site, index | %>
+        <% if @site.id == site.id %>
+          <option selected= "selected" value= <%= site.id %>><%= site.name %></option>
+        <% else %>
+          <option value= <%= site.id %>><%= site.name %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <button type = "submit" class = "search-button">Go</button>  
+  </form>  
+</div>
+<h3> Comments </h3>
+<hr>
 <div class="comments list">
-  <% if @all_comments.empty? %>
+  <% comments = @site.comments.page(params[:page])%>
+  <% if comments.empty? %>
     No comments have been posted.
   <% else %>
     <%= render :partial => 'admin/comments/comment',
-      :collection => @comments,
+      :collection => comments,
       :locals => { :show_topic => true } %>
-    <%= will_paginate @comments %>
+    <%= will_paginate comments %>
   <% end %>
 </div>

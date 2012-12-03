@@ -9,11 +9,20 @@ class Admin::CommentsController < ApplicationController
   
   def index
     authorize! :read, Comment
-    @all_comments = Comment.
-      accessible_by(current_ability).
-      order('created_at DESC').
-      includes(:topic)
-    @comments = @all_comments.page(params[:page])
+    @sites = Site.accessible_by(current_ability, :read).order('created_at ASC') 
+    redirect_to admin_sites_path , notice: "There are no sites available" and return if @sites.blank?
+    @site = if( !params[:site_id].blank? )
+      @sites.where( :id => params[:site_id])[0]
+    else
+      @sites[0]
+    end
+    redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
+    
+    #@all_comments = Comment.
+      #accessible_by(current_ability).
+      #order('created_at DESC').
+      #includes(:topic)
+    #@comments = @all_comments.page(params[:page])
   end
   
   def edit
@@ -61,7 +70,16 @@ class Admin::CommentsController < ApplicationController
   end
 
   def flags
-    comments = Comment.where(:id => [Flag.latest.select(:comment_id).map { |e| e.comment_id }.uniq]).sort { |x, y| x.flags.size <=> y.flags.size }.reverse
+    @sites = Site.accessible_by(current_ability, :read).order('created_at ASC') 
+    redirect_to admin_sites_path , notice: "There are no sites available" and return if @sites.blank?
+    @site = if( !params[:site_id].blank? )
+      @sites.where( :id => params[:site_id])[0]
+    else
+      @sites[0]
+    end
+    redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
+     @sites_comment = @site.comments;
+    comments = @sites_comment.where(:id => [Flag.latest.select(:comment_id).map { |e| e.comment_id }.uniq]).sort { |x, y| x.flags.size <=> y.flags.size }.reverse
     @flagcomments, flagcomment = [], Struct.new(:flaggers, :comment)
     comments.each do |comment|
       @flagcomments << flagcomment.new(comment.total_flags_str, comment)
@@ -76,7 +94,7 @@ class Admin::CommentsController < ApplicationController
     end
     redirect_to flags_admin_comments_path
   end
-
+  
 private
   def set_navigation_ids
     @navigation_ids = [:dashboard, :comments]

@@ -32,11 +32,4 @@
     <%= f.submit :class => 'primary button' %>
     <%= button_link_to 'Cancel', session[:return_to] || admin_comments_path %>
   </div>
-  
-  <div class="para preview">
-    <h3>Preview</h3>
-    <div class="content">
-      <%= render_markdown(@comment.content) %>
-    </div>
-  </div>
 <% end %>

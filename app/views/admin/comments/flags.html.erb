@@ -1,4 +1,19 @@
-<% @title = "Flagged Comments" %>
+<div class='search-div'>
+  <form class="well form-search" action="/admin/comments/flags" method="get">  
+    <select id='sites' name="site_id" class= "dropdown_box_class">
+      <% @sites.each_with_index do | site, index | %>
+        <% if @site.id == site.id %>
+          <option selected= "selected" value= <%= site.id %>><%= site.name %></option>
+        <% else %>
+          <option value= <%= site.id %>><%= site.name %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <button type = "submit" class = "search-button">Go</button>  
+  </form>  
+</div>
+<h3>Flagged Comments</h3>
+<hr>
 <div class="comments list">
   <% if @flagcomments.empty? %>
     No comments have been flagged.
@@ -26,3 +41,4 @@
     <% end %>
   <% end %>
 </div>
+
