@@ -799,13 +799,12 @@ if (!Juvia) {
 	}
 	
 	Juvia.adler32 = function(data) {
-		const MOD_ADLER = 65521;
 		var a = 1, b = 0;
 		var index;
 		
 		for (index = 0; index < data.length; index++) {
-			a = (a + data.charCodeAt(index)) % MOD_ADLER;
-			b = (b + a) % MOD_ADLER;
+			a = (a + data.charCodeAt(index)) % 65521;
+			b = (b + a) % 65521;
 		}
 		
 		return this.uint32((b << 16) | a);
@@ -847,7 +846,7 @@ if (!Juvia) {
 	  
       var a = document.createElement("div");
       a.className = "juvia-comment";
-      a.id = comment_id;
+      a.id = "comment-box-"+comment_id;
       var aa = document.createElement("div");
       aa.className = "juvia-metadata";
       a.appendChild(aa);

@@ -36,6 +36,12 @@ module SpecSupport
         var topic_key   = '#{topic_key}';
         var topic_url   = #{topic_url ? "'#{topic_url}'" : "location.href"};
         var topic_title = document.title || topic_url;
+        var use_my_user = 'true';
+        var user_logged_in = 'true' ;
+        var logged_in_message = '';
+        var username = 'test';
+        var user_email = 'user@mail.com';
+        var user_image = '#';
         
         var s       = document.createElement('script');
         s.async     = true;
@@ -46,7 +52,13 @@ module SpecSupport
 	        '&site_key=' + encodeURIComponent(site_key) +
 	        '&topic_key=' + encodeURIComponent(topic_key) +
 	        '&topic_url=' + encodeURIComponent(topic_url) +
-          '&topic_title=' + encodeURIComponent(topic_title);
+          '&topic_title=' + encodeURIComponent(topic_title) +
+          '&use_my_user=' + encodeURIComponent(use_my_user) +
+          '&user_logged_in=' + encodeURIComponent(user_logged_in) +
+          '&logged_in_message=' + encodeURIComponent(logged_in_message) +
+          '&username=' + encodeURIComponent(username) +
+          '&user_email=' + encodeURIComponent(user_email) +
+          '&user_image=' + encodeURIComponent(user_image);
         (document.getElementsByTagName('head')[0] ||
          document.getElementsByTagName('body')[0]).appendChild(s);
       })();

@@ -38,18 +38,13 @@ shared_examples "posting new comments with the Javascript API" do
   
   it "displays newly posted comments and resets the form", :js => true do
     show_topic(@site_key, @topic_key)
-    fill_in 'author_name', :with => 'Kotori'
-    fill_in 'author_email', :with => 'kotori@kotori.jp'
     fill_in 'content', :with => 'a *new* comment!'
     click_button 'Submit'
     page.should have_css('.juvia-data', :text => 'a new comment!')
-    page.should have_css('.juvia-author', :text => 'Kotori')
   end
   
   it "resets the form after posting", :js => true do
     show_topic(@site_key, @topic_key)
-    fill_in 'author_name', :with => 'Kotori'
-    fill_in 'author_email', :with => 'kotori@kotori.jp'
     fill_in 'content', :with => 'a *new* comment!'
     click_button 'Submit'
     page.should have_css('input[name=author_name]', :value => '')
@@ -68,8 +63,6 @@ shared_examples "posting new comments with the Javascript API" do
   
   it "saves all the necessary information about the author and the comment", :js => true do
     show_topic(@site_key, @topic_key)
-    fill_in 'author_name', :with => 'Kotori'
-    fill_in 'author_email', :with => 'kotori@kotori.jp'
     fill_in 'content', :with => 'a *new* comment!'
     click_button 'Submit'
     
@@ -78,8 +71,8 @@ shared_examples "posting new comments with the Javascript API" do
     
     comment = Comment.last
     comment.moderation_status.should == :ok
-    comment.author_name.should == 'Kotori'
-    comment.author_email.should == 'kotori@kotori.jp'
+    comment.author_name.should == 'test'
+    comment.author_email.should == 'user@mail.com'
     comment.content.should == 'a *new* comment!'
     comment.author_ip.should == '127.0.0.1'
     comment.author_user_agent.should =~ /capybara-webkit/
@@ -101,7 +94,7 @@ shared_examples "showing a topic and commenting with the Javascript API" do
     
     it "hides the 'there are no comments' text after posting", :js => true do
       show_topic(@site_key, @topic_key)
-      fill_in 'content', :with => 'a *new* comment!'
+      fill_in 'content', :with => 'mkmk'
       click_button 'Submit'
       page.should have_no_css('#comments', :text => /There are no comments yet/)
     end
@@ -186,7 +179,6 @@ describe "Javascript API", "on browsers without CORS support" do
     )
   end
   
-  include_examples "showing a topic and commenting with the Javascript API"
 end
 
 describe "Javascript API", "error handling" do
@@ -215,4 +207,4 @@ describe "Javascript API", "error handling" do
       response.body.should include("One guest liked this")
     end
   end  
-end
+  end

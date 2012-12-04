@@ -139,17 +139,20 @@ pre {
 
 .juvia-container .flag{
 	width: 78px !important;	
-	line-height: 24px;
+	line-height: 27px;
 }
 .juvia-comment-content p.icon-flag{
 	width:100%;
 	cursor: pointer;
 }
 
-.juvia-vote-to-comment, .juvia-vote-to-topic, .juvia-reply-to-comment{
+.juvia-vote-to-comment, .juvia-vote-to-topic{
 	width: 55px !important;
 }
-
+.juvia-reply-to-comment{
+	width: 55px !important;
+	margin-top: 15px !important;
+}
 .juvia-vote-to-comment:hover,  .juvia-vote-to-topic:hover, .juvia-reply-to-comment:hover{
 	cursor:pointer;
 	text-decoration: underline;
