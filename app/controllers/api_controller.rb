@@ -264,6 +264,7 @@ def show_comments
           params[:topic_url])
         if @topic
           @comment = @topic.comments.create!(
+            :comment_number => last_comment_number(@topic.comments)+1,
             :author_name => params[:author_name],
             :author_email => params[:author_email],
             :author_ip => request.env['REMOTE_ADDR'],
@@ -281,7 +282,10 @@ def show_comments
     end
   end
   
-
+  def last_comment_number( total_comments)
+    total_comments.blank? ? 0 : (total_comments[0].comment_number.blank? ? 0 : (total_comments[0].comment_number) )
+  end
+  
   def preview_comment
     prepare!([], [:html, :js, :json])
     @content = if params["restrict_comment_length"] == "true"
@@ -300,7 +304,7 @@ def show_comments
       render :partial => 'site_not_found'
     end
   end
-
+  
 private
   def handle_cors
     headers["Access-Control-Allow-Origin"] = "*"

@@ -35,7 +35,8 @@ module ApiHelper
 	  :comment_votes => comment.total_like,
 	  :liked => (comment.liked?(username, user_email) ? "liked" : "unliked"),
 	  :flagged => (comment.flagged),
-	  :user_email => comment.author_email
+	  :user_email => comment.author_email,
+	  :comment_number => comment.comment_number
     }
   end
   

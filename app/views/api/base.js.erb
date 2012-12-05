@@ -167,11 +167,6 @@ if (!Juvia) {
 		  });  
         });
 		
-        $('.comment_index').each(function(index){
-          var $this = $(this);
-          $this.html(index + 1);    
-        });
-        
         $('.collapse_link_class:not(.juvia-installed-behavior)').each(function(){
           var $this = $(this);
           $this.addClass('juvia-installed-behavior');
@@ -440,7 +435,7 @@ if (!Juvia) {
 			topic_key   : $container.data('topic-key'),
 			topic_title : $container.data('topic-title'),
 			topic_url   : $container.data('topic-url'),
-      restrict_comment_length: this.restrict_comment_length,
+			restrict_comment_length: this.restrict_comment_length,
 			author_name : $('input[name="author_name"]', form).val(),
 			author_email: $('input[name="author_email"]', form).val(),
 			content     : this.compress($('textarea[name="content"]', form).val())
@@ -609,8 +604,9 @@ if (!Juvia) {
 			lines[i] = '> ' +lines[i];
 		}
 		var $textarea  = $('textarea', $container);
-		var authorName = $.trim($('.juvia-author', $comment).text());
-		var newContent = "*In reply to " + authorName + ":*\n" + lines.join("\n");
+		var authorName = $('input[name="author_name"]', $container).val(); 
+		//var authorName = $.trim($('.juvia-author', $comment).text());
+		var newContent = "*In reply to [#"+$comment.data('comment-number')+"](#"+$comment.attr('id')+"') by "+authorName+"\n" + lines.join("\n");
 		if ($textarea.val() != '') {
 			newContent += "\n\n";
 			newContent += $textarea.val();
@@ -833,7 +829,7 @@ if (!Juvia) {
 	}
 
 	Juvia.rdf_comment_box = function(option){
-	  var comment_counter = option.comment_counter;
+	  var comment_number = (option.comment_number == null) ? "" : option.comment_number+"";
 	  var comment_id = option.comment_id;
 	  var user_image = option.user_image;
 	  var user_name = option.user_name;
@@ -843,10 +839,12 @@ if (!Juvia) {
 	  var liked = option.liked;
 	  var flagged = option.flagged;
 	  var comment_user_email = option.user_email;
-	  
       var a = document.createElement("div");
       a.className = "juvia-comment";
-      a.id = "comment-box-"+comment_id;
+      if(comment_number != "" ) {
+	  a.id = "comment-box-"+comment_number;
+      }
+      a.setAttribute("data-comment-number" , comment_number);
       var aa = document.createElement("div");
       aa.className = "juvia-metadata";
       a.appendChild(aa);
@@ -869,7 +867,8 @@ if (!Juvia) {
       left_div.className = "span8";
       left_div.appendChild(document.createTextNode(user_name));
       var comment_span = document.createElement("span");
-      comment_span.className='floatright comment_index';
+      comment_span.className='floatright';
+      comment_span.appendChild(document.createTextNode(comment_number));
       left_div.appendChild(comment_span);
       var right_div = document.createElement("div");
       right_div.className = "span1";
