@@ -143,4 +143,9 @@ private
   def notify_moderators
     #Mailer.comment_posted(self).deliver
   end
+  
+  def self.last_comment_number(total_comments)
+    total_comments.blank? ? 0 : (total_comments[0].comment_number.blank? ? 0 : (total_comments[0].comment_number) )
+  end
+  
 end

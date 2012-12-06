@@ -264,7 +264,7 @@ def show_comments
           params[:topic_url])
         if @topic
           @comment = @topic.comments.create!(
-            :comment_number => last_comment_number(@topic.comments)+1,
+            :comment_number => Comment.last_comment_number(@topic.comments) + 1,
             :author_name => params[:author_name],
             :author_email => params[:author_email],
             :author_ip => request.env['REMOTE_ADDR'],
@@ -280,10 +280,6 @@ def show_comments
       log_exception(e)
       render :partial => 'internal_error'
     end
-  end
-  
-  def last_comment_number( total_comments)
-    total_comments.blank? ? 0 : (total_comments[0].comment_number.blank? ? 0 : (total_comments[0].comment_number) )
   end
   
   def preview_comment

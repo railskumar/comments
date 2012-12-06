@@ -606,7 +606,7 @@ if (!Juvia) {
 		var $textarea  = $('textarea', $container);
 		var authorName = $('input[name="author_name"]', $container).val(); 
 		//var authorName = $.trim($('.juvia-author', $comment).text());
-		var newContent = "*In reply to [#"+$comment.data('comment-number')+"](#"+$comment.attr('id')+"') by "+authorName+"\n" + lines.join("\n");
+		var newContent = "*In reply to [#"+$comment.data('comment-number')+"](#"+$comment.attr('id')+"') by "+authorName+":*\n" + lines.join("\n");
 		if ($textarea.val() != '') {
 			newContent += "\n\n";
 			newContent += $textarea.val();
