@@ -1,6 +1,9 @@
+<% comment = @comment%>
+<% option = comment_hash(comment, @username, @user_email)%>
 <%= juvia_handle_response(
-  :action    => 'AddComment',
-  :site_key  => @site_key,
-  :topic_key => @topic_key,
-  :html      => render(:partial => 'api/comment.html', :locals => { :comment => @comment })
+  :status         => 'ok',
+  :action         => 'AddComment',
+  :site_key       => @site_key,
+  :topic_key      => @topic_key,
+  :comment_option => option
 ) %>
