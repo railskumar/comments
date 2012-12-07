@@ -5,23 +5,22 @@
 </div>
 <div id="show_user_comments">
   <%comments.visible.to_a.each do |comment|%>
-    <div class="juvia-comment-pure-content well well-small row">
-      <div class="span">
+    <div class="juvia-comment-pure-content well well-small row user-comment-box">
+      <div class="span user-profile-comment">
         <dl>
           <dt>
             <b>Topic:</b>
             <% if comment.topic and comment.topic.url %>
-              <%= link_to truncate(comment.topic.url, :length => 50), comment.topic.url %>
+              <%= link_to truncate(comment.topic.url, :length => 60), comment.topic.url+"#comment-box-#{comment.comment_number}" %>
             <% else %>
               None
             <% end %>
           </dt>
-          <dd class="lead">
-            <br/>
+          <dd class="lead comment-data">
             <%= render_markdown(comment.content.html_safe) %>
           </dd>
           <dd class="juvia-comment-date">
-            <%= distance_of_time_in_words(Time.now, comment.created_at) + ' ago' %>
+            <%= comment.created_at.strftime("%m/%d/%Y, %H:%M %p") %>
           </dd>
         </dl>
       </div>
@@ -29,7 +28,7 @@
   <%end%>
 </div>
 <div class="load_more_contain">
-  <img class="hide" src="<%="#{request.protocol}#{request.host_with_port}#{asset_path("loading.gif")}"%>">
+  <img class="hide progress-image" src="<%="#{request.protocol}#{request.host_with_port}#{asset_path("loading.gif")}"%>">
   <%  if (total_pages  > 1) %>
     <input type="button" id="append_user_comments" class="btn btn-large lod-more-btn-block" 
         value="Show More ..." data-page = "1" onclick="Juvia.showMoreUserComments(this);" 
