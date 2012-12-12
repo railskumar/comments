@@ -604,8 +604,8 @@ if (!Juvia) {
 			lines[i] = '> ' +lines[i];
 		}
 		var $textarea  = $('textarea', $container);
-		var authorName = $('input[name="author_name"]', $container).val(); 
-		//var authorName = $.trim($('.juvia-author', $comment).text());
+		//var authorName = $('input[name="author_name"]', $container).val(); 
+		var authorName = $.trim($('.juvia-author-name', $comment).text());
 		var newContent = "*In reply to [#"+$comment.data('comment-number')+"](#"+$comment.attr('id')+"') by "+authorName+":*\n" + lines.join("\n");
 		if ($textarea.val() != '') {
 			newContent += "\n\n";
@@ -863,13 +863,22 @@ if (!Juvia) {
 
       var aab = document.createElement("div");
       aab.className = "header_com juvia-author juvia-author-without-email row";
+      
+      
       var left_div = document.createElement("div");
       left_div.className = "span8";
-      left_div.appendChild(document.createTextNode(user_name));
+      
+      var comment_author_span = document.createElement("span");
+      comment_author_span.className='juvia-author-name';
+      comment_author_span.appendChild(document.createTextNode(user_name));
+      left_div.appendChild(comment_author_span);
+      
       var comment_span = document.createElement("span");
       comment_span.className='floatright';
       comment_span.appendChild(document.createTextNode(comment_number));
       left_div.appendChild(comment_span);
+      
+      
       var right_div = document.createElement("div");
       right_div.className = "span1";
       var collapse_link = document.createElement("a");

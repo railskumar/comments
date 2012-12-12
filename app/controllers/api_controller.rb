@@ -36,7 +36,7 @@ class ApiController < ApplicationController
     
    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-      @comments = (@topic.comments.visible).paginate(page: 1 , per_page: PER_PAGE)
+      @comments = (@topic.topic_comments.oldest.visible).paginate(page: 1 , per_page: PER_PAGE)
       render 
     else
       render :partial => 'site_not_found'
@@ -50,7 +50,7 @@ def show_comments
     )
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-     @comments = @topic.comments.paginate(page: params[:page], per_page: PER_PAGE)
+     @comments = @topic.topic_comments.oldest.visible.paginate(page: params[:page], per_page: PER_PAGE)
       render
     else
       render :partial => 'site_not_found'
