@@ -36,6 +36,8 @@
   <img class="hide" src="<%="#{request.protocol}#{request.host_with_port}#{asset_path("loading.gif")}"%>">
   <% if total_pages  > 1 %>
     <input type="button" id="show_more_comments" class="btn btn-large lod-more-btn-block" value="Show More ..." data-page = "2" onclick="Juvia.showMoreComments(this);" data-loading-text="Loading..."/>
+  <% else %>
+    <input type="button" id="show_more_comments" style="display:none;" class="btn btn-large lod-more-btn-block" value="Show More ..." data-page = "2" onclick="Juvia.showMoreComments(this);" data-loading-text="Loading..."/>
   <% end %>
 </div>
 </div> <!-- juvia-container -->

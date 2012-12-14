@@ -8,6 +8,8 @@
   Juvia.restrict_comment_length = true;
 <% end %>
 
+Juvia.total_pages = <%= @comments.total_pages %>;
+
 <%
   options = { 
     :action    => 'LoadTopic',

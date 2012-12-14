@@ -6,7 +6,8 @@ if (!Juvia) {
 	  user_logged_in: false,
     restrict_comment_length: false,
     sorting_order: 'oldest',
-    current_page: 1
+    current_page: 1,
+    total_pages: 1
 	};
 }
 
@@ -453,6 +454,9 @@ if (!Juvia) {
 	}
 
 	Juvia.sortComments = function(event, this_obj) {
+    if(this.total_pages > 1){
+      $('#show_more_comments').show();
+    }
     this.sorting_order = this_obj.value;
     this.current_page = 1;
 		var form = event.target;
