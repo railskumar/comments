@@ -40,4 +40,9 @@ module ApiHelper
     }
   end
   
+  def sorting_options
+    {:popular => "hot_visible",
+     :newest  => "newest",
+     :oldest  => "oldest"}
+  end
 end

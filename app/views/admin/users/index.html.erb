@@ -17,7 +17,7 @@
   <% end %>
   </div>
 
-  <%= will_paginate @users %>
+  <%= paginate @users %>
 
   <% if can?(:create, User) %>
     <div class="pre actions">

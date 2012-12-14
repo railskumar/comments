@@ -3,6 +3,8 @@
 require 'zlib'
 
 class ApiController < ApplicationController
+
+  include ApiHelper
   layout nil
   PER_PAGE = 20
   skip_before_filter :verify_authenticity_token
@@ -36,25 +38,32 @@ class ApiController < ApplicationController
     
    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-      @comments = (@topic.topic_comments.oldest.visible).paginate(page: 1 , per_page: PER_PAGE)
+      @comments = (@topic.topic_comments.oldest.visible).page(1).per(PER_PAGE)
       render 
     else
       render :partial => 'site_not_found'
     end
   end
       
-def show_comments
+  def show_comments
     prepare!(
-      [:site_key, :topic_key, :topic_url],
+      [:site_key, :topic_key, :topic_url, :sorting_order, :page],
       [:html, :js]
     )
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-     @comments = @topic.topic_comments.oldest.visible.paginate(page: params[:page], per_page: PER_PAGE)
+      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sorting_order]
+        @topic.topic_comments.send(params[:sorting_order]).visible
+      elsif sorting_options[:popular] == params[:sorting_order]
+        Kaminari.paginate_array(@topic.topic_comments.send(params[:sorting_order]))
+      else
+        @topic.topic_comments.oldest.visible
+      end
+      @comments = comments.page(params[:page] || 1).per(PER_PAGE)
       render
     else
       render :partial => 'site_not_found'
-    end   
+    end
   end
   
   def user_comments
@@ -62,14 +71,10 @@ def show_comments
       [:site_key, :username, :user_email, :container],
       [:html, :js]
     )
-      @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?",
+    @comments = (Site.where(key: params[:site_key])[0].comments.where("author_name =? AND author_email = ?",
       params[:username], 
       params[:user_email]
-      ).order("created_at DESC").paginate(
-      page: 1, 
-      per_page: PER_PAGE
-      ) rescue []
-    )
+      ).order("created_at DESC").page(1).per(PER_PAGE))
   end 
   
   def append_user_comments
@@ -77,15 +82,11 @@ def show_comments
       [:site_key, :username, :user_email, :container],
       [:html, :js]
     )
-    @comments = (Site.where(key: params[:site_key])[0].comments.where(
+    @comments = Site.where(key: params[:site_key])[0].comments.where(
       "author_name =? AND author_email = ?",
       params[:username], 
       params[:user_email]
-      ).order("created_at DESC").paginate(
-      page: params[:page].to_i , 
-      per_page: PER_PAGE
-      ) rescue []
-    )
+      ).order("created_at DESC").page(params[:page].to_i).per(PER_PAGE)
   end 
   
   def comments_count
@@ -223,16 +224,16 @@ def show_comments
       [:site_key, :topic_key, :topic_url, :topic_title, :sort],
       [:html, :js, :json]
     )
-    if @topic = Topic.lookup(@site_key, @topic_key)
-      if params[:sort] == "newest"
-        @comments = @topic.topic_comments.newest.visible.to_a
-      elsif params[:sort] == "oldest"
-        @comments = @topic.topic_comments.oldest.visible.to_a
-      elsif params[:sort] == "hot"
-        @comments = @topic.topic_comments.hot_visible.to_a
+    @topic = Topic.lookup(@site_key, @topic_key)
+    if @topic
+      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sort]
+        @topic.topic_comments.send(params[:sort]).visible
+      elsif sorting_options[:popular] == params[:sort]
+        Kaminari.paginate_array(@topic.topic_comments.send(params[:sort]))
       else
-        @comments = @topic.comments.visible.to_a
+        @topic.topic_comments.oldest.visible
       end
+      @comments = comments.page(params[:page] || 1).per(PER_PAGE)
       render
     else
       render :partial => 'site_not_found'
@@ -373,4 +374,5 @@ private
     logger.error("#{e.class} (#{e}):\n  " <<
       e.backtrace.join("\n  "))
   end
+
 end

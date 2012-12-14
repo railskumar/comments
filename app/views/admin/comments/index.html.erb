@@ -22,6 +22,6 @@
     <%= render :partial => 'admin/comments/comment',
       :collection => comments,
       :locals => { :show_topic => true } %>
-    <%= will_paginate comments %>
+    <%= paginate comments %>
   <% end %>
 </div>

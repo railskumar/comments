@@ -4,7 +4,9 @@ var Juvia;
 if (!Juvia) {
 	Juvia = {
 	  user_logged_in: false,
-    restrict_comment_length: false
+    restrict_comment_length: false,
+    sorting_order: 'oldest',
+    current_page: 1
 	};
 }
 
@@ -184,6 +186,9 @@ if (!Juvia) {
 // END of reinstallBehavior
 
       Juvia.showMoreUserComments = function(this_obj){
+         var page_num = this.current_page;
+         page_num = page_num + 1;
+         this.current_page = page_num;
 	       $(".load_more_contain img").show();
 	       var $this = $(this_obj);
 	       $this.hide();
@@ -192,11 +197,15 @@ if (!Juvia) {
 			username   : $this.attr('data-user-name'),
 			user_email : $this.attr('data-user-email'),
 			container    : '#show_user_comments',
-		        page  	    :  $this.attr('data-page')
+		        page  	    :  page_num
 		});
       }
       
       Juvia.showMoreComments = function(this_obj){
+         var page_num = this.current_page;
+         page_num = page_num + 1;
+         this.current_page = page_num;
+         var current_sorting_order = this.sorting_order;
 	       $(".load_more_contain img").show();
 	       var $this = $(this_obj);
 	       $this.hide();
@@ -206,7 +215,8 @@ if (!Juvia) {
 			site_key    : $container.data('site-key'),
 			topic_key  : $container.data('topic-key'),
 			topic_url   : $container.data('topic-url'),
-			page           : $this.attr('data-page')
+			page           : page_num,
+      sorting_order : current_sorting_order
 		});
       }
 	
@@ -443,7 +453,8 @@ if (!Juvia) {
 	}
 
 	Juvia.sortComments = function(event, this_obj) {
-
+    this.sorting_order = this_obj.value;
+    this.current_page = 1;
 		var form = event.target;
 		var $container = $(form).closest('.juvia-container');
 		this.loadScript('/api/sort_comment', {
@@ -473,15 +484,6 @@ if (!Juvia) {
 			$this.html(" Like");
 			up_down = 0
 		}
-		// this.loadJsScript('/api/post/vote', {
-		// 	site_key    : $container.data('site-key'),
-		// 	topic_key   : $container.data('topic-key'),
-		// 	topic_url   : $container.data('topic-url'),
-		// 	comment_key : $this.data('comment-id'),
-		// 	author_name : $('input[name="author_name"]', $container).val(),
-		// 	author_email: $('input[name="author_email"]', $container).val(),
-		// 	vote     : up_down
-		// });
 		var a_name = $('input[name="author_name"]', $container).val();
 		var a_email = $('input[name="author_email"]', $container).val();
 		var opt1 = {
