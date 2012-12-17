@@ -94,18 +94,18 @@ class ApiController < ApplicationController
       [:site_key],
       [:html, :js]
     )
-    if params[:q] == "1"
-      @comments_arr = []
-      params.each do |key, value|
-        if key == "0" or key.to_i > 0
-          @comments_arr.push({
-            "uid" => "#{key}",
-            "comments" => "#{(Topic.topic_comments_size(value.split(",")[1]) rescue 0)}"
-          })
+    if @site = Site.where(site_key: @site_key)
+      if params[:q] == "1"
+        @comments_arr = []
+        params.each do |key, value|
+          if key == "0" or key.to_i > 0
+            @comments_arr.push({
+              "uid" => "#{key}",
+              "comments" => "#{(Topic.topic_comments_size(value.split(",")[1], @site_key) rescue 0)}"
+            })
+          end
         end
       end
-    end
-    if @site = Site.where(site_key: @site_key)
       render
     else
       render :partial => 'site_not_found'
