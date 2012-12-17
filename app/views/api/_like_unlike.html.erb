@@ -22,7 +22,7 @@
 <% elsif @topic.unliked?(@username, @user_email)%>
   <script type="text/javascript">
     $unlike = $('#vote_for_unlike');
-    $this.addClass('votes-down-active');
-    $this.html(" Unliked");
+    $unlike.addClass('votes-down-active');
+    $unlike.html(" Unliked");
   </script>
 <% end %>

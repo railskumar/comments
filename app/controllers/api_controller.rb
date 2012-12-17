@@ -206,13 +206,14 @@ class ApiController < ApplicationController
       if votes.present?
         votes.each{|vote| vote.destroy}
       else
-        @topic.votes.create!(
+        vote = @topic.votes.build(
             :author_name => params[:author_name],
             :author_email => params[:author_email],
             :author_ip => request.env['REMOTE_ADDR'],
             :author_user_agent => request.env['HTTP_USER_AGENT'],
-            :referer => request.env['HTTP_REFERER'],
-            :like => params[:vote] )
+            :referer => request.env['HTTP_REFERER'])
+        params[:vote] == "1" ? vote.like = 1 : vote.unlike = 1
+        vote.save
       end
     end
   end

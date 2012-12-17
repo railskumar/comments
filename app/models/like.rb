@@ -21,7 +21,12 @@ module Like
   end
 
   def guest_votes
-    votes.where("author_name IS NULL").where("author_email IS NULL").first.like rescue 0
+    all_votes = votes.where("author_name IS NULL").where("author_email IS NULL")
+    if all_votes.present?
+      return all_votes.first.like.to_i
+    else
+      return 0
+    end
   end
 
   def user_votes
@@ -29,15 +34,23 @@ module Like
   end
 
   def liked?(username, user_email)
-    (user_vote(username, user_email).like == 1) rescue false
+    if (u_vote = user_vote(username, user_email))
+      return u_vote.like == 1
+    end
+    return false
   end
 
   def unliked?(username, user_email)
-    (user_vote(username, user_email).like == 0) rescue false
+    if (u_vote = user_vote(username, user_email))
+      return u_vote.unlike == 1
+    end
+    return false
   end
 
   def user_vote(username, user_email)
-    return [] if user_email.blank?
-    votes.where(author_name:username).where(author_email:user_email).first
+    return nil if user_email.blank?
+    u_votes = votes.where(author_name:username).where(author_email:user_email)
+    return u_votes.first if u_votes.present?
+    return nil
   end
 end

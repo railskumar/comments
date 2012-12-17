@@ -28,12 +28,17 @@ describe "Vote" do
     vote.valid?.should be_false
   end
 
-  it 'Topic\'s Vote has been saved successfully' do
+  it 'Topic\'s Vote(like) has been saved successfully' do
     vote = @topic.votes.create vote_attributes.merge({:like => 1})
     vote.should eq(Vote.first)
   end
+  
+  it 'Topic\'s Vote(unlike) has been saved successfully' do
+    vote = @topic.votes.create vote_attributes.merge({:unlike => 1})
+    vote.should eq(Vote.first)
+  end
 
-  it 'Comments Vote has been saved successfully' do
+  it 'Comments Vote(like) has been saved successfully' do
     vote = @comment.votes.create vote_attributes.merge({:like => 1})
     vote.should eq(Vote.first)
   end
@@ -42,10 +47,20 @@ describe "Vote" do
   	vote = @topic.votes.create vote_attributes.merge({:like => 1})
   	@topic.total_like.should eql("One guest liked this.")
   end
+  
+  it 'Topic: One guest unliked this.' do
+  	vote = @topic.votes.create vote_attributes.merge({:unlike => 1})
+  	@topic.total_like.should eql("")
+  end
 
   it 'Comment: message total_like' do
   	vote = @comment.votes.create vote_attributes.merge({:like => 1})
   	@comment.total_like.should eql("One guest liked this.")
+  end
+  
+  it 'Comment: message total_like' do
+  	vote = @comment.votes.create vote_attributes.merge({:unlike => 1})
+  	@comment.total_like.should eql("")
   end
 
   it 'Topic: User and guest liked this.' do
