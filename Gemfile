@@ -17,7 +17,6 @@ gem 'css3buttons'
 gem 'cancan'
 gem 'inherited_resources'
 
-
 # Deploy with Capistrano
 # gem 'capistrano'
 
