@@ -12,6 +12,48 @@ describe "Javascript API", "error handling" do
         :topic_title => 'my topic', 
         :vote => 1
       response.body.should include("One guest liked this")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com', 
+        :topic_title => 'my topic', :vote => 1
+      response.body.should include("2 guests liked this.")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com', 
+        :topic_title => 'my topic', :vote => 1
+      response.body.should include("3 guests liked this.")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com', 
+        :topic_title => 'my topic', :vote => 0
+      response.body.should include("3 guests liked this.")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com',
+        :author_name => "author_name1",
+        :author_email => "author_name1@email.com",
+        :topic_title => 'my topic', :vote => 1
+      response.body.should include("One user and 3 guests liked this.")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com',
+        :author_name => "author_name2",
+        :author_email => "author_name2@email.com",
+        :topic_title => 'my topic', :vote => 1
+      response.body.should include("2 users and 3 guests liked this.")
+      post '/api/topic/vote.js', 
+        :site_key => 'hatsuneshima', 
+        :topic_key => 'topic', 
+        :topic_url => 'http://www.google.com',
+        :author_name => "author_name3",
+        :author_email => "author_name3@email.com",
+        :topic_title => 'my topic', :vote => 1
+      response.body.should include("3 users and 3 guests liked this.")
     end
   end  
 end
