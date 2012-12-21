@@ -416,6 +416,7 @@ if (!Juvia) {
 	}
 
 	Juvia.handleSortComments = function(options) {
+    $(".load_more_contain img").hide();
 		juvia_cls = this;
 		var container = juvia_cls.findContainer(options);
 		$('#juvia-comments-box').html(""); 
@@ -460,7 +461,7 @@ if (!Juvia) {
     this.sorting_order = this_obj.value;
     this.current_page = 1;
 		var form = event.target;
-		var $container = $(form).closest('.juvia-container');
+		var $container = $(form).closest('.juvia-container');    
 		this.loadScript('/api/sort_comment', {
 			site_key    : $container.data('site-key'),
 			topic_key   : $container.data('topic-key'),
@@ -470,6 +471,8 @@ if (!Juvia) {
 			author_email: $('input[name="author_email"]', $container).val(),
 			sort     : this_obj.value
 		});
+    $("#juvia-comments-box").html('');
+    $(".load_more_contain img").show();
 	}
 
 	Juvia.voteComment = function(event, this_obj) {
