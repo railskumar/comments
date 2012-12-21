@@ -266,10 +266,11 @@ pre {
 }
 
 .juvia-comment .juvia-avatar {
-	float: left;
-	margin-top: -8px;
-	margin-left: -60px;
-	img{
+  float: left;
+  margin-top: -8px;
+  margin-left: -60px;
+  width: 40px;
+  img{
      border-radius: 6px 6px 6px 6px;
      width:40px;
    }
