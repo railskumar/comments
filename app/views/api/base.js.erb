@@ -416,6 +416,9 @@ if (!Juvia) {
 	}
 
 	Juvia.handleSortComments = function(options) {
+    if(this.total_pages > 1){
+      $('#show_more_comments').show();
+    }
     $(".load_more_contain img").hide();
 		juvia_cls = this;
 		var container = juvia_cls.findContainer(options);
@@ -455,9 +458,7 @@ if (!Juvia) {
 	}
 
 	Juvia.sortComments = function(event, this_obj) {
-    if(this.total_pages > 1){
-      $('#show_more_comments').show();
-    }
+    $('#show_more_comments').hide();
     this.sorting_order = this_obj.value;
     this.current_page = 1;
 		var form = event.target;
