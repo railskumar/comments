@@ -11,7 +11,7 @@
   Juvia.site_key = '<%= @site_key%>';
   Juvia.topic_key = '<%= @topic_key%>';
   Juvia.topic_url = '<%= @topic_url%>';
-  Juvia.topic_title = '<%= @topic_title%>';
+  Juvia.topic_title = '<%= escape_javascript(@topic_title) %>';
 
 <%
   options = { 
