@@ -77,6 +77,8 @@ GEM
       eventmachine (>= 0.12.9)
     erubis (2.7.0)
     eventmachine (0.12.10)
+    exceptional (2.0.33)
+      rack
     excon (0.16.2)
     execjs (1.2.13)
       multi_json (~> 1.0)
@@ -226,6 +228,7 @@ DEPENDENCIES
   debugger
   default_value_for
   devise
+  exceptional
   factory_girl_rails
   guard-livereload
   heroku

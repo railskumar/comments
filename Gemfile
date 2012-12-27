@@ -16,6 +16,7 @@ gem 'kaminari'
 gem 'css3buttons'
 gem 'cancan'
 gem 'inherited_resources'
+gem 'exceptional'
 gem 'newrelic_rpm'
 
 # Deploy with Capistrano
