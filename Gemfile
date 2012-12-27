@@ -16,7 +16,7 @@ gem 'kaminari'
 gem 'css3buttons'
 gem 'cancan'
 gem 'inherited_resources'
-gem 'exceptional'
+gem 'exception_notification', git: 'git://github.com/alanjds/exception_notification.git'
 gem 'newrelic_rpm'
 
 # Deploy with Capistrano
