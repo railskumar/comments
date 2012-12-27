@@ -55,11 +55,6 @@ module Juvia
     # Enable the asset pipeline
     config.assets.enabled = true
     
-    config.middleware.use ExceptionNotifier, 
-    :email_prefix => "[ExceptionNotifier] ", 
-    :sender_address => %{"notifier" <mk@optimalconsulting.com>}, 
-    :exception_recipients => %w{mk@optimalconsulting.com}
-    
     initializer "application action_mailer settings", :after => "app_config" do
       uri = URI.parse(config.base_url)
       config.action_mailer.default_url_options = { :host => uri.host }

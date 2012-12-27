@@ -8,8 +8,6 @@ class ApplicationController < ActionController::Base
     render :template => 'shared/forbidden'
   end
 
-  rescue_from Exception, :with => :server_error
-
 private
   ### before filters
   
@@ -25,10 +23,6 @@ private
     end
   end
   
-  def server_error(exception)
-    ExceptionNotifier::Notifier.exception_notification(request.env, exception,
-      :data => {:message => "was doing something wrong"}).deliver
-  end
   
   ### helpers
   
