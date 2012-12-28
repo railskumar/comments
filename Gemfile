@@ -18,6 +18,7 @@ gem 'cancan'
 gem 'inherited_resources'
 gem 'exceptional'
 gem 'newrelic_rpm'
+gem 'redis'
 
 # Deploy with Capistrano
 # gem 'capistrano'

@@ -22,6 +22,8 @@ class Comment < ActiveRecord::Base
   before_create :set_moderation_status
   after_create :update_topic_timestamp
   after_create :notify_moderators
+  after_create :redis_update
+  after_destroy :redis_update
 
   include Like
 
@@ -148,4 +150,8 @@ private
     total_comments.blank? ? 0 : (total_comments[0].comment_number.blank? ? 0 : (total_comments[0].comment_number) )
   end
   
+  def redis_update
+    $redis.set("#{self.topic.site.key}_#{self.topic.key.to_s}", self.topic.comments.size)
+  end
+
 end
