@@ -77,6 +77,8 @@ GEM
       eventmachine (>= 0.12.9)
     erubis (2.7.0)
     eventmachine (0.12.10)
+    exceptional (2.0.33)
+      rack
     excon (0.16.2)
     execjs (1.2.13)
       multi_json (~> 1.0)
@@ -126,6 +128,7 @@ GEM
     multi_json (1.0.4)
     mysql2 (0.3.10)
     netrc (0.7.7)
+    newrelic_rpm (3.5.4.33)
     nokogiri (1.5.2)
     orm_adapter (0.0.6)
     pg (0.14.1)
@@ -225,6 +228,7 @@ DEPENDENCIES
   debugger
   default_value_for
   devise
+  exceptional
   factory_girl_rails
   guard-livereload
   heroku
@@ -233,6 +237,7 @@ DEPENDENCIES
   kaminari
   launchy
   mysql2
+  newrelic_rpm
   pg
   rails (= 3.1.6)
   rspec-rails (~> 2.4)

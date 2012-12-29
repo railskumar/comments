@@ -7,22 +7,90 @@ if (!Juvia) {
     restrict_comment_length: false,
     sorting_order: 'oldest',
     current_page: 1,
-    total_pages: 1
+    total_pages: 1,
+    site_key: '',
+    topic_key: '',
+    topic_url: '',
+    topic_title: ''
 	};
 }
 
 (function(Juvia) {
-	var RawDeflate;
-	<%= File.read("#{Rails.root}/app/assets/javascripts/jquery-1.7.1.min.js").html_safe %>
-	<%= File.read("#{Rails.root}/app/assets/javascripts/jquery.delayed-observer.js").html_safe %>
-	<%= File.read("#{Rails.root}/app/assets/javascripts/jquery.example.min.js").html_safe %>
-	<%= File.read("#{Rails.root}/app/assets/javascripts/rawdeflate.js").html_safe %>
-	<%= File.read("#{Rails.root}/app/assets/javascripts/base64.js").html_safe %>
-	<%= File.read("#{Rails.root}/app/assets/javascripts/bootstrap_juvia_tooltip.js").html_safe %>
-       <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
-       <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-limit.js").html_safe %>
+  var RawDeflate;
+  <%= File.read("#{Rails.root}/app/assets/javascripts/jquery-1.7.1.min.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/jquery.delayed-observer.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/jquery.example.min.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/rawdeflate.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/base64.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/bootstrap_juvia_tooltip.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-limit.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/jquery.cookie.js").html_safe %>
   
 	var $ = Juvia.$ = window.jQuery.noConflict(true);
+  
+  Juvia.set_cookie = function(the_cookie, the_value, options){
+    $.cookie(the_cookie, the_value, options);
+  }
+  
+  Juvia.get_cookie = function(the_cookie){
+    return $.cookie(the_cookie);
+  }
+  
+  Juvia.remove_cookie = function(the_cookie){
+    $.removeCookie(the_cookie);
+    $.removeCookie(the_cookie, { path: '/' });
+  }
+
+  Juvia.reqLoadComment = function(){
+    var self = this;
+    var options = {
+          site_key     : self.site_key,
+          topic_key    : self.topic_key,
+          topic_url    : self.topic_url,
+          topic_title  : self.topic_title,
+          sorting_order: self.sorting_order
+      };
+
+      function makeQueryString(options) {
+          var key, params = [];
+          for (key in options) {
+              params.push(
+                  encodeURIComponent(key) +
+                  '=' +
+                  encodeURIComponent(options[key]));
+          }
+          return params.join('&');
+      }
+
+      function makeApiUrl(options) {
+          // Makes sure that each call generates a unique URL, otherwise
+          // the browser may not actually perform the request.
+          if (!('_juviaRequestCounter' in window)) {
+              window._juviaRequestCounter = 0;
+          }
+
+          var result =
+              '<%= request.protocol %><%= request.host_with_port %>/api/load_comments.js' +
+              '?_c=' + window._juviaRequestCounter +
+              '&' + makeQueryString(options);
+          window._juviaRequestCounter++;
+          return result;
+      }
+
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+
+
+
+  }
+
 	
 	Juvia.reinstallBehavior = function() {
 		var self = this;
@@ -460,6 +528,7 @@ if (!Juvia) {
 	Juvia.sortComments = function(event, this_obj) {
     $('#show_more_comments').hide();
     this.sorting_order = this_obj.value;
+    this.set_cookie('sorting_order', this_obj.value, { path: '/' });
     this.current_page = 1;
 		var form = event.target;
 		var $container = $(form).closest('.juvia-container');    
@@ -1028,3 +1097,5 @@ if (!Juvia) {
 		}
 	}
 })(Juvia);
+
+

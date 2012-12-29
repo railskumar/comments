@@ -8,25 +8,26 @@
   Juvia.restrict_comment_length = true;
 <% end %>
 
-Juvia.total_pages = <%= @comments.total_pages %>;
+  Juvia.site_key = '<%= @site_key%>';
+  Juvia.topic_key = '<%= @topic_key%>';
+  Juvia.topic_url = '<%= @topic_url%>';
+  Juvia.topic_title = '<%= escape_javascript(@topic_title) %>';
 
 <%
   options = { 
     :action    => 'LoadTopic',
     :container => @container,
-    :html      => render(:partial => 'topic.html', :locals => { :topic => @topic, :total_pages => @comments.total_pages })
+    :html      => render(:partial => 'topic.html', :locals => { :topic => @topic })
   }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body if @include_css
 %>
 <%= juvia_handle_response(options) %>
-<% if (comments = @comments).size > 0 %>
-  <% comments.each_with_index do |comment, index| %>
-    <% 
-      options = comment_hash(comment, @username, @user_email)
-      options.merge!({'action' => 'LoadComment'})
-    %>
-    <%= juvia_handle_load_comment(options) %>
-  <% end %>
-<% end %>
 <%= juvia_reinstall_behavior %>
 
+
+if(Juvia.get_cookie('sorting_order') !== null){
+  Juvia.sorting_order = Juvia.get_cookie('sorting_order');
+  $("#juvia-sort-select").val(Juvia.sorting_order);
+}
+
+Juvia.reqLoadComment();
