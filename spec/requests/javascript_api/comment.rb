@@ -30,6 +30,19 @@ describe "Javascript API", "error handling" do
       post path,post_comment_hash
     end
 
+    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment_id)
+      post_comment_hash=Hash.new
+      post_comment_hash.merge!(:site_key => site.key)
+      post_comment_hash.merge!(:topic_key => topic.key)
+      post_comment_hash.merge!(:topic_url => topic.url)
+      post_comment_hash.merge!(:comment_key => comment_id)
+      post_comment_hash.merge!(:vote => vote)
+      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
+      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
+      post path,post_comment_hash
+    end
+
+
     def post_comment_with_missing_arg(path,author_name,author_email,site,topic,content,missing_arg)
       post_comment_hash=Hash.new
       post_comment_hash.merge!(:site_key => site.key)  if missing_arg != :site_key
@@ -189,12 +202,25 @@ describe "Javascript API", "error handling" do
         end
 
         it "comment sort by popular now" , :js => true do
-          pending("need to update spec!")
-          this_should_not_get_executed
-        
           create_three_comment
+          topic = Topic.last
+          show_topic(topic.site.key, topic.key)  
+          within("#comment-box-2") do
+            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+            post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+          end
+          within("#comment-box-1") do
+            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+          end
+          within("#comment-box-3") do
+            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,find(".juvia-vote-to-comment")[:"data-comment-id"])
+          end
 
-          select('Sort by popular now', :from => 'juvia-sort-select')
+          show_topic(topic.site.key, topic.key)
+          
+          select('Sort by popular now', :from => 'juvia-sort-select')          
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0].should have_content('hello world 1hello world 2')
@@ -204,9 +230,18 @@ describe "Javascript API", "error handling" do
 
         end
 
+        it "toggel collapse" , :js => true do
+          create_three_comment
+          within("#comment-box-3") do
+            find(".collapse_link_class").click
+            find(".collapse_link_class").find("span")[:class].should include("icon-plus")
+            find(".jcollapse")[:style].should include("height: 0px")
+            find(".collapse_link_class").click
+            find(".collapse_link_class").find("span")[:class].should include("icon-minus")
+            find(".jcollapse")[:style].should_not include("height: 0px")
+          end
+        end
       end
-
-
 
     end
    
