@@ -1,0 +1,18 @@
+
+Juvia.total_pages = <%= @comments.total_pages %>;
+
+if(Juvia.total_pages > 1){
+  $('#show_more_comments').show();
+}
+
+
+<% if (comments = @comments).size > 0 %>
+  <% comments.each_with_index do |comment, index| %>
+    <% 
+      options = comment_hash(comment, @username, @user_email)
+      options.merge!({'action' => 'LoadComment'})
+    %>
+    <%= juvia_handle_load_comment(options) %>
+  <% end %>
+<% end %>
+<%= juvia_reinstall_behavior %>

@@ -29,8 +29,6 @@ class ApiController < ApplicationController
     @topic_url   = params[:topic_url]
     @include_base = get_boolean_param(:include_base, true)
     @include_css  = get_boolean_param(:include_css, true)
-     # Must come before error checking because the error
-    # templates depend on @include_base/@include_css.
       prepare!(
       [:site_key, :topic_key, :container, :topic_title, :topic_url],
       [:html, :js]
@@ -38,11 +36,36 @@ class ApiController < ApplicationController
     
    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-      @comments = (@topic.topic_comments.oldest.visible).page(1).per(PER_PAGE)
       render 
     else
       render :partial => 'site_not_found'
     end
+  end
+  
+  def load_comments
+    @topic_title = params[:topic_title]
+    @topic_url   = params[:topic_url]
+     # Must come before error checking because the error
+    # templates depend on @include_base/@include_css.
+      prepare!(
+      [:site_key, :topic_key, :topic_title, :topic_url, :sorting_order],
+      [:html, :js]
+    )
+    
+   @topic = Topic.lookup(@site_key, @topic_key)
+    if @topic
+      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sorting_order]
+        @topic.topic_comments.send(params[:sorting_order]).visible
+      elsif sorting_options[:popular] == params[:sorting_order]
+        Kaminari.paginate_array(@topic.topic_comments.send(params[:sorting_order]))
+      else
+        @topic.topic_comments.oldest.visible
+      end
+      @comments = comments.page(params[:page] || 1).per(PER_PAGE)
+      render 
+    else
+      render :partial => 'site_not_found'
+    end 
   end
       
   def show_comments
@@ -94,22 +117,16 @@ class ApiController < ApplicationController
       [:site_key],
       [:html, :js]
     )
-    if @site = Site.where(site_key: @site_key)
-      if params[:q] == "1"
-        @comments_arr = []
-        params.each do |key, value|
-          if key == "0" or key.to_i > 0
-            @comments_arr.push({
-              "uid" => "#{key}",
-              "comments" => "#{(Topic.topic_comments_size(value.split(",")[1], @site_key) rescue 0)}"
-            })
-          end
-        end
+    @comments_arr = []
+    params.each do |key, value|
+      if ( key == "0" or key.to_i > 0 ) and value.to_s.split(",").size > 1
+        @comments_arr.push({
+          "uid" => "#{key}",
+          "comments" => "#{$redis.get("#{params[:site_key]}_#{value.to_s.split(",")[1]}").to_i}"
+        })
       end
-      render
-    else
-      render :partial => 'site_not_found'
     end
+    render
   end
 
   def posts_vote
