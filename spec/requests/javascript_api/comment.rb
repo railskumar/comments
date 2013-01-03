@@ -5,7 +5,7 @@ describe "Javascript API", "error handling" do
 
     def create_new_topic
       admin = FactoryGirl.create(:admin)
-      site = FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
+      site  = FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
       topic = FactoryGirl.create(:topic,:site_id => site.id)
     end
 
@@ -17,39 +17,13 @@ describe "Javascript API", "error handling" do
       )
     end    
 
-    def post_comment(path,author_name,author_email,site,topic,content)
-      post_comment_hash=Hash.new
-      post_comment_hash.merge!(:site_key => site.key)
-      post_comment_hash.merge!(:topic_key => topic.key)
-      post_comment_hash.merge!(:topic_url => topic.url)
-      post_comment_hash.merge!(:topic_title => topic.title)
-      post_comment_hash.merge!(:content => compress(content))
-      post_comment_hash.merge!(:restrict_comment_length => false)
-      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
-      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
-      post path,post_comment_hash
-    end
-
     def post_comment_vote(path,author_name,author_email,vote,site,topic,comment_id)
-      post_comment_hash=Hash.new
+      post_comment_hash = Hash.new
       post_comment_hash.merge!(:site_key => site.key)
       post_comment_hash.merge!(:topic_key => topic.key)
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment_id)
       post_comment_hash.merge!(:vote => vote)
-      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
-      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
-      post path,post_comment_hash
-    end
-
-
-    def post_comment_with_missing_arg(path,author_name,author_email,site,topic,content,missing_arg)
-      post_comment_hash=Hash.new
-      post_comment_hash.merge!(:site_key => site.key)  if missing_arg != :site_key
-      post_comment_hash.merge!(:topic_key => topic.key)  if missing_arg != :topic_key
-      post_comment_hash.merge!(:topic_url => topic.url)  if missing_arg != :topic_url
-      post_comment_hash.merge!(:topic_title => topic.title)  if missing_arg != :topic_title
-      post_comment_hash.merge!(:content => content)  if missing_arg != :content
       post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
       post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
       post path,post_comment_hash
@@ -79,12 +53,8 @@ describe "Javascript API", "error handling" do
 
       show_topic(topic.site.key, topic.key)
     end
-    
-    describe "json format" do
-    end
  
     describe "js format" do
-
       describe "commnet" do      
         it "initial preview" , :js => true do
           create_new_topic
@@ -241,12 +211,295 @@ describe "Javascript API", "error handling" do
             find(".jcollapse")[:style].should_not include("height: 0px")
           end
         end
+        
+        describe "formating preview" do
+          it "header formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '#header text'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("h1").text.should include("header text")
+            end
+            fill_in 'content', :with => '##header text'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("h2").text.should include("header text")
+            end
+          end
+
+          it "images formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '![rdf richard](http://rdfrs.com/assets/richard.png)'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("img")[:src].should include("http://rdfrs.com/assets/richard.png")
+              find("img")[:alt].should include("rdf richard")
+            end
+          end
+
+          it "link formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '[Google](http://google.com)'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("a")[:href].should include("http://google.com")
+              find("a").text.should include("Google")
+            end
+          end
+
+
+          it "text style formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '*For italic*'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("em").text.should include("For italic")
+            end          
+            fill_in 'content', :with => '**For bold**'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("strong").text.should include("For bold")
+            end          
+          end
+
+
+          it "list formating" , :js => true do
+            pending("Need to fix this")
+            this_should_not_get_executed
+
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '* unordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+            end          
+            fill_in 'content', :with => '1. ordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ol li").text.should include("ordered list")
+            end                    
+
+            fill_in 'content', :with => '* unordered list
+            1. ordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end                    
+
+            fill_in 'content', :with => '1. ordered list
+            * unordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end                    
+          end
+
+        end
+
+        describe "create formated comment" do
+          it "header formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '#header text'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("h1").text.should include("header text")
+            end
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-1") do
+              find("h1").text.should include("header text")
+            end
+            fill_in 'content', :with => '##header text'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("h2").text.should include("header text")
+            end
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-2") do
+              find("h2").text.should include("header text")
+            end
+          end
+
+          it "images formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '![rdf richard](http://rdfrs.com/assets/richard.png)'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("img")[:src].should include("http://rdfrs.com/assets/richard.png")
+              find("img")[:alt].should include("rdf richard")
+            end
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-1") do
+              within(".juvia-comment-pure-content") do
+                find("img")[:src].should include("http://rdfrs.com/assets/richard.png")
+                find("img")[:alt].should include("rdf richard")
+              end
+            end
+          end
+
+          it "link formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '[Google](http://google.com)'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("a")[:href].should include("http://google.com")
+              find("a").text.should include("Google")
+            end
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-1") do
+              within(".juvia-comment-pure-content") do
+                find("a")[:href].should include("http://google.com")
+                find("a").text.should include("Google")
+              end
+            end
+          end
+
+
+          it "text style formating" , :js => true do
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '*For italic*'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("em").text.should include("For italic")
+            end          
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-1") do
+              find("em").text.should include("For italic")
+            end
+            fill_in 'content', :with => '**For bold**'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("strong").text.should include("For bold")
+            end          
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-2") do
+              find("strong").text.should include("For bold")
+            end
+
+          end
+
+
+          it "list formating" , :js => true do
+            pending("Need to fix this")
+            this_should_not_get_executed
+
+            create_new_topic
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            fill_in 'content', :with => '* unordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+            end          
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-1") do
+              find("ul li").text.should include("unordered list")
+            end
+
+            fill_in 'content', :with => '1. ordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ol li").text.should include("ordered list")
+            end                    
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-2") do
+              find("ol li").text.should include("ordered list")
+            end
+
+
+            fill_in 'content', :with => '* unordered list
+            1. ordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end                    
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-3") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end
+
+
+            fill_in 'content', :with => '1. ordered list
+            * unordered list'
+            page.should have_css('.juvia-preview-empty', :visible => false)
+            page.should have_css('.juvia-preview-content',:visible => true)
+            within(".juvia-preview-content") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end                    
+            click_button 'Submit'
+            page.should have_css('.juvia-preview-empty', :visible => true)
+            page.should have_css('.juvia-preview-content',:visible => false)
+            within("#comment-box-4") do
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
+            end
+          end
+
+        end
+        
+        
       end
 
     end
    
-    describe "other format" do
-    end
-
   end  
 end
