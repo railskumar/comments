@@ -26,6 +26,7 @@ if (!Juvia) {
   <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-collapse.js").html_safe %>
   <%= File.read("#{Rails.root}/app/assets/javascripts/juvia-bootstrap-limit.js").html_safe %>
   <%= File.read("#{Rails.root}/app/assets/javascripts/jquery.cookie.js").html_safe %>
+  <%= File.read("#{Rails.root}/app/assets/javascripts/markdown.js").html_safe %>
   
 	var $ = Juvia.$ = window.jQuery.noConflict(true);
   
@@ -655,15 +656,22 @@ if (!Juvia) {
 	Juvia.previewComment = function(formElement) {
 		var $container = $(formElement).closest('.juvia-container');
 		this.saveCommentBox($container);
-		this.loadScript('/api/preview_comment', {
-			site_key : $container.data('site-key'),
-			topic_key: $container.data('topic-key'),
-      restrict_comment_length: this.restrict_comment_length,
-			content  : this.compress($('textarea[name="content"]', $container).val())
-		});
+		
+		var input_value = $('textarea[name="content"]', $container).val();
+		var html_output = markdown.toHTML(input_value);
+		var preview = $('.juvia-preview', $container);
+		this.showFormError($container, undefined);
+		if (html_output.length == 0) {
+			preview.find('.juvia-preview-empty').show();
+			preview.find('.juvia-preview-content').hide();
+		} else {
+			preview.find('.juvia-preview-empty').hide();
+			preview.find('.juvia-preview-content').html(html_output).show();
+		}
+		
 		return false;
 	}
-
+	
 	Juvia.setSubmitting = function(container, val) {
 		if (val) {
 			container.find('.juvia-submit-button').hide();
