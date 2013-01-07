@@ -6,6 +6,7 @@ gem 'rails', '3.1.6'
 gem 'pg'
 gem 'dalli'
 gem 'heroku'
+gem 'thin'
 
 gem 'schema_plus'
 gem 'default_value_for'
@@ -19,21 +20,12 @@ gem 'inherited_resources'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'redis'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug'
 gem 'bcrypt-ruby'
 
 group :development do
   gem 'guard-livereload'
 end
 
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
 group :development, :test do
   gem 'debugger'
   gem 'mysql2'
