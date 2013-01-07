@@ -1,7 +1,13 @@
 <%= render :template => 'api/base.js' if @include_base %>
 
+<% if @require_external_user %>
+  Juvia.use_my_user = 'true';
+<% end %>
+
 <% if @user_logged_in %> 
   Juvia.user_logged_in = true;
+  Juvia.username = '<%= @username%>';
+  Juvia.user_email = '<%= @user_email%>';
 <% end %>
 
 <% if @restrict_comment_length %> 

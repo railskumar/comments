@@ -3,7 +3,7 @@
 var Juvia;	
 if (!Juvia) {
 	Juvia = {
-	  user_logged_in: false,
+    user_logged_in: false,
     restrict_comment_length: false,
     sorting_order: 'oldest',
     current_page: 1,
@@ -11,7 +11,10 @@ if (!Juvia) {
     site_key: '',
     topic_key: '',
     topic_url: '',
-    topic_title: ''
+    topic_title: '',
+    username: '',
+    user_email: '',
+    use_my_user: 'false'
 	};
 }
 
@@ -50,7 +53,12 @@ if (!Juvia) {
           topic_key    : self.topic_key,
           topic_url    : self.topic_url,
           topic_title  : self.topic_title,
-          sorting_order: self.sorting_order
+          sorting_order: self.sorting_order,
+          username     : self.username,
+          user_email  : self.user_email,
+          restrict_comment_length: self.restrict_comment_length,
+          use_my_user: self.use_my_user,
+          user_logged_in: self.user_logged_in
       };
 
       function makeQueryString(options) {
@@ -105,6 +113,17 @@ if (!Juvia) {
 				}
 			});
 		}
+		
+        
+        $(".juvia-comment-editable-content:not(juvia-installed-behavior)").each(function() {
+          if(self.user_logged_in){
+		    var $this = $(this);
+		    $this.addClass('juvia-installed-behavior');
+		    $this.bind('dblclick', function(){
+              self.editComment(this);
+            });
+          }
+        });
 		
 		$('.juvia-container:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
@@ -255,6 +274,82 @@ if (!Juvia) {
       }
 // END of reinstallBehavior
 
+  Juvia.editComment = function(this_obj){
+    var self = this;
+    
+    if($(this_obj).find('textarea').length > 0){
+      return;
+    }
+    
+    $textarea = $('<textarea class="juvia-text-area" />');
+
+    $textarea.delayedObserver(function() {
+      self.previewEditComment(this);
+    });
+
+    $buttons = $('<div class="edit-buttons"><button class="btn update_comment" type="button">OK</button><button class="btn" type="button" onclick="Juvia.resumeEdit($(this).parent().parent())">Cancel</button></div>');
+    var htmlContent = $(this_obj).html(); 
+    var markdwonContent = toMarkdown(htmlContent);
+    $textarea.val(markdwonContent);
+    var $edit_dom = $('<div></div>');
+    $edit_dom.addClass("juvia-preview-content margin-edit");
+    $edit_dom.html(htmlContent);
+    $(this_obj).html($edit_dom).append($textarea).append($buttons);
+    
+    $buttons.find(".update_comment").bind("click", function(){
+      self.updateComment(this);
+    });
+    
+    $textarea.focus();
+  };
+  
+  Juvia.updateComment = function(this_obj){
+    var $this = $(this_obj);
+    var $comment_input = $this.parent().parent().find('textarea');
+    var comment_id = $this.closest(".juvia-data").attr("id");
+    comment_id = comment_id.replace("divid", "");
+    var form = $(".juvia-add-comment-form");
+	var $container = $(".juvia-add-comment-form").closest('.juvia-container');
+    this.loadScript('/api/update_comment', {
+      site_key    : $container.data('site-key'),
+      restrict_comment_length: this.restrict_comment_length,
+      comment_id: comment_id,
+      content     : this.compress($comment_input.val())
+    });
+  };
+  
+  Juvia.handleUpdateComment = function(options){
+	var self = this;
+    if(options.status === "ok"){
+      self.resumeEdit($("#divid" + options.comment_id).find(".juvia-comment-pure-content"));
+    }else{
+      alert("something went wrong");
+    }
+  };
+  
+  Juvia.previewEditComment = function(this_obj) {
+    var $textarea = $(this_obj);
+    var input_value = $textarea.val();
+    if(this.restrict_comment_length && input_value.length > 140){
+      input_value = input_value.substring(0, 140);
+    }
+    var html_output = markdown.toHTML(input_value);
+    var $preview_dom = $textarea.parent().find(".juvia-preview-content");
+    $preview_dom.html(html_output).show();
+    return false;
+  };
+  
+  Juvia.resumeEdit = function($main_edit){
+    var $edit_dom = $main_edit.find(".juvia-preview-content");
+    var original_html = $edit_dom.html();
+    $main_edit.html(original_html);
+    return false;
+  };
+  
+  
+  
+  
+  
       Juvia.showMoreUserComments = function(this_obj){
          var page_num = this.current_page;
          page_num = page_num + 1;
@@ -658,6 +753,9 @@ if (!Juvia) {
 		this.saveCommentBox($container);
 		
 		var input_value = $('textarea[name="content"]', $container).val();
+        if(this.restrict_comment_length && input_value.length > 140){
+          input_value = input_value.substring(0, 140);
+        }
 		var html_output = markdown.toHTML(input_value);
 		var preview = $('.juvia-preview', $container);
 		this.showFormError($container, undefined);
@@ -926,6 +1024,12 @@ if (!Juvia) {
 	  var liked = option.liked;
 	  var flagged = option.flagged;
 	  var comment_user_email = option.user_email;
+	  var editable = function(){
+        if(option.can_edit == "true"){
+          return true;
+        }
+        return false;
+      };
       var a = document.createElement("div");
       a.className = "juvia-comment";
       if(comment_number != "" ) {
@@ -1000,7 +1104,13 @@ if (!Juvia) {
       ab.appendChild(aba);
 
       var abaa = document.createElement("div");
-      abaa.className = "juvia-comment-pure-content";
+      abaa.className = function(){
+        if(editable()){
+          return "juvia-comment-pure-content juvia-comment-editable-content";
+        }
+        return "juvia-comment-pure-content";
+      }();
+      
       $(abaa).html(comment_text);
       aba.appendChild(abaa);
       

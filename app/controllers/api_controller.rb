@@ -320,6 +320,33 @@ class ApiController < ApplicationController
     end
   end
   
+  def update_comment
+    prepare!(
+      [:site_key, :content, :comment_id],
+      [:js, :json]
+    )
+    @content = if params["restrict_comment_length"] == "true"
+      decompress(params[:content]).to_s[0..139]
+    else
+      decompress(params[:content]).to_s
+    end
+    if @content.blank?
+      render :partial => 'content_may_not_be_blank'
+      return
+    end
+    @site = Site.find_by_key(@site_key)
+    @comment = Comment.find(params[:comment_id])
+    if @comment.update_attributes(
+        :author_ip => request.env['REMOTE_ADDR'],
+        :author_user_agent => request.env['HTTP_USER_AGENT'],
+        :referer => request.env['HTTP_REFERER'],
+        :content => @content)
+      render
+    else
+      render :partial => 'site_not_found'
+    end
+  end
+  
 private
   def handle_cors
     headers["Access-Control-Allow-Origin"] = "*"

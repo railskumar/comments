@@ -82,6 +82,11 @@ class Comment < ActiveRecord::Base
   def report_spam
     call_akismet('submit-spam', akismet_params)
   end
+  
+  def can_edit?(username, user_email)
+    return false if (!self.author_email.blank? and self.author_email != user_email)
+    created_at > Time.zone.now - 1.hour
+  end
 
 private
   AKISMET_HEADERS = {
