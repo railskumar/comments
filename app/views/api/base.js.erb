@@ -124,6 +124,17 @@ if (!Juvia) {
             });
           }
         });
+        
+        $('.juvia-edit-to-comment a:not(.juvia-installed-behavior)').each(function() {
+           if(self.user_logged_in){
+		    var $this = $(this);
+		    $this.addClass('juvia-installed-behavior');
+		    $this.bind('click', function(){
+              $(this).closest('.juvia-comment-content').find('.juvia-comment-editable-content').dblclick();
+              //self.editComment(this);
+            });
+          }
+		});
 		
 		$('.juvia-container:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
@@ -294,7 +305,7 @@ if (!Juvia) {
     var $edit_dom = $('<div></div>');
     $edit_dom.addClass("juvia-preview-content margin-edit");
     $edit_dom.html(htmlContent);
-    $(this_obj).html($edit_dom).append($textarea).append($buttons);
+    $(this_obj).html("<br/>").append($textarea).append($buttons).append($edit_dom);
     
     $buttons.find(".update_comment").bind("click", function(){
       self.updateComment(this);
@@ -1119,7 +1130,12 @@ if (!Juvia) {
       aba.appendChild(abab);
 
       var ababa = document.createElement("div");
-      ababa.className = "span6 comment-like-flag";
+      ababa.className = function(){
+        if(editable()){
+          return "span6 comment-like-flag-edit";
+        }
+        return "span6 comment-like-flag";
+      }();
       abab.appendChild(ababa);
 
       var ababaa_p = document.createElement("p");
@@ -1180,6 +1196,21 @@ if (!Juvia) {
         ababcaa.appendChild(document.createTextNode("Reply"));
         ababca.appendChild(ababcaa);
       }
+      
+      if(editable()){
+        var edit_comment_dom = document.createElement("div");
+        edit_comment_dom.className = "span1";
+        abab.appendChild(edit_comment_dom);
+
+        var edit_comment_dom_p = document.createElement("p");
+        edit_comment_dom_p.className = "juvia-edit-to-comment";
+        edit_comment_dom.appendChild(edit_comment_dom_p);
+        var edit_comment_dom_p_a = document.createElement("a");
+        edit_comment_dom_p_a.setAttribute("href", "javascript:void(0)");
+        edit_comment_dom_p_a.appendChild(document.createTextNode("Edit"));
+        edit_comment_dom_p.appendChild(edit_comment_dom_p_a);
+       }
+      
       return a;
     }
     

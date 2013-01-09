@@ -85,7 +85,7 @@ class Comment < ActiveRecord::Base
   
   def can_edit?(username, user_email)
     return false if (!self.author_email.blank? and self.author_email != user_email)
-    created_at > Time.zone.now - 1.hour
+    created_at > Time.zone.now - 12.hours
   end
 
 private
