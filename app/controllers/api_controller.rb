@@ -117,22 +117,16 @@ class ApiController < ApplicationController
       [:site_key],
       [:html, :js]
     )
-    if @site = Site.where(site_key: @site_key)
-      if params[:q] == "1"
-        @comments_arr = []
-        params.each do |key, value|
-          if key == "0" or key.to_i > 0
-            @comments_arr.push({
-              "uid" => "#{key}",
-              "comments" => "#{(Topic.topic_comments_size(value.split(",")[1], @site_key) rescue 0)}"
-            })
-          end
-        end
+    @comments_arr = []
+    params.each do |key, value|
+      if ( key == "0" or key.to_i > 0 ) and value.to_s.split(",").size > 1
+        @comments_arr.push({
+          "uid" => "#{key}",
+          "comments" => "#{$redis.get("#{params[:site_key]}_#{value.to_s.split(",")[1]}").to_i}"
+        })
       end
-      render
-    else
-      render :partial => 'site_not_found'
     end
+    render
   end
 
   def posts_vote

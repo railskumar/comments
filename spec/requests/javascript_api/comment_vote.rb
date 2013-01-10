@@ -10,15 +10,6 @@ describe "Javascript API", "error handling" do
       comment = FactoryGirl.create(:comment,:topic_id => topic.id)
     end
     
-    def post_flag_by_guest(path,site,topic,comment)
-      post path, 
-        :site_key => site.key, 
-        :topic_key => topic.key, 
-        :topic_url => topic.url, 
-        :topic_title => topic.title,
-        :comment_key => comment.id
-    end
-
     
     def post_comment_vote(path,author_name,author_email,vote,site,topic,comment)
       post_comment_hash=Hash.new
