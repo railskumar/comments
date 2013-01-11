@@ -102,17 +102,37 @@ juvia-container [class^="icon-"], .juvia-container [class*=" icon-"]{
   height: 248px;
 }
 
+.edit_markdown_child_div{
+  border:1px solid;
+  height: 292px;
+}
+
 .markdown_div{
   overflow: hidden;
   margin-bottom:10px;
   width:89%;
 }
 
+.edit_markdown_div{
+  overflow: hidden;
+  margin-bottom:10px;
+  width:98%;
+}
+
 .miscell{
   width:297px !important;
 }
 
+.edit_miscell{
+  width:302px !important;
+}
+
+
 #markdown_upper_div{
+  padding-left: 10px;
+}
+
+.edit_markdown_upper_div{
   padding-left: 10px;
 }
 

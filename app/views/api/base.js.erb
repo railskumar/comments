@@ -288,24 +288,29 @@ if (!Juvia) {
   Juvia.editComment = function(this_obj){
     var self = this;
     
+    self.uniq_edit_id = self.uniq_edit_id || 123;
+    
+    self.uniq_edit_id = self.uniq_edit_id + 1;
+    
     if($(this_obj).find('textarea').length > 0){
       return;
     }
     
-    $textarea = $('<textarea class="juvia-text-area" />');
+    var $textarea = $('<textarea class="juvia-text-area" />');
 
     $textarea.delayedObserver(function() {
       self.previewEditComment(this);
     });
 
-    $buttons = $('<div class="edit-buttons"><button class="btn update_comment" type="button">OK</button><button class="btn" type="button" onclick="Juvia.resumeEdit($(this).parent().parent())">Cancel</button></div>');
+    var $buttons = $('<div class="edit-buttons"><button class="btn update_comment" type="button">OK</button><button class="btn" type="button" onclick="Juvia.resumeEdit($(this).parent().parent())">Cancel</button></div>');
+    var edit_preview_help = $("<div class='row row-markdown'><div class='span'>Help with formatting  <a href='#markdowncollapse_"+self.uniq_edit_id+"'data-toggle='jcollapse'>click here</a></div></div><div id='markdowncollapse_"+ self.uniq_edit_id +"'class='edit_markdown_div jcollapse'><div class='edit_markdown_child_div'><div class='edit_markdown_upper_div'><div class='row'><div class='span pull-right'><a href='#markdowncollapse_"+ self.uniq_edit_id +"'data-toggle='jcollapse'>X</a></div></div><div class='format_list_div'><h4>Format Text</h4><p>Headers</p><pre>#H1 Header<br>##H2 Header</pre><p>Text styles</p><pre>*For italic*<br>**For bold**</pre></div><div class='format_list_div'><h4>Lists</h4><p>Unordered</p><pre>*Item 1<br>*Item 2</pre><p>Ordered</p><pre>1.Item 1<br>2.Item 2</pre></div><div class='format_list_div edit_miscell'><h4>Miscellaneous</h4><p>Images</p><pre>Format:![Alt Text](url)<br>Example: ![rdf richard](http://rdfrs.com/assets/richard.png)</pre><p>Links</p><pre>Example: [Google](http://google.com)</pre><p class='pull-right'><a href='http://daringfireball.net/projects/markdown/basics'target='_blank'>More help on markdown home page</a></p></div></div></div></div>");
     var htmlContent = $(this_obj).html(); 
     var markdwonContent = toMarkdown(htmlContent);
     $textarea.val(markdwonContent);
     var $edit_dom = $('<div></div>');
     $edit_dom.addClass("juvia-preview-content margin-edit");
     $edit_dom.html(htmlContent);
-    $(this_obj).html("<br/>").append($textarea).append($buttons).append($edit_dom);
+    $(this_obj).html("<br/>").append($textarea).append($buttons).append($edit_dom).append(edit_preview_help);
     
     $buttons.find(".update_comment").bind("click", function(){
       self.updateComment(this);
