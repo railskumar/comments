@@ -28,7 +28,7 @@
   <%end%>
 </div>
 <div class="load_more_contain">
-  <img class="hide progress-image" src="<%="#{request.protocol}#{request.host_with_port}#{asset_path("loading.gif")}"%>">
+  <img class="hide progress-image" src="<%="#{asset_path("loading.gif")}"%>">
   <%  if (total_pages  > 1) %>
     <input type="button" id="append_user_comments" class="btn btn-large lod-more-btn-block" 
         value="Show More ..." data-page = "1" onclick="Juvia.showMoreUserComments(this);" 

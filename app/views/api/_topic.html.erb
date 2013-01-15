@@ -33,7 +33,7 @@
 	<% end %>
 </div>
 <div class="load_more_contain">
-  <img class="hide" width="16" height="11" style="margin:0 0 3px 5px" src="<%="#{request.protocol}#{request.host_with_port}#{asset_path("loading.gif")}"%>">
-    <input type="button" id="show_more_comments" style="display:none;" class="btn btn-large lod-more-btn-block" value="Show More ..." data-page = "2" onclick="Juvia.showMoreComments(this);" data-loading-text="Loading..."/>
+  <img class="hide" width="16" height="11" style="margin:0 0 3px 5px" src="<%="#{asset_path("loading.gif")}"%>">
+  <input type="button" id="show_more_comments" style="display:none;" class="btn btn-large lod-more-btn-block" value="Show More ..." data-page = "2" onclick="Juvia.showMoreComments(this);" data-loading-text="Loading..."/>
 </div>
 </div> <!-- juvia-container -->
