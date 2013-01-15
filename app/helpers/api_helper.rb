@@ -36,7 +36,8 @@ module ApiHelper
 	  :liked => (comment.liked?(username, user_email) ? "liked" : "unliked"),
 	  :flagged => (comment.flagged),
 	  :user_email => comment.author_email,
-	  :comment_number => comment.comment_number
+	  :comment_number => comment.comment_number,
+	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
   end
   
