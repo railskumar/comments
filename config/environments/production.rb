@@ -41,7 +41,7 @@ Juvia::Application.configure do
   config.assets.precompile += %w( columnal.css )
 
   # Assets are distributed via Amazon CDN
-  config.action_controller.asset_host = "d2gticy66n56kj.cloudfront.net"
+  # config.action_controller.asset_host = "d2gticy66n56kj.cloudfront.net"
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
