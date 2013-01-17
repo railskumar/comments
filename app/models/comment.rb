@@ -6,6 +6,8 @@ class Comment < ActiveRecord::Base
   class AkismetError < StandardError
   end
 
+  COMMENT_EDIT_DURATION = 1.hour
+  
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable
   has_many :flags, :dependent => :destroy
@@ -85,7 +87,7 @@ class Comment < ActiveRecord::Base
   
   def can_edit?(username, user_email)
     return false if (!self.author_email.blank? and self.author_email != user_email)
-    created_at > Time.zone.now - 12.hours
+    created_at > Time.zone.now - COMMENT_EDIT_DURATION
   end
 
 private
