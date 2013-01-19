@@ -1,10 +1,16 @@
 <div class="juvia-topic-vote">
-  <div class="row">
-  	<div class="span1">
-      <p class="juvia-vote-to-topic icon-thumbs-up" id="vote_for_like" > Like</p>
+  <div class="row-fluid">
+  	<div class="span2">
+	  <votetopic class="juvia-vote-to-topic" id="vote_for_like">
+        <i class="icon-thumbs-up" ></i>
+        <span> Like</span>
+      </votetopic>
     </div>
-    <div class="span1" style="margin-left:2px;">
-      <p class="juvia-vote-to-topic icon-thumbs-down" id="vote_for_unlike" > Unlike</p>
+    <div class="span2">
+	  <votetopic class="juvia-vote-to-topic" id="vote_for_unlike" >
+        <i class="icon-thumbs-down" ></i>
+        <span> Unlike</span>
+      </votetopic>
     </div>
     <div class="span6">
     	<p><span id="liked_pages"><%=@topic.total_like %></span></p>
@@ -15,14 +21,16 @@
 <% if @topic.liked?(@username, @user_email) %>
 <!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
   <script type="text/javascript">
-    $like = $('#vote_for_like')
+    var $like = $('#vote_for_like')
     $like.addClass('votes-up-active');
-    $like.html(" Liked");
+    var $like_text = $like.find("span");
+    $like_text.html(" Liked");
   </script>
 <% elsif @topic.unliked?(@username, @user_email)%>
   <script type="text/javascript">
-    $unlike = $('#vote_for_unlike');
+    var $unlike = $('#vote_for_unlike');
     $unlike.addClass('votes-down-active');
-    $unlike.html(" Unliked");
+    var $unlike_text = $unlike.find("span");
+    $unlike_text.html(" Unliked");
   </script>
 <% end %>

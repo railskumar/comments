@@ -191,7 +191,7 @@ if (!Juvia) {
 			});
 		});
 
-		$('.juvia-reply-to-comment a:not(.juvia-installed-behavior)').each(function() {
+		$('.rdf-reply-to-comment:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
 			$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function() {
@@ -227,11 +227,10 @@ if (!Juvia) {
 			}
 		});
 
-		$('.juvia-comment-function p.icon-flag:not(.juvia-installed-behavior)').each(function() {
+		$('flagcomment:not(.juvia-installed-behavior)').each(function() {
 			var $this = $(this);
 			$this.addClass('juvia-installed-behavior');
 			$this.bind('click', function(event) {
-			    $(this).css("top", "0px");
             if(confirm('Are you sure you wish to flag this comment?')){
                   self.reportComment(event, this);
                 }else{
@@ -248,8 +247,6 @@ if (!Juvia) {
                 mouseenter: function(e) {
                   $('.blink_text',$this).each(function() {
                   	$(this).css("visibility", "visible");
-			$(this).css("position", "relative");
-			$(this).css("top", "-5px");
                   });
                 },
                 mouseleave: function(e) {
@@ -611,10 +608,11 @@ if (!Juvia) {
 	Juvia.handleReportComment = function(options) {
 		if(options.status == "ok"){
 		  alert("Thank you. This comment has been flagged for moderator attention. ");
-		  tempFlagsElement=$('#flag-'+options.comment_id);
-		  tempFlagsElement.html(options.flagged);
-		  tempFlagsElement.removeClass('blink_text');
-		  tempFlagsElement.css("visibility","visible");
+		  var tempFlagsElement = $('#flag-'+options.comment_id);
+		  tempFlagsElement.html( " " + options.flagged);
+		  var flag_comment = tempFlagsElement.parent();
+		  flag_comment.removeClass('blink_text');
+		  flag_comment.css("visibility","visible");
 		}else{
 		  alert("Something went wrong!");
 		}
@@ -661,16 +659,18 @@ if (!Juvia) {
 		var $this = $(this_obj);
 		var form = event.target;
 		var $container = $(form).closest('.juvia-container');
-		var up_down = 1
-		if ($this.hasClass('icon-thumbs-up')){
-			$this.removeClass('icon-thumbs-up');
-			$this.addClass('icon-thumbs-down');
-			$this.html(" Liked");
+		var up_down = 1;
+		var $vote_icon = $this.find("i");
+		var $vote_text = $this.find("span");
+		if ($vote_icon.hasClass('icon-thumbs-up')){
+			$vote_icon.removeClass('icon-thumbs-up');
+			$vote_icon.addClass('icon-thumbs-down');
+			$vote_text.html(" Liked");
 			up_down = 1
 		}else{
-			$this.removeClass('icon-thumbs-down');
-			$this.addClass('icon-thumbs-up');
-			$this.html(" Like");
+			$vote_icon.removeClass('icon-thumbs-down');
+			$vote_icon.addClass('icon-thumbs-up');
+			$vote_text.html(" Like");
 			up_down = 0
 		}
 		var a_name = $('input[name="author_name"]', $container).val();
@@ -696,36 +696,43 @@ if (!Juvia) {
 		var $this = $(this_obj);
 		var form = event.target;
 		var $container = $(form).closest('.juvia-container');
-		$unlike = $('#vote_for_unlike');
-		$like = $('#vote_for_like')
-		if ($this.hasClass('icon-thumbs-up')){
+		
+		var $unlike = $('#vote_for_unlike');
+		var $unlike_text = $('#vote_for_unlike').find("span");
+		
+		var $like = $('#vote_for_like');
+		var $like_text = $('#vote_for_like').find("span");
+		
+		var $vote_icon = $this.find("i");
+		var $vote_text = $this.find("span");
+		if ($vote_icon.hasClass('icon-thumbs-up')){
 			if ($this.hasClass('votes-up-active')){
 		        up_down = 0;
 		        $this.removeClass('votes-up-active');
-		        $this.html(" Like");
+		        $vote_text.html(" Like");
 			}else{
 		        up_down = 1;
 		        if($unlike.hasClass('votes-down-active')){
 		           $unlike.removeClass('votes-down-active');
-		           $unlike.html(" Unlike");
+		           $unlike_text.html(" Unlike");
 		        }else{
 		           $this.addClass('votes-up-active');
-		           $this.html(" Liked");
+		           $vote_text.html(" Liked");
 		        }
 			}
 		}else{
 			if ($this.hasClass('votes-down-active')){
 		        up_down = 1;
 		        $this.removeClass('votes-down-active');
-		        $this.html(" Unlike");
+		        $vote_text.html(" Unlike");
 			}else{
 		        up_down = 0;
 		        if($like.hasClass('votes-up-active')){
 		           $like.removeClass('votes-up-active');
-		           $like.html(" Like");
+		           $like_text.html(" Like");
 		        }else{
 		           $this.addClass('votes-down-active');
-		           $this.html(" Unliked");
+		           $vote_text.html(" Unliked");
 		        }
 			}
 		}
@@ -1052,63 +1059,17 @@ if (!Juvia) {
 	  a.id = "comment-box-"+comment_number;
       }
       a.setAttribute("data-comment-number" , comment_number);
-      var aa = document.createElement("div");
-      aa.className = "juvia-metadata";
-      a.appendChild(aa);
+      
+      
+      // Start Header creation 
+      
+      
+     $(a).html("<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='"+ comment_user_email + "'src='"+ user_image +"'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>"+ user_name +"</span></div><div class='span2'><div class='row-fluid'><div class='span8'><span class='pull-right'>"+ comment_number +"</span></div><div class='span1'></div><div class='span3'><span data-divid='divid"+ comment_id +"'class='collapse_link_class'href='#divid"+ comment_id +"'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid"+ comment_id +"'></i></span></div></div></div></div></div></div>");
+    
 
-      var aaa = document.createElement("div");
-      aaa.className = "juvia-avatar";
-      aa.appendChild(aaa);
-
-      var aaaa = document.createElement("img");
-      aaaa.className = "img-circle";
-      aaaa.setAttribute("data-user-email", comment_user_email);
-      aaaa.src = user_image;
-      aaaa.height = "38";
-      aaaa.width = "64";
-      aaa.appendChild(aaaa);
-
-      var aab = document.createElement("div");
-      aab.className = "header_com juvia-author juvia-author-without-email row";
+      // end Comment Header Bar
       
       
-      var left_div = document.createElement("div");
-      left_div.className = "span8";
-      
-      var comment_author_span = document.createElement("span");
-      comment_author_span.className='juvia-author-name';
-      comment_author_span.appendChild(document.createTextNode(user_name));
-      left_div.appendChild(comment_author_span);
-      
-      var comment_span = document.createElement("span");
-      comment_span.className='floatright';
-      comment_span.appendChild(document.createTextNode(comment_number));
-      left_div.appendChild(comment_span);
-      
-      
-      var right_div = document.createElement("div");
-      right_div.className = "span1";
-      var collapse_link = document.createElement("a");
-      collapse_link.setAttribute("data-divid", "divid"+comment_id)
-      collapse_link.setAttribute("class",  "collapse_link_class");
-      collapse_link.setAttribute("href", "#divid"+comment_id);
-      collapse_link.setAttribute("data-toggle", "jcollapse");
-      var collapse_sign_span = document.createElement("span");
-      collapse_sign_span.className = 'floatright icon-minus';
-      collapse_sign_span.setAttribute('id', 'comment_sign_divid'+comment_id);
-      collapse_link.appendChild(collapse_sign_span);
-      right_div.appendChild(collapse_link);
-      aab.appendChild(left_div);
-      aab.appendChild(right_div);
-      aa.appendChild(aab);
-
-      var aac = document.createElement("div");
-      aac.className = "juvia-creation-date";
-      aa.appendChild(aac);
-
-      var aad = document.createElement("div");
-      aad.className = "juvia-end";
-      aa.appendChild(aad);
 
       var ab = document.createElement("div");
       ab.className = "juvia-data in jcollapse";
@@ -1131,15 +1092,15 @@ if (!Juvia) {
       aba.appendChild(abaa);
       
       var abab = document.createElement("div");
-      abab.className = "row juvia-comment-function";
+      abab.className = "row-fluid juvia-comment-function";
       aba.appendChild(abab);
 
       var ababa = document.createElement("div");
       ababa.className = function(){
         if(editable()){
-          return "span6 comment-like-flag-edit";
+          return "span7";
         }
-        return "span6 comment-like-flag";
+        return "span7";
       }();
       abab.appendChild(ababa);
 
@@ -1156,56 +1117,95 @@ if (!Juvia) {
       ababaab_span.appendChild(document.createTextNode(comment_votes));
       ababaa_p.appendChild(ababaab_span);
 
+      
+      var bottom_second_colm = document.createElement("div");
+      bottom_second_colm.className = "span5";
+      abab.appendChild(bottom_second_colm);
+      
+      var function_links = document.createElement("div");
+      function_links.className = "row-fluid";
+      $(function_links).css("text-align", "right");
+      
+      bottom_second_colm.appendChild(function_links);
+
       var ababb_flag = document.createElement("div");
-      ababb_flag.className = "span1 flag";
-      var ababb_flag_p = document.createElement("p");
-      ababb_flag_p.id = "flag-" + comment_id;
+      ababb_flag.className = function(){
+        if(editable()){
+          return "span4";
+        }
+        return "span6";
+      }();
+      
+      
+      
+      var flag_comment_tag = document.createElement("flagcomment");
+      flag_comment_tag.setAttribute("data-comment-id", comment_id);
+      
+      var ababb_flag_p = document.createElement("i");
+      var flag_span = document.createElement("span");
+      
+      flag_span.id = "flag-" + comment_id;
       if(flagged == 'Flagged'){
-      	ababb_flag_p.appendChild(document.createTextNode(" Flagged"));
+      	flag_span.appendChild(document.createTextNode(" Flagged"));
       	ababb_flag_p.className = "icon-flag";
       }else{
-        ababb_flag_p.appendChild(document.createTextNode(" Flag"));
-        $(ababb_flag_p).css("visibility", "hidden");
-        ababb_flag_p.className = "blink_text icon-flag";
+        flag_span.appendChild(document.createTextNode(" Flag"));
+        $(flag_comment_tag).css("visibility", "hidden");
+        ababb_flag_p.className = "icon-flag";
+        flag_comment_tag.className = "blink_text";
       }
-      ababb_flag_p.setAttribute("data-comment-id", comment_id);
-      ababb_flag.appendChild(ababb_flag_p);
+      
+      
+      flag_comment_tag.appendChild(ababb_flag_p);
+      flag_comment_tag.appendChild(flag_span);
+      ababb_flag.appendChild(flag_comment_tag);
 
-      abab.appendChild(ababb_flag);
+
+
+      function_links.appendChild(ababb_flag);
       var ababb = document.createElement("div");
-      ababb.className = "span1";
-      abab.appendChild(ababb);
+      ababb.className = "span3";
+      function_links.appendChild(ababb);
 
-      var ababba = document.createElement("p");
+
+        
+      var vote_comment_tag = document.createElement("votecomment");
+      vote_comment_tag.className = "juvia-vote-to-comment";
+      vote_comment_tag.id = "comment-vote-icon-" + comment_id;
+      vote_comment_tag.setAttribute("data-comment-id", comment_id);
+      
+      var ababba = document.createElement("i");
+      var like_span = document.createElement("span");
       if(liked == "liked"){
-        ababba.className = "juvia-vote-to-comment icon-thumbs-down";
-        ababba.appendChild(document.createTextNode(" Liked"));
+        ababba.className = "icon-thumbs-down";
+        like_span.appendChild(document.createTextNode(" Liked"));
       }else{
-        ababba.className = "juvia-vote-to-comment icon-thumbs-up";
-        ababba.appendChild(document.createTextNode(" Like"));
+        ababba.className = "icon-thumbs-up";
+        like_span.appendChild(document.createTextNode(" Like"));
       }
-      ababba.id = "comment-vote-icon-" + comment_id;
-      ababba.setAttribute("data-comment-id", comment_id);
-      ababb.appendChild(ababba);
+      
+      
+      vote_comment_tag.appendChild(ababba);
+      vote_comment_tag.appendChild(like_span);
+      
+      ababb.appendChild(vote_comment_tag);
+
 
       var ababc = document.createElement("div");
-      ababc.className = "span1";
-      abab.appendChild(ababc);
+      ababc.className = "span3";
+      function_links.appendChild(ababc);
 
-      var ababca = document.createElement("p");
-      ababca.className = "juvia-reply-to-comment";
+      var ababca = document.createElement("span");
+      ababca.className = "rdf-reply-to-comment";
       ababc.appendChild(ababca);
       if(this.user_logged_in && !this.restrict_comment_length){
-        var ababcaa = document.createElement("a");
-        ababcaa.setAttribute("href", "javascript:void(0)");
-        ababcaa.appendChild(document.createTextNode("Reply"));
-        ababca.appendChild(ababcaa);
+        ababca.appendChild(document.createTextNode("Reply"));
       }
       
       if(editable()){
         var edit_comment_dom = document.createElement("div");
-        edit_comment_dom.className = "span1";
-        abab.appendChild(edit_comment_dom);
+        edit_comment_dom.className = "span2";
+        function_links.appendChild(edit_comment_dom);
 
         var edit_comment_dom_p = document.createElement("p");
         edit_comment_dom_p.className = "juvia-edit-to-comment";
