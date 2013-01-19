@@ -92,7 +92,7 @@ class Admin::CommentsController < ApplicationController
       authorize! :destroy, @flag
       flag.destroy
     end
-    redirect_to flags_admin_comments_path
+    redirect_back(flags_admin_comments_path)
   end
   
 private
