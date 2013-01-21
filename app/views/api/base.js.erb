@@ -492,6 +492,8 @@ if (!Juvia) {
 		this.restoreCommentBox($container.find('> .juvia-container'));
 		if (options.css && $('style.juvia').length == 0) {
 			var style = document.createElement('style');
+            var extend_css = '.juvia-container [class^="icon-"],.juvia-container [class*=" icon-"] {background-image: url(<%= escape_javascript(request.protocol + request.host_with_port) + "/assets/glyphicons-halflings.png" %>);}';
+            options.css += extend_css ;
 			var rules = document.createTextNode(options.css);
 			style.type = 'text/css';
 			style.className = 'juvia';

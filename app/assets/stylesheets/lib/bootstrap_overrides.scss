@@ -1480,16 +1480,22 @@
 }
 .juvia-container [class^="icon-"],
 .juvia-container [class*=" icon-"] {
+  content: "";
   display: inline-block;
   width: 14px;
   height: 14px;
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("http://localhost/less/bootstrap-original/../img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
+
+.juvia-container [class^="icon-"]:before,
+.juvia-container [class*=" icon-"]:before {
+   content: "";
+}
+
 .juvia-container [class^="icon-"]:last-child,
 .juvia-container [class*=" icon-"]:last-child {
   *margin-left: 0;
