@@ -319,6 +319,19 @@ class ApiController < ApplicationController
       render :partial => 'site_not_found'
     end
   end
+
+  def list_topics_by_topic_keys
+    prepare!([:site_key,:topic_keys], [:html])
+    @site = Site.find_by_key(@site_key)
+    if @site
+      topics_info = @site.topics_info_by_topic_key(params[:topic_keys])
+      render :json => topics_info
+    else
+      render :partial => 'site_not_found'
+    end
+  end
+
+ 
   
   def update_comment
     prepare!(
