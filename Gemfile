@@ -21,6 +21,7 @@ gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'redis'
 gem 'bcrypt-ruby'
+gem 'rails_config'
 
 group :development do
   gem 'guard-livereload'
