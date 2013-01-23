@@ -34,7 +34,7 @@
 
 if(Juvia.get_cookie('sorting_order') !== null){
   Juvia.sorting_order = Juvia.get_cookie('sorting_order');
-  $("#juvia-sort-select").val(Juvia.sorting_order);
+  Juvia.$("#juvia-sort-select").val(Juvia.sorting_order);
 }
 
 Juvia.reqLoadComment();
