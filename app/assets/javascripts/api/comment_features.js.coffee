@@ -1,5 +1,5 @@
 Juvia.showMoreComments = (this_obj) ->
-  $ = @juvia_jquery
+  $ = @$
   page_num = @current_page
   page_num = page_num + 1
   @current_page = page_num
@@ -18,7 +18,7 @@ Juvia.showMoreComments = (this_obj) ->
 
 
 Juvia.showMoreUserComments = (this_obj) ->
-  $ = @juvia_jquery
+  $ = @$
   page_num = @current_page
   page_num = page_num + 1
   @current_page = page_num
@@ -34,7 +34,7 @@ Juvia.showMoreUserComments = (this_obj) ->
 
 
 Juvia.replyToComment = ($comment) ->
-  #$ = @juvia_jquery
+  $ = @$
   $container = $comment.closest(".juvia-container")
   text = $(".juvia-comment-pure-content", $comment).text()
   lines = text.split("\n")
@@ -57,7 +57,7 @@ Juvia.replyToComment = ($comment) ->
 
 
 Juvia.sortComments = (event, this_obj) ->
-  $ = @juvia_jquery
+  $ = @$
   $("#show_more_comments").hide()
   @sorting_order = this_obj.value
   @set_cookie "sorting_order", this_obj.value,
@@ -80,7 +80,7 @@ Juvia.sortComments = (event, this_obj) ->
 
 
 Juvia.voteComment = (event, this_obj) ->
-  #$ = @juvia_jquery
+  $ = @$
   $this = $(this_obj)
   form = event.target
   $container = $(form).closest(".juvia-container")
@@ -169,6 +169,7 @@ Juvia.voteTopic = (event, this_obj) ->
 
 
 Juvia.reportComment = (event, this_obj) ->
+  $ = @$
   $this = $(this_obj)
   form = event.target
   $container = $(form).closest(".juvia-container")
