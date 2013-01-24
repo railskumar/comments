@@ -14,7 +14,6 @@ Juvia.reqLoadComment = ->
     window._juviaRequestCounter++
     result
   self = this
-  $ = self.juvia_jquery
   options =
     site_key: self.site_key
     topic_key: self.topic_key

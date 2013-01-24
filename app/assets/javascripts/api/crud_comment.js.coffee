@@ -1,6 +1,6 @@
 Juvia.editComment = (this_obj) ->
   self = this
-  $ = self.juvia_jquery
+  $ = @$
   self.uniq_edit_id = self.uniq_edit_id or 123
   self.uniq_edit_id = self.uniq_edit_id + 1
   return  if $(this_obj).find("textarea").length > 0
@@ -24,7 +24,7 @@ Juvia.editComment = (this_obj) ->
 
 
 Juvia.updateComment = (this_obj) ->
-  $ = @juvia_jquery
+  $ = @$
   $this = $(this_obj)
   $comment_input = $this.parent().parent().find("textarea")
   comment_id = $this.closest(".juvia-data").attr("id")
@@ -46,7 +46,7 @@ Juvia.resumeEdit = ($main_edit) ->
 
 
 Juvia.previewEditComment = (this_obj) ->
-  $ = @juvia_jquery
+  $ = @$
   $textarea = $(this_obj)
   input_value = $textarea.val()
   input_value = input_value.substring(0, 140)  if @restrict_comment_length and input_value.length > 140
@@ -58,7 +58,7 @@ Juvia.previewEditComment = (this_obj) ->
 
 Juvia.handleUpdateComment = (options) ->
   self = this
-  $ = self.juvia_jquery
+  $ = @$
   if options.status is "ok"
     self.resumeEdit $("#divid" + options.comment_id).find(".juvia-comment-pure-content")
   else
@@ -66,6 +66,7 @@ Juvia.handleUpdateComment = (options) ->
 
 
 Juvia.findContainer = (options) ->
+  $ = @$
   $ ".juvia-container[data-site-key=\"" + options.site_key + "\"][data-topic-key=\"" + options.topic_key + "\"]"
 
 
@@ -75,11 +76,12 @@ Juvia.appendComment = (dom_element) ->
 
 
 Juvia.prependComment = (dom_element) ->
+  $ = @$
   $(dom_element).prependTo $("#juvia-comments-box")
 
 
 Juvia.rdf_comment_box = (option) ->
-  $ = @juvia_jquery
+  $ = @$
   comment_number = (if (not (option.comment_number?)) then "" else option.comment_number + "")
   comment_id = option.comment_id
   user_image = option.user_image
