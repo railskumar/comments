@@ -1,6 +1,6 @@
 Juvia.reinstallBehavior = ->
   self = this
-  $ = self.juvia_jquery
+  $ = @$
   unless $(document.body).hasClass("juvia-installed-behavior")
     $(document.body).addClass "juvia-installed-behavior"
     $(document.body).bind "mousedown touchdown", (event) ->

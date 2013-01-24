@@ -21,14 +21,14 @@
 <% if @topic.liked?(@username, @user_email) %>
 <!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
   <script type="text/javascript">
-    var $like = $('#vote_for_like')
+    var $like = Juvia.$('#vote_for_like')
     $like.addClass('votes-up-active');
     var $like_text = $like.find("span");
     $like_text.html(" Liked");
   </script>
 <% elsif @topic.unliked?(@username, @user_email)%>
   <script type="text/javascript">
-    var $unlike = $('#vote_for_unlike');
+    var $unlike = Juvia.$('#vote_for_unlike');
     $unlike.addClass('votes-down-active');
     var $unlike_text = $unlike.find("span");
     $unlike_text.html(" Unliked");

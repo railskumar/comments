@@ -69,7 +69,7 @@ Juvia.compress = (str) ->
 
 
 Juvia.showFormError = (container, message) ->
-  #$ = @juvia_jquery
+  $ = @$
   div = $(".juvia-form-actions .juvia-error", container)
   if message is `undefined` or not message? or message is ""
     div.hide()
@@ -78,7 +78,7 @@ Juvia.showFormError = (container, message) ->
 
 
 Juvia.loadScript = (path, options) ->
-  #$ = @juvia_jquery
+  $ = @$
   url = @root_url
   url += path
   if @supportsCors
@@ -130,7 +130,7 @@ Juvia.loadJsScript = (path, options) ->
 
 
 Juvia.previewComment = (formElement) ->
-  $ = @juvia_jquery
+  $ = @$
   $container = $(formElement).closest(".juvia-container")
   @saveCommentBox $container
   input_value = $("textarea[name=\"content\"]", $container).val()
@@ -157,7 +157,7 @@ Juvia.setSubmitting = (container, val) ->
 
 
 Juvia.virtualAnimate = (options) ->
-  #$ = @juvia_jquery
+  $ = @$
   options = $.extend(
     duration: 1000
   , options or {})
@@ -169,7 +169,6 @@ Juvia.virtualAnimate = (options) ->
 
 Juvia._virtualAnimate_step = (animation_start, animation_end, interval, options) ->
   self = this
-  $ = self.juvia_jquery
   now = new Date()
   progress = (now - animation_start) / interval
   progress = 1  if progress > 1
@@ -186,7 +185,7 @@ Juvia._virtualAnimate_step = (animation_start, animation_end, interval, options)
 
 Juvia.smoothlyScrollTo = (top) ->
   self = this
-  $ = self.juvia_jquery
+  $ = @$
   $document = $(document)
   current = $document.scrollTop()
   @virtualAnimate
@@ -203,7 +202,7 @@ Juvia.setScrollTop = (top, element) ->
   # Browsers don't always scroll properly so work around
   # this with a few timers.
   self = this
-  $ = self.juvia_jquery
+  $ = @$
   element = element or $(document)
   element = $(element)
   element.scrollTop top
@@ -225,7 +224,7 @@ Juvia.handleResponsOffCallback = (response) ->
 
 
 Juvia.handleLoadTopic = (options) ->
-  $ = @juvia_jquery
+  $ = @$
   $container = $(options.container)
   $container.html options.html
   @restoreCommentBox $container.find("> .juvia-container")
@@ -244,12 +243,13 @@ Juvia.handleLoadTopic = (options) ->
 
 
 Juvia.handleAppendUserComment = (options) ->
+  $ = @$
   $container = $(options.container)
   $container.append options.html
 
 
 Juvia.handleLoadUserComment = (options) ->
-  $ = @juvia_jquery
+  $ = @$
   $container = $(options.container)
   $container.html options.html
   @restoreCommentBox $container.find("> .juvia-container")
@@ -271,7 +271,7 @@ Juvia.handleLoadComment = (options) ->
 
 
 Juvia.handleAddComment = (options) ->
-  $ = @juvia_jquery
+  $ = @$
   container = @findContainer(options)
   comments = $(".juvia-comments", container)
   comment_obj = options.comment_option
@@ -291,7 +291,7 @@ Juvia.handleAddComment = (options) ->
 
 
 Juvia.handlePreviewComment = (options) ->
-  $ = @juvia_jquery
+  $ = @$
   container = @findContainer(options)
   preview = $(".juvia-preview", container)
   @showFormError container, `undefined`
@@ -304,7 +304,7 @@ Juvia.handlePreviewComment = (options) ->
 
 
 Juvia.handleShowError = (options) ->
-  
+  $ = @$
   if options.container
     $container = $(options.container)
     $container.html options.html
@@ -330,7 +330,7 @@ Juvia.handleShowFormError = (options) ->
 
 
 Juvia.handleSortComments = (options) ->
-  #$ = @juvia_jquery
+  $ = @$
   $("#show_more_comments").show()  if @total_pages > 1
   $(".load_more_contain img").hide()
   juvia_cls = this
@@ -341,7 +341,7 @@ Juvia.handleSortComments = (options) ->
 
 
 Juvia.handleReportComment = (options) ->
-  $ = @juvia_jquery
+  $ = @$
   if options.status is "ok"
     alert "Thank you. This comment has been flagged for moderator attention. "
     tempFlagsElement = $("#flag-" + options.comment_id)
@@ -354,7 +354,7 @@ Juvia.handleReportComment = (options) ->
 
 
 Juvia.submitComment = (event) ->
-  $ = @juvia_jquery
+  $ = @$
   form = event.target
   $container = $(form).closest(".juvia-container")
   @setSubmitting $container, true
@@ -392,7 +392,7 @@ Juvia.clearAllTextBoxStorage = (container) ->
 
 
 Juvia.saveCommentBox = (container) ->
-  $ = @juvia_jquery
+  $ = @$
   if window.sessionStorage
     key = @getTextBoxStorageKey(container)
     value = $("textarea[name=\"content\"]", container).val()
@@ -422,7 +422,7 @@ Juvia.saveCommentBox = (container) ->
 
 
 Juvia.restoreCommentBox = (container) ->
-  $ = @juvia_jquery
+  $ = @$
   if window.sessionStorage
     key = @getTextBoxStorageKey(container)
     value = window.sessionStorage.getItem(key)
