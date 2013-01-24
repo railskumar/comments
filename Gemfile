@@ -37,6 +37,8 @@ group :development, :test do
   gem 'factory_girl_rails', :require => false
   gem 'launchy', :require => false
   gem 'spork', '0.9.0.rc9', :require => false
+  gem 'taps'
+  gem 'sqlite3'
 end
 
 # Gems used only for assets and not required

@@ -7,3 +7,4 @@ tmp/**/*
 .sass-cache
 *~
 public/_test.html
+config/database.yml
