@@ -123,10 +123,10 @@ Juvia.rdf_comment_box = (option) ->
   abab.className = "row-fluid juvia-comment-function"
   aba.appendChild abab
   ababa = document.createElement("div")
-  if editable()
+  if @user_logged_in
     ababa.className = "span7"
   else
-    ababa.className = "span7"
+    ababa.className = "span9"
   abab.appendChild ababa
   ababaa_p = document.createElement("p")
   ababa.appendChild ababaa_p
@@ -139,7 +139,10 @@ Juvia.rdf_comment_box = (option) ->
   ababaab_span.appendChild document.createTextNode(comment_votes)
   ababaa_p.appendChild ababaab_span
   bottom_second_colm = document.createElement("div")
-  bottom_second_colm.className = "span5"
+  if @user_logged_in
+    bottom_second_colm.className = "span5"
+  else
+    bottom_second_colm.className = "span3"
   abab.appendChild bottom_second_colm
   function_links = document.createElement("div")
   function_links.className = "row-fluid"
@@ -168,7 +171,10 @@ Juvia.rdf_comment_box = (option) ->
   ababb_flag.appendChild flag_comment_tag
   function_links.appendChild ababb_flag
   ababb = document.createElement("div")
-  ababb.className = "span3"
+  if @user_logged_in
+    ababb.className = "span3"
+  else
+    ababb.className = "span6"
   function_links.appendChild ababb
   vote_comment_tag = document.createElement("votecomment")
   vote_comment_tag.className = "juvia-vote-to-comment"
@@ -185,13 +191,14 @@ Juvia.rdf_comment_box = (option) ->
   vote_comment_tag.appendChild ababba
   vote_comment_tag.appendChild like_span
   ababb.appendChild vote_comment_tag
-  ababc = document.createElement("div")
-  ababc.className = "span3"
-  function_links.appendChild ababc
-  ababca = document.createElement("span")
-  ababca.className = "rdf-reply-to-comment"
-  ababc.appendChild ababca
-  ababca.appendChild document.createTextNode("Reply")  if @user_logged_in and not @restrict_comment_length
+  if @user_logged_in and not @restrict_comment_length
+    ababc = document.createElement("div")
+    ababc.className = "span3"
+    function_links.appendChild ababc
+    ababca = document.createElement("span")
+    ababca.className = "rdf-reply-to-comment"
+    ababc.appendChild ababca
+    ababca.appendChild document.createTextNode("Reply")
   if editable()
     edit_comment_dom = document.createElement("div")
     edit_comment_dom.className = "span2"
