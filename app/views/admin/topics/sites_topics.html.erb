@@ -13,11 +13,12 @@
   </form>  
 </div>
 <h3>Topics </h3>
-<% if @site.topics.blank? %>
+<% topics = @site.topics.page(params[:page]) %>
+<% if topics.blank? %>
   <p>This site doesn't have any topics yet.</p>
 <% else %>
   <div class="topics resources list">
-      <%= render :partial => 'admin/topics/topic', :collection => @site.topics %>
+      <%= render :partial => 'admin/topics/topic', :collection => topics %>
+      <%= paginate topics %>
   </div>
 <% end %>
-
