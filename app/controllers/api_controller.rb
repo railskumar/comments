@@ -261,39 +261,34 @@ class ApiController < ApplicationController
       [:site_key, :topic_key, :topic_title, :topic_url, :content],
       [:html, :js, :json]
     )
-    begin
-      @content = if params["restrict_comment_length"] == "true"
-        decompress(params[:content]).to_s[0..139]
+    @content = if params["restrict_comment_length"] == "true"
+      decompress(params[:content]).to_s[0..139]
+    else
+      decompress(params[:content]).to_s
+    end
+    if @content.blank?
+      render :partial => 'content_may_not_be_blank'
+      return
+    end
+    Topic.transaction do
+      @topic = Topic.lookup_or_create(
+        @site_key,
+        @topic_key,
+        params[:topic_title],
+        params[:topic_url])
+      if @topic
+        @comment = @topic.comments.create!(
+          :comment_number => Comment.last_comment_number(@topic.comments) + 1,
+          :author_name => params[:author_name],
+          :author_email => params[:author_email],
+          :author_ip => request.env['REMOTE_ADDR'],
+          :author_user_agent => request.env['HTTP_USER_AGENT'],
+          :referer => request.env['HTTP_REFERER'],
+          :content => @content)
+        render
       else
-        decompress(params[:content]).to_s
+        render :partial => 'site_not_found'
       end
-      if @content.blank?
-        render :partial => 'content_may_not_be_blank'
-        return
-      end
-      Topic.transaction do
-        @topic = Topic.lookup_or_create(
-          @site_key,
-          @topic_key,
-          params[:topic_title],
-          params[:topic_url])
-        if @topic
-          @comment = @topic.comments.create!(
-            :comment_number => Comment.last_comment_number(@topic.comments) + 1,
-            :author_name => params[:author_name],
-            :author_email => params[:author_email],
-            :author_ip => request.env['REMOTE_ADDR'],
-            :author_user_agent => request.env['HTTP_USER_AGENT'],
-            :referer => request.env['HTTP_REFERER'],
-            :content => @content)
-          render
-        else
-          render :partial => 'site_not_found'
-        end
-      end
-    rescue => e
-      log_exception(e)
-      render :partial => 'internal_error'
     end
   end
   
