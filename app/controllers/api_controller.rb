@@ -6,7 +6,7 @@ class ApiController < ApplicationController
 
   include ApiHelper
   layout nil
-  PER_PAGE = 30
+  PER_PAGE = 60
   skip_before_filter :verify_authenticity_token
   skip_before_filter :authenticate_user!
   before_filter :handle_cors
