@@ -1,4 +1,4 @@
-module ReadXml
+module ImportDisqus
   require 'csv'
   require 'nokogiri'
 
@@ -61,6 +61,7 @@ module ReadXml
     posts
   end
   
+  # This must be run on the main application before importing
   def export_articles
     File.open("lib/articles.csv", "w") do |f|
       Article.approved.scoped.each do |a|
