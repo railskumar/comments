@@ -63,10 +63,9 @@ class Topic < ActiveRecord::Base
   end
 
 private
+
   def self.find_by_site_key_and_topic_key(site_key, topic_key)
-    Topic.
-      where('sites.key = ? AND topics.key = ?', site_key, topic_key).
-      joins(:site).
-      first
+    Topic.where(:site_id => Site.find_by_key(site_key).id).where(:key => topic_key).first rescue nil
   end
+
 end

@@ -29,11 +29,10 @@ class ApiController < ApplicationController
     @topic_url   = params[:topic_url]
     @include_base = get_boolean_param(:include_base, true)
     @include_css  = get_boolean_param(:include_css, true)
-      prepare!(
+    prepare!(
       [:site_key, :topic_key, :container, :topic_title, :topic_url],
       [:html, :js]
     )
-    
    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
       render 
@@ -45,14 +44,13 @@ class ApiController < ApplicationController
   def load_comments
     @topic_title = params[:topic_title]
     @topic_url   = params[:topic_url]
-     # Must come before error checking because the error
+    # Must come before error checking because the error
     # templates depend on @include_base/@include_css.
-      prepare!(
+    prepare!(
       [:site_key, :topic_key, :topic_title, :topic_url, :sorting_order],
       [:html, :js]
     )
-    
-   @topic = Topic.lookup(@site_key, @topic_key)
+    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
       comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sorting_order]
         @topic.topic_comments.send(params[:sorting_order]).visible
@@ -269,12 +267,10 @@ class ApiController < ApplicationController
       else
         decompress(params[:content]).to_s
       end
-      
       if @content.blank?
         render :partial => 'content_may_not_be_blank'
         return
       end
-      
       Topic.transaction do
         @topic = Topic.lookup_or_create(
           @site_key,
@@ -330,8 +326,6 @@ class ApiController < ApplicationController
       render :partial => 'site_not_found'
     end
   end
-
- 
   
   def update_comment
     prepare!(

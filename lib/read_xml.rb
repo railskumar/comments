@@ -1,5 +1,6 @@
 module ReadXml
   require 'csv'
+  require 'nokogiri'
 
   def read_disqus
     @doc = Nokogiri::XML(File.open("lib/disqus.xml")) do |config|
@@ -8,26 +9,27 @@ module ReadXml
     @threads = create_threads
     @posts = read_posts
     @articles = read_articles
-    debugger
-    puts @doc
+    create_comments
   end
 
   def create_comments
     @posts.each do |po|
       if article = find_article(po[:article_id])
         topic = Topic.lookup_or_create(
-          @site_key,
+          "ipv96qqxc0w2gn0l9vduwicbzrlbg2r",
           po[:article_id],
           article[:title],
           article[:link]
         )
-        topic.comments.create!(
+        comment = Comment.create(
+          :topic_id => topic.id,
           :comment_number => Comment.last_comment_number(topic.comments) + 1,
           :author_name => po[:name],
           :author_email => po[:email],
           :author_ip => po[:ip],
           :content => po[:message]
         )
+        comment.update_attributes({:created_at => po[:created]})
       end
     end
   end
@@ -76,7 +78,7 @@ module ReadXml
         items = CSV.parse(line).first 
         articles << {
           :id => items[0],
-          :titel => items[1],
+          :title => items[1],
           :link => items[2]
         }
       rescue
@@ -90,6 +92,7 @@ module ReadXml
     @articles.each do |a|
       return a if a[:id] == article_id
     end
+    nil
   end
   
 end
