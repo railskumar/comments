@@ -16,7 +16,7 @@ module ImportDisqus
     @posts.each do |po|
       if article = find_article(po[:article_id])
         topic = Topic.lookup_or_create(
-          "ipv96qqxc0w2gn0l9vduwicbzrlbg2r",
+          Site.first.key,
           po[:article_id],
           article[:title],
           article[:link]
