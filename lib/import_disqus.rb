@@ -9,15 +9,17 @@ module ImportDisqus
     @threads = create_threads
     @posts = read_posts
     @articles = read_articles
+    @disqus_articles = read_disqus_articles
     create_comments
   end
 
   def create_comments
     @posts.each do |po|
-      if article = find_article(po[:article_id])
+      # if article = find_article(po[:article_id])
+      if article = find_disqus_article(po[:article_id])
         topic = Topic.lookup_or_create(
           "ipv96qqxc0w2gn0l9vduwicbzrlbg2r",
-          po[:article_id],
+          article[:id],
           article[:title],
           article[:link]
         )
@@ -89,9 +91,35 @@ module ImportDisqus
     articles
   end
   
+  def read_disqus_articles
+    articles = []
+    lines = File.read("#{Rails.root}/lib/disqus_ids.csv").split("\n")
+    lines.each do |line|
+      begin
+        items = CSV.parse(line).first 
+        articles << {
+          :disqus_id => items[0],
+          :id => items[1]
+        }
+      rescue
+        puts line
+      end
+    end
+    articles
+  end
+
   def find_article article_id
     @articles.each do |a|
       return a if a[:id] == article_id
+    end
+    nil
+  end
+  
+  def find_disqus_article article_id
+    @disqus_articles.each do |a|
+      if a[:disqus_id] == article_id
+        return find_article a[:id]
+      end
     end
     nil
   end
