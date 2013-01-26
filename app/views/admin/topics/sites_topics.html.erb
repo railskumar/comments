@@ -13,7 +13,7 @@
   </form>  
 </div>
 <h3>Topics </h3>
-<% topics = @site.topics.page(params[:page]) %>
+<% topics = @site.topics.order("last_posted_at desc").page(params[:page]) %>
 <% if topics.blank? %>
   <p>This site doesn't have any topics yet.</p>
 <% else %>

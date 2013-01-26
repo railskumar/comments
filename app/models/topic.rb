@@ -61,6 +61,14 @@ class Topic < ActiveRecord::Base
       end
     end
   end
+  
+  def last_comment
+    self.comments.order("created_at desc").limit(1).first
+  end
+
+  def last_commented_at
+    self.last_comment.created_at rescue nil
+  end
 
 private
 

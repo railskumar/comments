@@ -124,4 +124,10 @@ module ImportDisqus
     nil
   end
   
+  def update_last_posted
+    Topic.scoped.each do |t|
+      t.update_attribute("last_posted_at", t.last_commented_at)
+    end
+  end
+  
 end
