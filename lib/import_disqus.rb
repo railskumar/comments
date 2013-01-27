@@ -6,10 +6,12 @@ module ImportDisqus
     @doc = Nokogiri::XML(File.open("lib/disqus.xml")) do |config|
       config.strict.nonet
     end
-    @threads = create_threads
-    @posts = read_posts
-    @articles = read_articles
+    # @articles = read_articles
     @disqus_articles = read_disqus_articles
+    # @threads = create_threads
+    # @threads = create_special_threads
+    @threads = create_special_disqus_threads
+    @posts = read_posts
     create_comments
   end
 
@@ -36,6 +38,28 @@ module ImportDisqus
     end
   end
   
+  def create_special_threads
+    threads = {}
+    @doc.xpath('/xmlns:disqus/xmlns:thread').each do |th|
+      tid = th.css('id').text
+      if find_article(tid) and !find_topic('ipv96qqxc0w2gn0l9vduwicbzrlbg2r', tid)
+        threads[th.attributes.first[1].value] = th.css('id').text
+      end
+    end
+    threads
+  end
+
+  def create_special_disqus_threads
+    threads = {}
+    @doc.xpath('/xmlns:disqus/xmlns:thread').each do |th|
+      tid = th.css('id').text
+      if find_disqus_article(tid) and !find_topic('ipv96qqxc0w2gn0l9vduwicbzrlbg2r', tid)
+        threads[th.attributes.first[1].value] = th.css('id').text
+      end
+    end
+    threads
+  end
+
   def create_threads
     threads = {}
     @doc.xpath('/xmlns:disqus/xmlns:thread').each do |th|
@@ -46,6 +70,14 @@ module ImportDisqus
     threads
   end
   
+  def create_all_threads
+    threads = {}
+    @doc.xpath('/xmlns:disqus/xmlns:thread').each do |th|
+      threads[th.attributes.first[1].value] = th.css('id').text
+    end
+    threads
+  end
+
   def read_posts
     posts = []
     @doc.xpath('/xmlns:disqus/xmlns:post').each do |po|
@@ -123,11 +155,22 @@ module ImportDisqus
     end
     nil
   end
+
+  def find_special_article article_id
+    [''].each do |a|
+      return a if a == article_id
+    end
+    nil
+  end
   
   def update_last_posted
     Topic.scoped.each do |t|
       t.update_attribute("last_posted_at", t.last_commented_at)
     end
+  end
+  
+  def find_topic(site_key, topic_key)
+    Topic.where(:site_id => Site.find_by_key(site_key).id).where(:key => topic_key).first
   end
   
 end
