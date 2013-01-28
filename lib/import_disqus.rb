@@ -1,6 +1,8 @@
 module ImportDisqus
   require 'csv'
   require 'nokogiri'
+  require "net/https"
+  require "uri"
 
   def read_disqus
     @doc = Nokogiri::XML(File.open("lib/disqus.xml")) do |config|
@@ -13,6 +15,46 @@ module ImportDisqus
     @threads = create_special_disqus_threads
     @posts = read_posts
     create_comments
+  end
+
+  def add_post_details
+    @doc = Nokogiri::XML(File.open("lib/disqus.xml")) do |config|
+      config.strict.nonet
+    end
+    @articles = read_articles
+    @disqus_articles = read_disqus_articles
+    @threads = create_special_threads
+    @posts = read_all_posts
+    @posts.each do |po|
+      if comment = Comment.where(:author_email => po[:email]).where(:created_at => po[:created]).first
+        request = "https://disqus.com/api/3.0/posts/details.json?api_key=128JGbqG5rM0uDqJtbDfUqwwMT1IrJL7ieKqmkUwXRSOBGE51MoimnV48FVvvfrB&post=#{po[:disqus_id]}"
+        uri = URI.parse(request)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        request = Net::HTTP::Get.new(uri.request_uri)
+        response = http.request(request)
+        item = JSON.parse(response.body)
+        if item["response"]["isDeleted"] or item["response"]["isFlagged"] or item["response"]["isSpam"]
+          comment.destroy
+        else
+          create_votes(comment, item["response"]["likes"]) if item["response"]["likes"] != 0
+        end
+      end
+    end
+  end
+  
+  def create_votes(comment, likes)
+    votes = comment.votes.where(author_email:nil).where(author_name:nil)
+    if votes.present?
+      vote = votes.first
+      vote.like = vote.like.to_i + likes
+      vote.save
+    else
+      vote = comment.votes.build
+      vote.like = likes
+      vote.save
+    end
   end
 
   def create_comments
@@ -42,7 +84,7 @@ module ImportDisqus
     threads = {}
     @doc.xpath('/xmlns:disqus/xmlns:thread').each do |th|
       tid = th.css('id').text
-      if find_article(tid) and !find_topic('ipv96qqxc0w2gn0l9vduwicbzrlbg2r', tid)
+      if find_article(tid) or find_disqus_article(tid)
         threads[th.attributes.first[1].value] = th.css('id').text
       end
     end
@@ -95,6 +137,25 @@ module ImportDisqus
     posts
   end
   
+  def read_all_posts
+    posts = []
+    @doc.xpath('/xmlns:disqus/xmlns:post').each do |po|
+      if @threads[po.css('thread').first.attributes.first[1].value]
+        po.css('parent').blank? ? parent = nil : parent = po.css('parent').first.attributes.first[1].value
+        posts << {
+          :created => po.css('createdAt').text,
+          :email => po.css('email').text,
+          :name => po.css('name').text,
+          :ip => po.css('ipAddress').text,
+          :message => po.css('message').text,
+          :disqus_id => po.first[1],
+          :parent_disqus_id => parent
+        }
+      end
+    end
+    posts
+  end
+
   # This must be run on the main application before importing
   def export_articles
     File.open("lib/articles.csv", "w") do |f|
