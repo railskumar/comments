@@ -27,6 +27,8 @@ class Comment < ActiveRecord::Base
   after_create :redis_update
   after_destroy :redis_update
 
+  scope :by_user, lambda{ |username, email| where('author_name =? AND author_email = ?', username, email).order('created_at DESC') }
+
   include Like
 
   def site

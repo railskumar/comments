@@ -15,4 +15,9 @@ class Vote < ActiveRecord::Base
     end
   end
 
+  def add_like_unlike_vote(vote)
+    self.like = self.like.to_i + 1 if vote == "1"
+    self.unlike = self.unlike.to_i + 1 if vote == "0"
+    self.save
+  end
 end
