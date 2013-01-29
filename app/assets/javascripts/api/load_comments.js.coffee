@@ -10,7 +10,7 @@ Juvia.reqLoadComment = ->
     # Makes sure that each call generates a unique URL, otherwise
     # the browser may not actually perform the request.
     window._juviaRequestCounter = 0  unless "_juviaRequestCounter" of window
-    result = self.root_url + "/api/load_comments.js" + "?_c=" + window._juviaRequestCounter + "&" + makeQueryString(options)
+    result = self.root_url + "/api/comments/load_comments.js" + "?_c=" + window._juviaRequestCounter + "&" + makeQueryString(options)
     window._juviaRequestCounter++
     result
   self = this

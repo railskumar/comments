@@ -9,7 +9,7 @@ Juvia.showMoreComments = (this_obj) ->
   $this.hide()
   form = $("#juvia-sort-select")
   $container = $(form).closest(".juvia-container")
-  @loadJsScript "/api/show_comments",
+  @loadJsScript "/api/comments/show_comments",
     site_key: $container.data("site-key")
     topic_key: $container.data("topic-key")
     topic_url: $container.data("topic-url")
@@ -66,7 +66,7 @@ Juvia.sortComments = (event, this_obj) ->
   @current_page = 1
   form = event.target
   $container = $(form).closest(".juvia-container")
-  @loadScript "/api/sort_comment",
+  @loadScript "/api/comments/sort_comment",
     site_key: $container.data("site-key")
     topic_key: $container.data("topic-key")
     topic_title: $container.data("topic-title")

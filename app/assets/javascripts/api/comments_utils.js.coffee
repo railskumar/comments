@@ -359,7 +359,7 @@ Juvia.submitComment = (event) ->
   $container = $(form).closest(".juvia-container")
   @setSubmitting $container, true
   @saveCommentBox $container
-  @loadScript "/api/add_comment",
+  @loadScript "/api/comments/add_comment",
     site_key: $container.data("site-key")
     topic_key: $container.data("topic-key")
     topic_title: $container.data("topic-title")

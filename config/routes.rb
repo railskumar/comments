@@ -1,10 +1,11 @@
 Juvia::Application.routes.draw do
   match 'api/:action(.:format)', :to => 'api'
-  match 'api/post/flag' => 'api#post_report'
-  match 'api/topic/vote' => 'api#topics_vote'
-  get 'admin/sites_topics', :to => 'admin/topics#sites_topics'
-  
+  match 'api/comments/:action(.:format)', :to => 'api/comments'
   match 'api/post/vote' => 'api/votes#posts_vote'
+  match 'api/topic/vote' => 'api/votes#topics_vote'
+  match 'api/post/flag' => 'api/flags#post_report'
+
+  get 'admin/sites_topics', :to => 'admin/topics#sites_topics'
 
   root :to => 'admin/dashboard#index'
 

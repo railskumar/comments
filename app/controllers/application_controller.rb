@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from MissingParameter do |exception|
-    render :partial => 'missing_parameter'
+    render :partial => 'api/missing_parameter'
   end
   rescue_from UnacceptableFormat do |exception|
     # Do nothing, response already sent.
@@ -36,7 +36,16 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
+  def handle_cors
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    headers["Access-Control-Max-Age"] = (60 * 60 * 24).to_s
+    if request.method == "OPTIONS"
+      render :text => '', :content_type => 'text/plain'
+    end
+  end
+
   def prepare!(required_params, accepted_formats)
     raise ArgumentError if accepted_formats.empty?
 

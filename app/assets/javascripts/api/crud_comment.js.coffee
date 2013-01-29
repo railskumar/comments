@@ -31,7 +31,7 @@ Juvia.updateComment = (this_obj) ->
   comment_id = comment_id.replace("divid", "")
   form = $(".juvia-add-comment-form")
   $container = $(".juvia-add-comment-form").closest(".juvia-container")
-  @loadScript "/api/update_comment",
+  @loadScript "/api/comments/update_comment",
     site_key: $container.data("site-key")
     restrict_comment_length: @restrict_comment_length
     comment_id: comment_id
