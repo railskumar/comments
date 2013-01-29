@@ -26,7 +26,8 @@ module ImportDisqus
     @threads = create_special_threads
     @posts = read_all_posts
     @posts.each do |po|
-      if comment = Comment.where(:author_email => po[:email]).where(:created_at => po[:created]).first
+      @restart = true if po[:email] == 'ray@nsls.tv' and po[:created] == '2012-09-24T15:11:14Z'
+      if @restart and comment = Comment.where(:author_email => po[:email]).where(:created_at => po[:created]).first
         request = "https://disqus.com/api/3.0/posts/details.json?api_key=128JGbqG5rM0uDqJtbDfUqwwMT1IrJL7ieKqmkUwXRSOBGE51MoimnV48FVvvfrB&post=#{po[:disqus_id]}"
         uri = URI.parse(request)
         http = Net::HTTP.new(uri.host, uri.port)
