@@ -48,22 +48,14 @@ class Site < ActiveRecord::Base
     topics.order("last_posted_at desc")
   end
 
-  def topics_info_by_topic_key(topic_keys)
+  def topics_info
     result = []
-    sql = %q{
-      SELECT topics.id,topics.key, COUNT(comments.id) AS comment_count, max(comments.created_at) AS last_commented_at FROM topics 
-      LEFT JOIN sites ON sites.id = topics.site_id 
-      LEFT JOIN comments ON comments.topic_id = topics.id 
-      WHERE sites.id = ? AND topics.key IN (?) 
-      GROUP BY topics.id
-    }
-    topics = Topic.find_by_sql([sql, id,topic_keys])
-    topics.each do |topic|
+    self.topics.each do |topic|
       result << {
         :id    => topic.id,
         :key   => topic.key,
-        :last_commented_at => topic.last_commented_at,
-        :comment_count  => topic.comment_count
+        :last_commented_at => topic.last_posted_at,
+        :comment_count  => topic.comments.count
       }
     end
     result

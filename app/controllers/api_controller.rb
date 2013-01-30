@@ -36,17 +36,26 @@ class ApiController < ApplicationController
     render
   end
 
-  def list_topics_by_topic_keys
-    prepare!([:site_key,:topic_keys], [:html])
+  def list_topics
+    prepare!([:site_key], [:json, :jsonp])
     @site = Site.find_by_key(@site_key)
     if @site
-      topics_info = @site.topics_info_by_topic_key(params[:topic_keys])
-      render :json => topics_info
+      render
     else
       render :partial => 'site_not_found'
     end
   end
- 
+
+  def topics_info
+    prepare!([:site_key], [:html])
+    site = Site.find_by_key(params[:site_key])
+    if site
+      render :json => site.topics_info
+    else
+      render :partial => 'site_not_found'
+    end
+  end
+
 private
   def log_exception(e)
     logger.error("#{e.class} (#{e}):\n  " <<

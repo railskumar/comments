@@ -88,5 +88,10 @@ module FactoryHelpers
     @hatsuneshima ||= FactoryGirl.create(:hatsuneshima,
       { :user => kotori }.merge(attrs))
   end
+
+  def site2(attrs = {})
+    @site2 ||= FactoryGirl.create(:site2,
+      { :user => kotori }.merge(attrs))
+  end
 end
 

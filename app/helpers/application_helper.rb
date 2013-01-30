@@ -1,7 +1,7 @@
 module ApplicationHelper
   extend self
 
-  PER_PAGE = 30
+  PER_PAGE = 60
 
   def juvia_handle_response(options)
     "Juvia.handleResponse(#{options.to_json})".html_safe

@@ -11,7 +11,57 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121019110313) do
+ActiveRecord::Schema.define(:version => 20130125084426) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "topic_id",                         :null => false
+    t.integer  "moderation_status", :default => 0, :null => false
+    t.string   "author_name"
+    t.string   "author_email"
+    t.string   "author_ip",                        :null => false
+    t.string   "author_user_agent"
+    t.text     "referer"
+    t.text     "content",                          :null => false
+    t.datetime "created_at",                       :null => false
+    t.integer  "comment_number"
+    t.index ["topic_id"], :name => "index_comments_on_topic_id"
+  end
+
+  create_table "flags", :force => true do |t|
+    t.integer  "comment_id"
+    t.string   "author_name"
+    t.string   "author_email"
+    t.string   "author_ip"
+    t.string   "author_user_agent"
+    t.text     "referer"
+    t.integer  "guest_count"
+    t.datetime "created_at",        :null => false
+    t.index ["comment_id"], :name => "index_flags_on_comment_id"
+  end
+
+  create_table "sites", :force => true do |t|
+    t.integer  "user_id",                          :null => false
+    t.string   "key",                              :null => false
+    t.string   "name",                             :null => false
+    t.string   "url"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "moderation_method", :default => 0, :null => false
+    t.string   "akismet_key"
+    t.index ["key"], :name => "index_sites_on_key", :unique => true
+    t.index ["user_id"], :name => "index_sites_on_user_id"
+  end
+
+  create_table "topics", :force => true do |t|
+    t.integer  "site_id",        :null => false
+    t.string   "key",            :null => false
+    t.text     "title",          :null => false
+    t.text     "url",            :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "last_posted_at"
+    t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true
+    t.index ["site_id"], :name => "index_topics_on_site_id"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -26,59 +76,6 @@ ActiveRecord::Schema.define(:version => 20121019110313) do
     t.index ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   end
 
-  create_table "sites", :force => true do |t|
-    t.integer  "user_id",                          :null => false
-    t.string   "key",                              :null => false
-    t.string   "name",                             :null => false
-    t.string   "url"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "moderation_method", :default => 0, :null => false
-    t.string   "akismet_key"
-    t.index ["key"], :name => "index_sites_on_key", :unique => true
-    t.index ["user_id"], :name => "index_sites_on_user_id"
-    t.foreign_key ["user_id"], "users", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "sites_ibfk_1"
-  end
-
-  create_table "topics", :force => true do |t|
-    t.integer  "site_id",        :null => false
-    t.string   "key",            :null => false
-    t.string   "title",          :null => false
-    t.string   "url",            :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "last_posted_at"
-    t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true
-    t.index ["site_id"], :name => "index_topics_on_site_id"
-    t.foreign_key ["site_id"], "sites", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "topics_ibfk_1"
-  end
-
-  create_table "comments", :force => true do |t|
-    t.integer  "topic_id",                         :null => false
-    t.integer  "moderation_status", :default => 0, :null => false
-    t.string   "author_name"
-    t.string   "author_email"
-    t.string   "author_ip",                        :null => false
-    t.string   "author_user_agent"
-    t.string   "referer"
-    t.text     "content",                          :null => false
-    t.datetime "created_at",                       :null => false
-    t.index ["topic_id"], :name => "index_comments_on_topic_id"
-    t.foreign_key ["topic_id"], "topics", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "comments_ibfk_1"
-  end
-
-  create_table "flags", :force => true do |t|
-    t.integer  "comment_id"
-    t.string   "author_name"
-    t.string   "author_email"
-    t.string   "author_ip"
-    t.string   "author_user_agent"
-    t.string   "referer"
-    t.integer  "guest_count"
-    t.datetime "created_at",        :null => false
-    t.index ["comment_id"], :name => "index_flags_on_comment_id"
-    t.foreign_key ["comment_id"], "comments", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "flags_ibfk_1"
-  end
-
   create_table "votes", :force => true do |t|
     t.integer  "votable_id"
     t.string   "votable_type",      :default => "Topic"
@@ -86,7 +83,7 @@ ActiveRecord::Schema.define(:version => 20121019110313) do
     t.string   "author_email"
     t.string   "author_ip"
     t.string   "author_user_agent"
-    t.string   "referer"
+    t.text     "referer"
     t.integer  "like"
     t.integer  "unlike"
     t.datetime "created_at",                             :null => false
