@@ -92,6 +92,33 @@ class Comment < ActiveRecord::Base
     created_at > Time.zone.now - COMMENT_EDIT_DURATION
   end
 
+  def report_comment_flag(params, request)
+    if params[:author_name].blank? or params[:author_email].blank?
+      # Report a flag to comment for guest user.
+      flag_comments = self.flags.where(:author_name => nil).where(:author_email => nil)
+      if flag_comments.present?
+        flag_comments.first.add_flag
+      else
+        self.flags.create!(
+          :author_ip => request.env['REMOTE_ADDR'],
+          :author_user_agent => request.env['HTTP_USER_AGENT'],
+          :referer => request.env['HTTP_REFERER'],
+          :guest_count => 1)
+      end
+    else
+      # Report a flag to comment if user logged in.
+      flag_comments = self.flags.where(author_email:params[:author_email]).where(author_name:params[:author_name])
+      unless flag_comments.present?
+        self.flags.create!(
+          :author_name => params[:author_name],
+          :author_email => params[:author_email],
+          :author_ip => request.env['REMOTE_ADDR'],
+          :author_user_agent => request.env['HTTP_USER_AGENT'],
+          :referer => request.env['HTTP_REFERER'])
+      end
+    end
+  end
+
 private
   AKISMET_HEADERS = {
     'User-Agent' => "Juvia | Rails/#{Rails.version}",
@@ -162,5 +189,4 @@ private
   def redis_update
     $redis.set("#{self.topic.site.key}_#{self.topic.key.to_s}", self.topic.comments.size)
   end
-
 end

@@ -9,13 +9,11 @@ class Api::CommentsController < ApplicationController
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
 
   def show_topic
-    @topic_title = params[:topic_title]
-    @topic_url   = params[:topic_url]
-    @include_base = get_boolean_param(:include_base, true)
-    @include_css  = get_boolean_param(:include_css, true)
+    @topic_title, @topic_url = params[:topic_title], params[:topic_url]
+    @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
     prepare!([:site_key, :topic_key, :container, :topic_title, :topic_url], [:html, :js])
     
-   @topic = Topic.lookup(@site_key, @topic_key)
+    @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
       render 
     else
@@ -103,7 +101,6 @@ class Api::CommentsController < ApplicationController
   end
 
 private
-
   def get_boolean_param(name, default = false)
     if params[name].present?
       value = params[name].downcase
@@ -143,5 +140,4 @@ private
       render :partial => 'site_not_found'
     end
   end
-
 end
