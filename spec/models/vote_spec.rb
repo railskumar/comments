@@ -45,47 +45,62 @@ describe "Vote" do
 
   it 'Topic: One guest liked this.' do
   	vote = @topic.votes.create vote_attributes.merge({:like => 1})
+    @topic = vote.votable
   	@topic.total_like.should eql("One guest liked this.")
+  	@topic.vote_counts.should eql("One guest liked this.")
   end
   
   it 'Topic: One guest unliked this.' do
   	vote = @topic.votes.create vote_attributes.merge({:unlike => 1})
+    @topic = vote.votable
   	@topic.total_like.should eql("")
+  	@topic.vote_counts.should eql("")
   end
 
   it 'Comment: message total_like' do
   	vote = @comment.votes.create vote_attributes.merge({:like => 1})
+    @comment = vote.votable
   	@comment.total_like.should eql("One guest liked this.")
+  	@comment.vote_counts.should eql("One guest liked this.")
   end
   
   it 'Comment: message total_like' do
   	vote = @comment.votes.create vote_attributes.merge({:unlike => 1})
+    @comment = vote.votable
   	@comment.total_like.should eql("")
+  	@comment.vote_counts.should eql("")
   end
 
   it 'Topic: User and guest liked this.' do
-  	@topic.votes.create vote_attributes.merge({:like => 1, 
+  	vote = @topic.votes.create vote_attributes.merge({:like => 1, 
   		:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
   	@topic.total_like.should eql("One user liked this.")
-    @topic.votes.create vote_attributes.merge({:like => 1})
+  	vote.votable.vote_counts.should eql("One user liked this.")
+    
+    vote = @topic.votes.create vote_attributes.merge({:like => 1})
     @topic.total_like.should eql("One user and One guest liked this.")
-    @topic.votes.create vote_attributes.merge({:like => 1, 
+    vote.votable.vote_counts.should eql("One user and One guest liked this.")
+    vote = @topic.votes.create vote_attributes.merge({:like => 1, 
   		:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
     @topic.total_like.should eql("2 users and One guest liked this.")
+    vote.votable.vote_counts.should eql("2 users and One guest liked this.")
 
 
-  	@comment.votes.create vote_attributes.merge({:like => 1, 
+  	vote = @comment.votes.create vote_attributes.merge({:like => 1, 
   		:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
   	@comment.total_like.should eql("One user liked this.")
-  	@comment.votes.create vote_attributes.merge({:like => 1})
+  	vote.votable.vote_counts.should eql("One user liked this.")
+  	vote = @comment.votes.create vote_attributes.merge({:like => 1})
   	@comment.total_like.should eql("One user and One guest liked this.")
-  	@comment.votes.create vote_attributes.merge({:like => 1, 
+  	vote.votable.vote_counts.should eql("One user and One guest liked this.")
+  	vote = @comment.votes.create vote_attributes.merge({:like => 1, 
   		:author_name=>"author_name",
   		:author_email=>"author_name@email.com"})
   	@comment.total_like.should eql("2 users and One guest liked this.")
+  	vote.votable.vote_counts.should eql("2 users and One guest liked this.")    
   end
-
+  
 end

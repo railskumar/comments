@@ -36,15 +36,15 @@ module ApplicationHelper
 	  :user_name => comment.author_name,
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
-	  :comment_votes => comment.total_like,
+	  :comment_votes => comment.vote_counts,
 	  :liked => (comment.liked?(username, user_email) ? "liked" : "unliked"),
-	  :flagged => (comment.flagged),
+	  :flagged => (comment.flag_status),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
   end
-
+  
   def sorting_options
     {:popular => "hot_visible",
      :newest  => "newest",
