@@ -37,12 +37,21 @@ module ApplicationHelper
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => comment.vote_counts,
-	  :liked => (comment.liked?(username, user_email) ? "liked" : "unliked"),
+	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "unliked"),
 	  :flagged => (comment.flag_status),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
+  end
+  
+  def user_liked?(username, user_email, comment)
+    return false if user_email.blank?
+    votes = comment.votes
+    votes.each do |vote|
+      return true if (vote.author_name == username) and (vote.author_email == user_email)
+    end
+    return false
   end
   
   def sorting_options

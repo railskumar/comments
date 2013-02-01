@@ -1,2 +1,2 @@
 $liked_msg_dom = Juvia.$('#comment-vote-<%=@comment.id.to_s%>');
-$liked_msg_dom.html("<%=@comment.vote_counts %>");
+$liked_msg_dom.html("<%=@comment.reload.vote_counts %>");
