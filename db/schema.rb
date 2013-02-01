@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125084426) do
+ActiveRecord::Schema.define(:version => 20130131120908) do
 
   create_table "comments", :force => true do |t|
     t.integer  "topic_id",                         :null => false
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20130125084426) do
     t.text     "content",                          :null => false
     t.datetime "created_at",                       :null => false
     t.integer  "comment_number"
+    t.string   "vote_counts"
+    t.string   "flag_status"
     t.index ["topic_id"], :name => "index_comments_on_topic_id"
   end
 
@@ -59,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20130125084426) do
     t.text     "url",            :null => false
     t.datetime "created_at",     :null => false
     t.datetime "last_posted_at"
+    t.string   "vote_counts"
     t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true
     t.index ["site_id"], :name => "index_topics_on_site_id"
   end

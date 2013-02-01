@@ -40,7 +40,7 @@
 			  	<p>
 			  	  <%= distance_of_time_in_words(Time.now, comment.created_at) + " ago"%>
 			  	  <span id="comment-vote-<%=comment.id.to_s%>" style="margin-left:15px;">
-			  	    <%=comment.total_like%>
+			  	    <%=comment.vote_counts%>
 			  	  </span>
 			    </p>
 			  </div>

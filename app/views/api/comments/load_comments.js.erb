@@ -1,3 +1,11 @@
+
+Juvia.total_pages = <%= @comments.total_pages %>;
+
+if(Juvia.total_pages > 1){
+  Juvia.$('#show_more_comments').show();
+}
+
+
 <% if (comments = @comments).size > 0 %>
   <% comments.each_with_index do |comment, index| %>
     <% 
@@ -5,15 +13,6 @@
       options.merge!({'action' => 'LoadComment'})
     %>
     <%= juvia_handle_load_comment(options) %>
-  <% end %> 
+  <% end %>
 <% end %>
-$('#show_more_comments').attr('data-page', '<%= params[:page].to_i + 1%>');
-
-<% if @comments.total_pages < params[:page].to_i + 1%>
-  $('#show_more_comments').hide();
-<% else %>
-  $('#show_more_comments').show();
-<% end %>
-$(".load_more_contain img").hide();
 <%= juvia_reinstall_behavior %>
-
