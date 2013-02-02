@@ -13,6 +13,7 @@ namespace :dep do
     puts "Pushing to production"
     sh "git push production"
     sh "heroku run rake db:migrate --app rdfnet-comments"
+    sh "heroku restart --app rdfnet-comments"
   end
 
   task :diff_feature do
