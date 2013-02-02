@@ -11,7 +11,7 @@ namespace :dep do
   desc "Push to production after running specs and push to origin"
   task :production => [:push] do
     puts "Pushing to production"
-    sh "git push heroku"
+    sh "git push production"
     sh "heroku run rake db:migrate --app rdfnet-comments"
   end
 
