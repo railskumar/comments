@@ -42,7 +42,7 @@ class ApiController < ApplicationController
     if @site
       render
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 
@@ -52,7 +52,7 @@ class ApiController < ApplicationController
     if site
       render :json => site.topics_info
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 
