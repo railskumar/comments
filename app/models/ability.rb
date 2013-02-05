@@ -34,6 +34,7 @@ class Ability
       can crud, :all
       can :list, :all
       can :flags, Comment
+      can :approve, Comment
       can :destroy_flag , Comment
       can :make_admin, User
       can :sites_topics, Topic
