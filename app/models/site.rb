@@ -55,7 +55,7 @@ class Site < ActiveRecord::Base
         :id    => topic.id,
         :key   => topic.key,
         :last_commented_at => topic.last_posted_at,
-        :comment_count  => topic.comments.count
+        :comment_count  => topic.comments.visible.count
       }
     end
     result
