@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 class Vote < ActiveRecord::Base
 
   belongs_to :votable, :polymorphic => true
@@ -6,6 +8,17 @@ class Vote < ActiveRecord::Base
   after_destroy :update_vote_counts
   after_save :update_vote_counts
 
+  scope :user_liked, where("author_email IS NOT NULL")
+  scope :votes_by_type, lambda{ |vote_type| where('votable_type = ?', vote_type) }
+
+  def author_email_md5
+    if author_email
+      Digest::MD5.hexdigest(author_email.downcase)
+    else
+      nil
+    end
+  end
+    
   def presense_vote
     if [self.like, self.unlike].compact.size == 0
       errors[:base] << ("Vote is required")

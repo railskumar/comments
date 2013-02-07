@@ -100,6 +100,12 @@ class Api::CommentsController < ApplicationController
     end
   end
 
+  def show_like_users
+    prepare!([:site_key, :topic_key], [:html, :js, :json])
+    @comment = Topic.lookup(@site_key, @topic_key).comments.find(params[:comment_key])
+    @votes = @comment.get_users_comment_like("Comment")
+  end
+
 private
   def get_boolean_param(name, default = false)
     if params[name].present?

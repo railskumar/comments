@@ -183,3 +183,17 @@ Juvia.reportComment = (event, this_obj) ->
     author_email: $("input[name=\"author_email\"]", $container).val()
 
   false
+
+Juvia.showCommentLikeUsers = (event, this_obj) ->
+  $ = @$
+  $this = $(this_obj)
+  form = event.target
+  $container = $(form).closest(".juvia-container")
+  
+  opt1 =
+    site_key: $container.data("site-key")
+    topic_key: $container.data("topic-key")
+    comment_key: $this.data("comment-id")
+  opt2 = {}
+  
+  @loadScript "/api/comments/show_like_users", $.extend(opt1, opt2)

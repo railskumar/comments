@@ -17,6 +17,10 @@ describe "Topic" do
     @topic_key2 = @topic2.key
   end
 
+  def vote_attributes
+    FactoryGirl.build(:vote).attributes
+  end
+  
   it 'get newest comments' do
     @topic.topic_comments.newest.visible.to_a[0].should eql(@comment5)
   end
@@ -45,4 +49,18 @@ describe "Topic" do
     topic.should == nil
   end
 
+  it 'get users who likes the topic' do
+    topic = Topic.lookup(@site_key, @topic_key)
+    user1_vote = topic.votes.create vote_attributes.merge({:like => 1, 
+  		:author_name=>"author_name1",
+  		:author_email=>"author_name1@email.com"})
+    user2_vote = topic.votes.create vote_attributes.merge({:like => 1, 
+  		:author_name=>"author_name2",
+  		:author_email=>"author_name2@email.com"})
+    guest_user_vote = topic.votes.create vote_attributes.merge({:like => 1})
+    topic.get_users_topic_like("Topic").count.should eql(2)
+    topic.get_users_topic_like("bad_vote_type").count.should eql(0)
+    topic.get_users_topic_like("Topic")[0].author_email == user1_vote.author_email
+    topic.get_users_topic_like("Topic")[1].author_email == user2_vote.author_email
+  end
 end

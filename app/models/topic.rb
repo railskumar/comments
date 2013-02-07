@@ -2,6 +2,7 @@ class Topic < ActiveRecord::Base
   belongs_to :site, :inverse_of => :topics
   has_many :comments, :order =>'created_at DESC', :inverse_of => :topic
   has_many :topic_comments, :class_name => "Comment", :include => "votes" do
+  
     def oldest
       order(:created_at)
     end
@@ -68,6 +69,10 @@ class Topic < ActiveRecord::Base
 
   def last_commented_at
     self.last_comment.created_at rescue nil
+  end
+
+  def get_users_topic_like(vote_type)
+    self.votes.user_liked.votes_by_type(vote_type)
   end
 
 private

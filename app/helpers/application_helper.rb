@@ -44,7 +44,14 @@ module ApplicationHelper
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
   end
-  
+
+  def comment_users_hash(vote)
+    return {:comment_user_image => avatar_img(vote.author_email, (vote.author_email_md5 rescue '')),
+	  :comment_user_name => vote.author_name,
+	  :comment_user_email => vote.author_email
+    }
+  end  
+
   def user_liked?(username, user_email, comment)
     return false if user_email.blank?
     votes = comment.votes

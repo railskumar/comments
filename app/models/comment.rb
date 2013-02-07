@@ -119,6 +119,10 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def get_users_comment_like(vote_type)
+    self.votes.user_liked.votes_by_type(vote_type)
+  end
+
 private
   AKISMET_HEADERS = {
     'User-Agent' => "Juvia | Rails/#{Rails.version}",

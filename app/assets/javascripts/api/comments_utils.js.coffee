@@ -269,6 +269,19 @@ Juvia.handleLoadComment = (options) ->
   dom_ele = @rdf_comment_box(options)
   @appendComment dom_ele
 
+Juvia.handleShowCommentLikeUsers = (options) ->
+  users_liked_str = ""
+  $ = @$
+  if options.status is "ok"
+    users_liked_dom = $(".modal-body")
+    users_liked_dom.html " "
+    if !$.isEmptyObject(options.comment_users)
+      $("#myModal").modal "show"
+      $.each options.comment_users, (key, value) ->
+        users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a href='/users?juvia=true&email="+value.comment_user_email+"'><img width='64' height='38' src='" + value.comment_user_image + "' data-user-email='" + value.comment_user_email + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_user_name + "</div></div><div style='margin-bottom:10px;'></div>"
+        users_liked_dom.html " " + users_liked_str
+  else
+    alert "Something went wrong!"
 
 Juvia.handleAddComment = (options) ->
   $ = @$

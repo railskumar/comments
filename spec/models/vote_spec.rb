@@ -103,4 +103,16 @@ describe "Vote" do
   	vote.votable.vote_counts.should eql("2 users and One guest liked this.")    
   end
   
+  it 'get user\'s who likes comment' do
+    user_vote1 = @comment.votes.create vote_attributes.merge({:like => 1, 
+  		:author_name=>"author_name1",
+  		:author_email=>"author_name1@email.com"})
+    user_vote2 = @comment.votes.create vote_attributes.merge({:like => 1, 
+  		:author_name=>"author_name2",
+  		:author_email=>"author_name2@email.com"})
+    @comment.get_users_comment_like("Comment").count.should eql(2)
+    @comment.get_users_comment_like("bad_vote_type").count.should eql(0)
+    @comment.get_users_comment_like("Comment")[0].author_email == user_vote1.author_email
+    @comment.get_users_comment_like("Comment")[1].author_email == user_vote2.author_email
+  end
 end

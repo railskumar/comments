@@ -135,9 +135,12 @@ Juvia.rdf_comment_box = (option) ->
   ababaa_p.appendChild ababaaa_span
   ababaab_span = document.createElement("span")
   ababaab_span.id = "comment-vote-" + comment_id
+  ababaab_span.className = "comment-vote"
+  ababaab_span.setAttribute "data-comment-id", comment_id
   ababaab_span.setAttribute "style", "margin-left:15px"
   ababaab_span.appendChild document.createTextNode(comment_votes)
   ababaa_p.appendChild ababaab_span
+  
   bottom_second_colm = document.createElement("div")
   if @user_logged_in
     bottom_second_colm.className = "span5"
