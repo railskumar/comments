@@ -183,10 +183,10 @@ Juvia.rdf_comment_box = (option) ->
   ababba = document.createElement("i")
   like_span = document.createElement("span")
   if liked is "liked"
-    ababba.className = "icon-thumbs-down"
+    ababba.className = "icon-thumbs-up down-active"
     like_span.appendChild document.createTextNode(" Liked")
   else
-    ababba.className = "icon-thumbs-up"
+    ababba.className = "icon-thumbs-up up-active"
     like_span.appendChild document.createTextNode(" Like")
   vote_comment_tag.appendChild ababba
   vote_comment_tag.appendChild like_span

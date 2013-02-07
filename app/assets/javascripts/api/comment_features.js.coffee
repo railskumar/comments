@@ -87,14 +87,14 @@ Juvia.voteComment = (event, this_obj) ->
   up_down = 1
   $vote_icon = $this.find("i")
   $vote_text = $this.find("span")
-  if $vote_icon.hasClass("icon-thumbs-up")
-    $vote_icon.removeClass "icon-thumbs-up"
-    $vote_icon.addClass "icon-thumbs-down"
+  if $vote_icon.hasClass("up-active")
+    $vote_icon.removeClass "up-active"
+    $vote_icon.addClass "down-active"
     $vote_text.html " Liked"
     up_down = 1
   else
-    $vote_icon.removeClass "icon-thumbs-down"
-    $vote_icon.addClass "icon-thumbs-up"
+    $vote_icon.removeClass "down-active"
+    $vote_icon.addClass "up-active"
     $vote_text.html " Like"
     up_down = 0
   a_name = $("input[name=\"author_name\"]", $container).val()
