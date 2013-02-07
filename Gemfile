@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.6'
+gem 'rails', '3.2.11'
 
 # heroku gems and services
 gem 'pg'
