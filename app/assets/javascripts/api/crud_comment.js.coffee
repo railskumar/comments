@@ -176,8 +176,7 @@ Juvia.rdf_comment_box = (option) ->
   else
     ababb.className = "span6"
   function_links.appendChild ababb
-
-  unless @username is user_name
+  unless @user_email is comment_user_email
     vote_comment_tag = document.createElement("votecomment")
     vote_comment_tag.className = "juvia-vote-to-comment"
     vote_comment_tag.id = "comment-vote-icon-" + comment_id
