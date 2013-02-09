@@ -119,13 +119,6 @@ class Comment < ActiveRecord::Base
     end
   end
 
-  def votes_value
-    guest_votes = votes.where("author_name IS NULL AND author_email IS NULL")
-    guest_likes = guest_votes.first.like unless guest_votes.blank?
-    user_vote = (votes.count - guest_votes.count)*2
-    guest_likes.to_i + user_vote
-  end
-
 private
   AKISMET_HEADERS = {
     'User-Agent' => "Juvia | Rails/#{Rails.version}",
