@@ -176,21 +176,22 @@ Juvia.rdf_comment_box = (option) ->
   else
     ababb.className = "span6"
   function_links.appendChild ababb
-  vote_comment_tag = document.createElement("votecomment")
-  vote_comment_tag.className = "juvia-vote-to-comment"
-  vote_comment_tag.id = "comment-vote-icon-" + comment_id
-  vote_comment_tag.setAttribute "data-comment-id", comment_id
-  ababba = document.createElement("i")
-  like_span = document.createElement("span")
-  if liked is "liked"
-    ababba.className = "icon-thumbs-down"
-    like_span.appendChild document.createTextNode(" Liked")
-  else
-    ababba.className = "icon-thumbs-up"
-    like_span.appendChild document.createTextNode(" Like")
-  vote_comment_tag.appendChild ababba
-  vote_comment_tag.appendChild like_span
-  ababb.appendChild vote_comment_tag
+  unless @user_email is comment_user_email
+    vote_comment_tag = document.createElement("votecomment")
+    vote_comment_tag.className = "juvia-vote-to-comment"
+    vote_comment_tag.id = "comment-vote-icon-" + comment_id
+    vote_comment_tag.setAttribute "data-comment-id", comment_id
+    ababba = document.createElement("i")
+    like_span = document.createElement("span")
+    if liked is "liked"
+      ababba.className = "icon-thumbs-up down-active"
+      like_span.appendChild document.createTextNode(" Liked")
+    else
+      ababba.className = "icon-thumbs-up up-active"
+      like_span.appendChild document.createTextNode(" Like")
+    vote_comment_tag.appendChild ababba
+    vote_comment_tag.appendChild like_span
+    ababb.appendChild vote_comment_tag
   if @user_logged_in and not @restrict_comment_length
     ababc = document.createElement("div")
     ababc.className = "span3"
