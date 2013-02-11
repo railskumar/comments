@@ -53,4 +53,8 @@ module Like
     return u_votes.first if u_votes.present?
     return nil
   end
+
+  def total_likes_value
+    ((user_votes.size)*2) + guest_votes
+  end
 end

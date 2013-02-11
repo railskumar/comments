@@ -11,7 +11,7 @@ class Topic < ActiveRecord::Base
     end
 
     def hot_visible
-      visible.sort { |x,y| y.votes.size <=> x.votes.size }
+      visible.sort { |x,y| y.votes_value.to_i <=> x.votes_value.to_i }
     end
   end
   has_many :votes, :as => :votable
