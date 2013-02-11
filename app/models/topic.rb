@@ -1,6 +1,8 @@
 class Topic < ActiveRecord::Base
   belongs_to :site, :inverse_of => :topics
   has_many :comments, :order =>'created_at DESC', :inverse_of => :topic
+  has_many :votes, :as => :votable
+
   has_many :topic_comments, :class_name => "Comment", :include => "votes" do
     def oldest
       order(:created_at)
@@ -11,10 +13,9 @@ class Topic < ActiveRecord::Base
     end
 
     def hot_visible
-      visible.sort { |x,y| y.votes.size <=> x.votes.size }
+      sort { |x,y| y.votes_value.to_i <=> x.votes_value.to_i }
     end
   end
-  has_many :votes, :as => :votable
 
   validates_presence_of :key
   validates_presence_of :title
