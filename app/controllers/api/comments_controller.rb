@@ -17,7 +17,7 @@ class Api::CommentsController < ApplicationController
     if @topic
       render 
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 
@@ -56,7 +56,7 @@ class Api::CommentsController < ApplicationController
           :content => @content)
         render
       else
-        render :partial => 'site_not_found'
+        render :partial => 'api/site_not_found'
       end
     end
   end
@@ -76,7 +76,7 @@ class Api::CommentsController < ApplicationController
       :content => @content)
       render
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 
@@ -96,7 +96,7 @@ class Api::CommentsController < ApplicationController
       @comments = comments.page(params[:page] || 1).per(PER_PAGE)
       render
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 
@@ -143,7 +143,7 @@ private
       @comments = comments.page(params[:page] || 1).per(PER_PAGE)
       render
     else
-      render :partial => 'site_not_found'
+      render :partial => 'api/site_not_found'
     end
   end
 end

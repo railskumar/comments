@@ -148,12 +148,14 @@ Juvia.previewComment = (formElement) ->
 
 
 Juvia.setSubmitting = (container, val) ->
+  $submit_button = container.find(".juvia-submit-button")
+  $submitting_button = container.find(".juvia-submitting-button")
   if val
-    container.find(".juvia-submit-button").hide()
-    container.find(".juvia-submitting-button").show()
+    $submit_button.hide()
+    $submitting_button.show()
   else
-    container.find(".juvia-submit-button").show()
-    container.find(".juvia-submitting-button").hide()
+    $submit_button.show()
+    $submitting_button.hide()
 
 
 Juvia.virtualAnimate = (options) ->

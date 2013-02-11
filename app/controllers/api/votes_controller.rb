@@ -30,7 +30,7 @@ class Api::VotesController < ApplicationController
           :author_ip => request.env['REMOTE_ADDR'],
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
-          :like => 1)
+          :like => 1) unless (params[:author_email].eql?(@comment.author_email))
       end
     end
   end

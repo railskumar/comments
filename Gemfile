@@ -1,8 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.6'
+gem 'rails', '3.2.11'
 
 # heroku gems and services
+ruby "1.9.3"
 gem 'pg'
 gem 'dalli'
 gem 'heroku'

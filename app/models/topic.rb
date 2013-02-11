@@ -12,7 +12,7 @@ class Topic < ActiveRecord::Base
     end
 
     def hot_visible
-      visible.sort { |x,y| x.votes.size <=> y.votes.size }.reverse
+      visible.sort { |x,y| y.votes.size <=> x.votes.size }
     end
   end
   has_many :votes, :as => :votable
