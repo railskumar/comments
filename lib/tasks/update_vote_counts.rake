@@ -2,8 +2,7 @@ namespace :update_vote_counts do
 
   desc "Update vote counts and votes_value into topic and comment"
   task :topic => :environment do
-    Topic.all.each do |topic|
-      puts "Current likes #{topic.id.to_s}:  #{topic.users_and_guests_likes_string}, #{topic.total_likes_value}"
+    Topic.scoped.each do |topic|
       topic.vote_counts = topic.users_and_guests_likes_string
       topic.votes_value = topic.total_likes_value
       topic.save
@@ -12,8 +11,7 @@ namespace :update_vote_counts do
   end
   
   task :comment => :environment do
-    Comment.all.each do |comment|
-      puts "Current likes #{comment.id.to_s}:  #{comment.users_and_guests_likes_string}, #{comment.total_likes_value}"
+    Comment.scoped.each do |comment|
       comment.vote_counts = comment.users_and_guests_likes_string
       comment.votes_value = comment.total_likes_value
       comment.save
