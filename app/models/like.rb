@@ -1,6 +1,6 @@
 module Like
   
-  def total_like
+  def users_and_guests_likes_string
     return_str1 = ""
     return_str1 << "#{user_likes.to_s} users " if user_likes > 1
     return_str1 << "One user " if user_likes == 1
