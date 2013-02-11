@@ -12,7 +12,7 @@ class Topic < ActiveRecord::Base
       order("created_at DESC")
     end
 
-    def hot_visible
+    def most_popular
       sort { |x,y| y.votes_value.to_i <=> x.votes_value.to_i }
     end
   end
