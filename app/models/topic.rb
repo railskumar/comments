@@ -13,7 +13,7 @@ class Topic < ActiveRecord::Base
     end
 
     def most_popular
-      sort { |x,y| y.votes_value.to_i <=> x.votes_value.to_i }
+      order("votes_value DESC")
     end
   end
 
