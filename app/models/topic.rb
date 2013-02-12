@@ -13,7 +13,7 @@ class Topic < ActiveRecord::Base
     end
 
     def most_popular
-      order("votes_value DESC")
+      order("votes_value DESC NULLS LAST")
     end
   end
 
