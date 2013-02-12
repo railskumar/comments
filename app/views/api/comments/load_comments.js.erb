@@ -9,7 +9,7 @@ if(Juvia.total_pages > 1){
 <% if (comments = @comments).size > 0 %>
   <% comments.each_with_index do |comment, index| %>
     <% 
-      options = comment_hash(comment, @username, @user_email)
+      options = comment_hash(comment, @username, @user_email,request.remote_ip)
       options.merge!({'action' => 'LoadComment'})
     %>
     <%= juvia_handle_load_comment(options) %>

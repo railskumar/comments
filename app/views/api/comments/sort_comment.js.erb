@@ -1,7 +1,7 @@
 <% comments = {} %>
 <% @comments.each_with_index do |comment,index| %>
     <%
-      options = comment_hash(comment, @username, @user_email)
+      options = comment_hash(comment, @username, @user_email,request.remote_ip)
       comments.merge!({index => options})
     %>
 <% end %>
@@ -10,5 +10,5 @@
   :action    => 'SortComments',
   :site_key  => @site_key,
   :topic_key => @topic_key,
-  :comments      => comments
+  :comments  => comments
 ) %>

@@ -1,5 +1,5 @@
 <% comment = @comment%>
-<% option = comment_hash(comment, comment.author_name, comment.author_email)%>
+<% option = comment_hash(comment, comment.author_name, comment.author_email,request.remote_ip)%>
 <%= juvia_handle_response(
   :status         => 'ok',
   :action         => 'AddComment',
