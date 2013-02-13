@@ -51,6 +51,12 @@ module Like
     return u_votes.first if u_votes.present?
     return nil
   end
+  
+  def guest_vote(author_ip)
+    g_votes = guest_votes.where(author_ip:author_ip)
+    return g_votes.first if g_votes.present?
+    return nil
+  end
 
   def total_likes_value
     user_likes*2 + guest_likes

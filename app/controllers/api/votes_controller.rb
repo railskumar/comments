@@ -38,13 +38,14 @@ class Api::VotesController < ApplicationController
     prepare!([:site_key, :topic_key, :topic_url, :vote], [:html, :js, :json])
     @topic = Topic.lookup_or_create(@site_key, @topic_key,params[:topic_title],params[:topic_url])
     if params[:author_name].blank? or params[:author_email].blank?
-      votes = @topic.votes.where(author_email:nil).where(author_name:nil)
+      votes = @topic.guest_votes.where(author_ip: Rails.env.test? ? params[:author_ip] : request.remote_ip)
       if votes.present?
-        votes.first.add_like_unlike_vote(params[:vote])
-      else
+        votes.each{|vote| vote.destroy}
+      else  
         vote = @topic.votes.build(:author_ip => request.env['REMOTE_ADDR'],
              :author_user_agent => request.env['HTTP_USER_AGENT'],
              :referer => request.env['HTTP_REFERER'])
+        vote.author_ip = params[:author_ip] if Rails.env.test?
         params[:vote] == "1" ? vote.like = 1 : vote.unlike = 1
         vote.save
       end

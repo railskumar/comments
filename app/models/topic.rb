@@ -24,6 +24,29 @@ class Topic < ActiveRecord::Base
 
   include Like  
 
+  def topic_liked?(username, user_email, author_ip)
+    if !user_email.blank? and (u_vote = user_vote(username, user_email))
+      return (u_vote.present? && (u_vote.like == 1))
+    end
+    if user_email.blank?
+      g_vote = guest_vote(author_ip)
+      return (g_vote.present? && (g_vote.like == 1))
+    end
+    return false
+  end
+
+  def topic_unliked?(username, user_email, author_ip)
+    if !user_email.blank? and (u_vote = user_vote(username, user_email))
+      return (u_vote.present? && (u_vote.unlike == 1))
+    end
+    if user_email.blank?
+      g_vote = guest_vote(author_ip)
+      return (g_vote.present? && (g_vote.unlike == 1))
+    end
+    return false
+  end
+
+
   def self.topic_comments_size(topic_id, site_key)
     if topic = Topic.find_by_site_key_and_topic_key(site_key, topic_id)
       topic.comments.size
