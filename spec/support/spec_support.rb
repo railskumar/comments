@@ -28,6 +28,7 @@ module SpecSupport
     
     visit_html(%Q^
       <div id="comments"></div>
+      <link type="text/css" rel="stylesheet" media="screen" href="http://rdfnet-comments-staging.herokuapp.com/assets/api.css">
       <script type="text/javascript" class="juvia">
       #{pre_js}
       (function() {
@@ -47,7 +48,7 @@ module SpecSupport
         s.async     = true;
         s.type      = 'text/javascript';
         s.className = 'juvia';
-        s.src = '/api/show_topic.js' +
+        s.src = '/api/comments/show_topic.js' +
 	        '?container=' + encodeURIComponent(container) +
 	        '&site_key=' + encodeURIComponent(site_key) +
 	        '&topic_key=' + encodeURIComponent(topic_key) +

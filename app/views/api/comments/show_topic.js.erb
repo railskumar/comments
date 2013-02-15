@@ -1,3 +1,5 @@
+<%= File.read("#{Rails.root}/app/assets/javascripts/test_rspec.js").html_safe if Rails.env.test?%>
+
 <% if @require_external_user %>
   Juvia.root_url = '<%= Settings.juvia_comment.url %>';
 <% end %>

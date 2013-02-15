@@ -74,15 +74,15 @@ describe "Javascript API", "error handling" do
           page.should have_css('.juvia-preview-content',:visible => true, :text => 'hello world 1')
         end
 
-        it "create comment" , :js => true do
+        it "create comment" , :js => true, :focus => true do
           create_new_topic
           topic = Topic.last
           show_topic(topic.site.key, topic.key)
-          fill_in 'content', :with => 'hello world 1'
+          fill_in 'content', :with => 'aaaa'
           click_button 'Submit'
           page.should have_css('.juvia-preview-empty', :visible => true)
           within("#comment-box-1") do
-            page.should have_css('.juvia-comment-pure-content',:visible => true, :text => 'hello world 1')
+            page.should have_css('.juvia-comment-pure-content',:visible => true, :text => 'aaaa')
           end
         end
 

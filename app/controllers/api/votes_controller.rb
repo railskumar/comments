@@ -9,11 +9,11 @@ class Api::VotesController < ApplicationController
     prepare!([:site_key, :topic_key, :comment_key, :topic_url, :vote], [:html, :js, :json])
     @comment = Topic.lookup(@site_key, @topic_key).comments.find(params[:comment_key])
     if params[:author_name].blank? or params[:author_email].blank?
-      votes = @comment.guest_votes.where(author_ip: request.remote_ip)
+      votes = @comment.guest_votes.where(author_ip: Rails.env.test? ? params[:author_ip] : request.remote_ip)
       if votes.present?
         votes.each{|vote| vote.destroy}
-      else
-        vote = @comment.votes.create!(:author_ip => request.env['REMOTE_ADDR'],
+      elsif params[:vote] == "1"
+        vote = @comment.votes.create!(:author_ip => Rails.env.test? ? params[:author_ip] : request.env['REMOTE_ADDR'],
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
           :like => 1)
@@ -22,7 +22,7 @@ class Api::VotesController < ApplicationController
       votes = @comment.votes.where(author_email:params[:author_email]).where(author_name:params[:author_name])
       if votes.present?
         votes.each{|vote| vote.destroy}
-      else
+      elsif params[:vote] == "1"
         @comment.votes.create!(
           :author_name => params[:author_name],
           :author_email => params[:author_email],
