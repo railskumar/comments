@@ -23,48 +23,7 @@ module SpecSupport
   end
   
   def show_topic(site_key, topic_key, options = {})
-    pre_js    = options[:pre_js]
-    topic_url = options[:topic_url]
-    
-    visit_html(%Q^
-      <div id="comments"></div>
-      <link type="text/css" rel="stylesheet" media="screen" href="http://rdfnet-comments-staging.herokuapp.com/assets/api.css">
-      <script type="text/javascript" class="juvia">
-      #{pre_js}
-      (function() {
-        var container   = '#comments';
-        var site_key    = '#{site_key}';
-        var topic_key   = '#{topic_key}';
-        var topic_url   = #{topic_url ? "'#{topic_url}'" : "location.href"};
-        var topic_title = document.title || topic_url;
-        var use_my_user = 'true';
-        var user_logged_in = 'true' ;
-        var logged_in_message = '';
-        var username = 'test';
-        var user_email = 'user@mail.com';
-        var user_image = '#';
-        
-        var s       = document.createElement('script');
-        s.async     = true;
-        s.type      = 'text/javascript';
-        s.className = 'juvia';
-        s.src = '/api/comments/show_topic.js' +
-	        '?container=' + encodeURIComponent(container) +
-	        '&site_key=' + encodeURIComponent(site_key) +
-	        '&topic_key=' + encodeURIComponent(topic_key) +
-	        '&topic_url=' + encodeURIComponent(topic_url) +
-          '&topic_title=' + encodeURIComponent(topic_title) +
-          '&use_my_user=' + encodeURIComponent(use_my_user) +
-          '&user_logged_in=' + encodeURIComponent(user_logged_in) +
-          '&logged_in_message=' + encodeURIComponent(logged_in_message) +
-          '&username=' + encodeURIComponent(username) +
-          '&user_email=' + encodeURIComponent(user_email) +
-          '&user_image=' + encodeURIComponent(user_image);
-        (document.getElementsByTagName('head')[0] ||
-         document.getElementsByTagName('body')[0]).appendChild(s);
-      })();
-      </script>
-    ^)
+    visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}")
   end
 
   def eventually(max_wait = 5, sleep_time = 0.01)
