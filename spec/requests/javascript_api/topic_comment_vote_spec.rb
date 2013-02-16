@@ -227,7 +227,7 @@ describe "Javascript API", "error handling" do
       
     end
     
-    it "guest vote for topic and comment", :js => true do
+    it "guest vote for topic and comment", :js => true, :focus => true do
       create_new_topic
       topic = Topic.last
       show_topic(topic.site.key, topic.key, :guest_view => "1")
@@ -235,6 +235,15 @@ describe "Javascript API", "error handling" do
       page.should have_css('#liked_pages',:visible => true, :text => 'One guest liked this.')
       show_topic(topic.site.key, topic.key, :guest_view => "1")
       find("#vote_for_like").click
+      page.should have_css('#liked_pages',:visible => true, :text => '2 guests liked this.')
+      find("#vote_for_like").click
+      page.should have_css('#liked_pages',:visible => true, :text => 'One guest liked this.')
+      find("#vote_for_like").click
+      page.should have_css('#liked_pages',:visible => true, :text => '2 guests liked this.')
+      show_topic(topic.site.key, topic.key, :guest_view => "1")
+      find("#vote_for_unlike").click
+      page.should have_css('#liked_pages',:visible => true, :text => 'One guest liked this.')
+      find("#vote_for_unlike").click
       page.should have_css('#liked_pages',:visible => true, :text => '2 guests liked this.')
       
       within("#juvia-comments-box") do
@@ -256,6 +265,74 @@ describe "Javascript API", "error handling" do
           like_link.click()
           comment_id = like_link["data-comment-id"]
           page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"One guest liked this.")
+        end
+      end
+      
+      show_topic(topic.site.key, topic.key, :guest_view => "1")
+      
+      within("#juvia-comments-box") do
+        comment_order = all('.juvia-comment')
+        within("#" + comment_order[0]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
+        end
+        within("#" + comment_order[1]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
+        end
+        within("#" + comment_order[2]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
+        end
+      end
+      
+      within("#juvia-comments-box") do
+        comment_order = all('.juvia-comment')
+        within("#" + comment_order[0]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"One guest liked this.")
+        end
+        within("#" + comment_order[1]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"One guest liked this.")
+        end
+        within("#" + comment_order[2]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"One guest liked this.")
+        end
+      end
+      
+      within("#juvia-comments-box") do
+        comment_order = all('.juvia-comment')
+        within("#" + comment_order[0]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
+        end
+        within("#" + comment_order[1]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
+        end
+        within("#" + comment_order[2]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          like_link.click()
+          comment_id = like_link["data-comment-id"]
+          page.should have_css("#comment-vote-#{comment_id}",:visible => true, :text=>"2 guests liked this.")
         end
       end
       
