@@ -5,8 +5,8 @@ module Like
     return_str1 << "#{user_likes.to_s} users " if user_likes > 1
     return_str1 << "One user " if user_likes == 1
     return_str2 = ""
-    return_str2 << "#{guest_likes.to_s} guests " if guest_likes > 1
-    return_str2 << "One guest " if guest_likes == 1
+    return_str2 << "#{guest_like_unlike.to_s} guests " if guest_like_unlike > 1
+    return_str2 << "One guest " if guest_like_unlike == 1
     return_str = ""
     return_str << return_str1
     return_str << "and " if !return_str.blank? and !return_str2.blank?
@@ -29,6 +29,15 @@ module Like
 
   def guest_likes
     (guest_votes.blank?) ? 0 : guest_votes.first.like.to_i
+  end
+
+  def guest_unlikes
+    (guest_votes.blank?) ? 0 : guest_votes.first.unlike.to_i
+  end
+
+  def guest_like_unlike
+    return 0 if (guest_likes - guest_unlikes) < 0
+    guest_likes - guest_unlikes
   end
 
   def liked?(username, user_email)
