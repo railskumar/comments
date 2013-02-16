@@ -9,4 +9,9 @@ class TestController < ApplicationController
     sign_in(User.find(params[:user_id]))
     render :text => 'ok'
   end
+  
+  def js_api
+    render layout: false
+  end
+  
 end if Rails.env.test?

@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
+$commentor_remote_ip = 1
+
 describe "Javascript API", "error handling" do
   describe "topics_vote" do
 
@@ -11,15 +13,24 @@ describe "Javascript API", "error handling" do
     end
     
     
-    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment)
+    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment, options = {})
       post_comment_hash=Hash.new
       post_comment_hash.merge!(:site_key => site.key)
       post_comment_hash.merge!(:topic_key => topic.key)
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment.id)
       post_comment_hash.merge!(:vote => vote)
-      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
-      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
+      if author_email.blank?
+        $commentor_remote_ip = $commentor_remote_ip + 1
+        if(options[:author_ip].blank?)
+          post_comment_hash.merge!(:author_ip => "127.0.0.#{$commentor_remote_ip}")
+        else
+          post_comment_hash.merge!(:author_ip => options[:author_ip])
+        end
+      else
+        post_comment_hash.merge!(:author_name => author_name)
+        post_comment_hash.merge!(:author_email => author_email)
+      end
       post path,post_comment_hash
     end
     
@@ -35,9 +46,6 @@ describe "Javascript API", "error handling" do
       post path,post_comment_hash
     end
 
-    describe "json format" do
-    end
- 
     describe "js format" do
       describe "guest like" do
         it "first time like" do
@@ -50,6 +58,7 @@ describe "Javascript API", "error handling" do
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          response.body.should include("One guest liked this")
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           response.body.should include("2 guests liked this")
         end
@@ -64,45 +73,36 @@ describe "Javascript API", "error handling" do
       end
       describe "guest unlike" do
         it "first time unlike" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.25")
           
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.25")
           response.body.should include("2 guests liked this")
         end
         it "second time unlike" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.26")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.27")
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.26")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.27")
           response.body.should include("One guest liked this")
         end
         it "third time unlike" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.125")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.126")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.127")
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.125")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.126")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.127")
           response.body.should_not include("liked this")
         end
       end
@@ -129,15 +129,11 @@ describe "Javascript API", "error handling" do
           response.body.should include("3 users liked this")
         end
         it "same user like mutipal times" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
           2.times do |n|
             post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           end
-          response.body.should include("One user liked this")
           5.times do |n|
             post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           end
@@ -181,10 +177,7 @@ describe "Javascript API", "error handling" do
 
           response.body.should_not include("liked this")
         end
-        it "same user unlike mutipal times" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
+        it "same user unlike mutipal times", :focus => true do
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
@@ -267,54 +260,45 @@ describe "Javascript API", "error handling" do
         end
         
         it "After 3 users and 3 guests liked, first time unlike guest" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.225")
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.225")
           response.body.should include("3 users and 2 guests liked this.")
         end
         it "After 3 users and 3 guests liked, second time unlike guest" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.325")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.326")
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.325")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.326")
           response.body.should include("3 users and One guest liked this.")
         end
         it "After 3 users and 3 guests liked, third time unlike guest" do
-          pending("Need to fix this")
-          this_should_not_get_executed
-
           create_new_comment
           comment=Comment.last
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.425")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.426")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.427")
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.425")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.426")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.427")
           response.body.should include("3 users liked this.")
         end
         it "After 3 users and 3 guests liked, first time unlike user" do
@@ -402,10 +386,8 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
             post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
             post_comment_vote_with_missing_arg('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment,:site_key)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
           end
           it "if topic_key is missing then vote not created" do
             create_new_comment
@@ -413,10 +395,8 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
             post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
             post_comment_vote_with_missing_arg('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment,:topic_key)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
           end
           it "if topic_url is missing then vote not created" do
             create_new_comment
@@ -424,10 +404,8 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
             post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
             post_comment_vote_with_missing_arg('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment,:topic_url)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
           end
           it "if vote is missing then vote not created" do
             create_new_comment
@@ -435,10 +413,8 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
             post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
             post_comment_vote_with_missing_arg('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment,:vote)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
           end
           it "if comment_key is missing then vote not created" do
             create_new_comment
@@ -446,10 +422,8 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
             post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
             post_comment_vote_with_missing_arg('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment,:comment_key)
             comment.votes.sum(:like).should eq(1)
-            comment.votes.sum(:unlike).should eq(1)
           end
         end
 
@@ -532,8 +506,5 @@ describe "Javascript API", "error handling" do
       end  
     end
    
-    describe "other format" do
-    end
-
   end  
 end
