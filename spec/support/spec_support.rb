@@ -23,7 +23,11 @@ module SpecSupport
   end
   
   def show_topic(site_key, topic_key, options = {})
-    visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}")
+    if options[:guest_view].blank?
+      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}")
+    else
+      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&guest_view=#{options[:guest_view]}")
+    end
   end
 
   def eventually(max_wait = 5, sleep_time = 0.01)

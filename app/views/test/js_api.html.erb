@@ -17,10 +17,17 @@
     var topic_url   = "location.href";
     var topic_title = document.title || topic_url;
     var use_my_user = 'true';
-    var user_logged_in = 'true' ;
-    var logged_in_message = '';
-    var username = 'test';
-    var user_email = 'user@mail.com';
+    var logged_in_message = 'please logged in to make comment';
+    <% if params[:guest_view] == "1" %>
+      var username = '';
+      var user_email = '';
+      
+      var user_logged_in = 'false' ;
+    <% else %>
+      var username = 'test';
+      var user_email = 'user@mail.com';
+      var user_logged_in = 'true' ;
+    <% end %>
     var user_image = '#';
     
     var s       = document.createElement('script');
