@@ -28,7 +28,7 @@ module Like
   end
 
   def guest_likes
-    guest_votes.first.like unless guest_votes.blank?
+    (guest_votes.blank?) ? 0 : guest_votes.first.like.to_i
   end
 
   def liked?(username, user_email)
