@@ -13,24 +13,15 @@ describe "Javascript API", "error handling" do
     end
     
     
-    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment, options = {})
+    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment)
       post_comment_hash=Hash.new
       post_comment_hash.merge!(:site_key => site.key)
       post_comment_hash.merge!(:topic_key => topic.key)
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment.id)
       post_comment_hash.merge!(:vote => vote)
-      if author_email.blank?
-        $commentor_remote_ip = $commentor_remote_ip + 1
-        if(options[:author_ip].blank?)
-          post_comment_hash.merge!(:author_ip => "127.0.0.#{$commentor_remote_ip}")
-        else
-          post_comment_hash.merge!(:author_ip => options[:author_ip])
-        end
-      else
-        post_comment_hash.merge!(:author_name => author_name)
-        post_comment_hash.merge!(:author_email => author_email)
-      end
+      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
+      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
       post path,post_comment_hash
     end
     
@@ -77,32 +68,32 @@ describe "Javascript API", "error handling" do
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.25")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.25")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should include("2 guests liked this")
         end
         it "second time unlike" do
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.26")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.27")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.26")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.27")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should include("One guest liked this")
         end
         it "third time unlike" do
           create_new_comment
           comment=Comment.last
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.125")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.126")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.127")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.125")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.126")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.127")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should_not include("liked this")
         end
       end
@@ -186,11 +177,11 @@ describe "Javascript API", "error handling" do
           2.times do |n|
             post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',0,comment.topic.site,comment.topic,comment)
           end
-          response.body.should include("2 users liked this")
+          response.body.should include("3 users liked this")
           5.times do |n|
             post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',0,comment.topic.site,comment.topic,comment)
           end
-          response.body.should include("One user liked this")
+          response.body.should include("2 users liked this")
         end
       end
       describe "both guest and user like" do
@@ -264,41 +255,41 @@ describe "Javascript API", "error handling" do
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.225")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.225")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should include("3 users and 2 guests liked this.")
         end
         it "After 3 users and 3 guests liked, second time unlike guest" do
           create_new_comment
           comment=Comment.last
           post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.325")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.326")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.325")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.326")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should include("3 users and One guest liked this.")
         end
         it "After 3 users and 3 guests liked, third time unlike guest" do
           create_new_comment
           comment=Comment.last
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.425")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.426")
-          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.427")
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
           post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,comment.topic.site,comment.topic,comment)
 
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.425")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.426")
-          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment, :author_ip => "123.123.25.427")
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
+          post_comment_vote('/api/post/vote.js',nil,nil,0,comment.topic.site,comment.topic,comment)
           response.body.should include("3 users liked this.")
         end
         it "After 3 users and 3 guests liked, first time unlike user" do

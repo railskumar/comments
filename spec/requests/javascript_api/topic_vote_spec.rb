@@ -65,9 +65,9 @@ describe "Javascript API", "error handling" do
           response.body.should include("One guest liked this")
           post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
           response.body.should include("2 guests liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.12")
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
           response.body.should include("3 guests liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.12")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           response.body.should include("2 guests liked this")
         end
         it "second time unlike" do
@@ -75,24 +75,24 @@ describe "Javascript API", "error handling" do
           topic=Topic.last
           post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
           response.body.should include("One guest liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.13")
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
           response.body.should include("2 guests liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.14")
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
           response.body.should include("3 guests liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.13")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           response.body.should include("2 guests liked this")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.14")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           response.body.should include("One guest liked this")
         end
         it "third time unlike" do
           create_new_topics
           topic=Topic.last
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.15")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.16")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.123.12.17")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.15")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.16")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.123.12.17")
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           response.body.should_not include("liked this")
         end
       end
@@ -242,29 +242,29 @@ describe "Javascript API", "error handling" do
           post_topics_vote('/api/topic/vote.js','author_name1','author_name1@email.com',1,topic.site,topic)
           post_topics_vote('/api/topic/vote.js','author_name2','author_name2@email.com',1,topic.site,topic)
           post_topics_vote('/api/topic/vote.js','author_name3','author_name3@email.com',1,topic.site,topic)
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.36.25.25")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.36.25.26")
-          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic, :author_ip => "127.36.25.27")
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,1,topic.site,topic)
         end
         
         it "After 3 users and 3 guests liked, first time unlike guest" do
           topic=Topic.last
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.25")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           
           response.body.should include("3 users and 2 guests liked this.")
         end
         it "After 3 users and 3 guests liked, second time unlike guest" do
           topic=Topic.last
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.25")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.26")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
           
           response.body.should include("3 users and One guest liked this.")
         end
         it "After 3 users and 3 guests liked, third time unlike guest" do
           topic=Topic.last
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.25")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.26")
-          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic, :author_ip => "127.36.25.27")
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
+          post_topics_vote('/api/topic/vote.js',nil,nil,0,topic.site,topic)
 
           response.body.should include("3 users liked this.")
         end
