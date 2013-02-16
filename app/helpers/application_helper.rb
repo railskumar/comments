@@ -29,7 +29,7 @@ module ApplicationHelper
     end
   end
 
-  def comment_hash(comment, username, user_email,request_ip)
+  def comment_hash(comment, username, user_email)
     return {:comment_counter => 1,
 	  :comment_id => comment.id,
 	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
@@ -37,7 +37,7 @@ module ApplicationHelper
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => comment.vote_counts,
-	  :liked => (user_liked?(username, user_email,request_ip, comment) ? "liked" : "unliked"),
+	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "unliked"),
 	  :flagged => (comment.flag_status),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
@@ -45,14 +45,11 @@ module ApplicationHelper
     }
   end
   
-  def user_liked?(username, user_email,request_ip, comment)
+  def user_liked?(username, user_email, comment)
+    return false if user_email.blank?
     votes = comment.votes
     votes.each do |vote|
-      if user_email.blank?
-        return true if ((vote.author_email == nil) and (vote.author_ip == request_ip))
-      else 
-        return true if ((vote.author_name == username) and (vote.author_email == user_email))
-      end
+      return true if (vote.author_name == username) and (vote.author_email == user_email)
     end
     return false
   end

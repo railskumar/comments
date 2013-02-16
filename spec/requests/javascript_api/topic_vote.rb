@@ -11,23 +11,14 @@ describe "Javascript API", "error handling" do
       topic = FactoryGirl.create(:topic,:site_id => site.id)
     end
     
-    def post_topics_vote(path,author_name,author_email,vote,site,topic, options = {})
+    def post_topics_vote(path,author_name,author_email,vote,site,topic)
       post_vote_hash=Hash.new
       post_vote_hash.merge!(:site_key => site.key)
       post_vote_hash.merge!(:topic_key => topic.key)
       post_vote_hash.merge!(:topic_url => topic.url)
       post_vote_hash.merge!(:vote => vote)
-      if author_email.blank?
-        $remote_ip = $remote_ip + 1
-        if(options[:author_ip].blank?)
-          post_vote_hash.merge!(:author_ip => "127.0.0.#{$remote_ip}")
-        else
-          post_vote_hash.merge!(:author_ip => options[:author_ip])
-        end
-      else
-        post_vote_hash.merge!(:author_name => author_name)
-        post_vote_hash.merge!(:author_email => author_email)
-      end
+      post_vote_hash.merge!(:author_name => author_name) unless author_name.blank?
+      post_vote_hash.merge!(:author_email => author_email) unless author_email.blank?
       post path,post_vote_hash
     end
     

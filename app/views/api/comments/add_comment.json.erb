@@ -1,6 +1,6 @@
 <% comment = @comment%>
 <% 
-  option = comment_hash(comment, comment.author_name, comment.author_email,request.remote_ip)
+  option = comment_hash(comment, comment.author_name, comment.author_email)
 %>
 <%= {
   :status    => 'ok',

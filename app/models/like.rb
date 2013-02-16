@@ -28,7 +28,7 @@ module Like
   end
 
   def guest_likes
-    guest_votes.select{|vote| vote.like == 1}.size
+    guest_votes.first.like unless guest_votes.blank?
   end
 
   def liked?(username, user_email)
@@ -49,12 +49,6 @@ module Like
     return nil if user_email.blank?
     u_votes = votes.where(author_name:username).where(author_email:user_email)
     return u_votes.first if u_votes.present?
-    return nil
-  end
-  
-  def guest_vote(author_ip)
-    g_votes = guest_votes.where(author_ip:author_ip)
-    return g_votes.first if g_votes.present?
     return nil
   end
 
