@@ -102,14 +102,16 @@ Juvia.reinstallBehavior = ->
   $("flagcomment:not(.juvia-installed-behavior)").each ->
     $this = $(this)
     unless $this.hasClass("flagged")
-      $this.addClass "juvia-installed-behavior"
-      $this.bind "click", (event) ->
-        if confirm("Are you sure you wish to flag this comment?")
-          $(this).removeClass "juvia-installed-behavior"
-          $this.unbind "click"
-          self.reportComment event, this
-        else
-          false
+      $flag_span = $($this.find("span"))
+      unless $flag_span.html() == " Flagged"
+        $this.addClass "juvia-installed-behavior"
+        $this.bind "click", (event) ->
+          if confirm("Are you sure you wish to flag this comment?")
+            $(this).removeClass "juvia-installed-behavior"
+            $this.unbind "click"
+            self.reportComment event, this
+          else
+            false
 
 
   $(".juvia-comment-function").each ->
