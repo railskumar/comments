@@ -197,3 +197,15 @@ Juvia.showCommentLikeUsers = (event, this_obj) ->
   opt2 = {}
   
   @loadScript "/api/comments/show_like_users", $.extend(opt1, opt2)
+
+Juvia.showTopicLikeUsers = (event) ->
+  $ = @$
+  form = event.target
+  $container = $(form).closest(".juvia-container")
+
+  opt1 =
+    site_key: $container.data("site-key")
+    topic_key: $container.data("topic-key")
+  opt2 = {}
+
+  @loadScript "/api/comments/show_topic_like_users", $.extend(opt1, opt2)

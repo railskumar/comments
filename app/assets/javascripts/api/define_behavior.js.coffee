@@ -99,6 +99,15 @@ Juvia.reinstallBehavior = ->
         $this.bind "click", (event) ->
           self.showCommentLikeUsers event, this
 
+  $("#liked_pages").each ->
+    $this = $(this)
+    unless $this.hasClass("juvia-installed-behavior")
+      $this.addClass "juvia-installed-behavior"
+      if $this.text().indexOf("user") > -1
+        $this.css({'cursor':'pointer'})
+        $this.bind "click", (event) ->
+          self.showTopicLikeUsers event, this
+
   $(".juvia-vote-to-topic").each ->
     $this = $(this)
     unless $this.hasClass("juvia-installed-behavior")
