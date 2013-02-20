@@ -11,6 +11,13 @@ describe "Javascript API", "error handling" do
       topic = FactoryGirl.create(:topic,:site_id => site.id)
     end
     
+    def get_topic_liked_users(path,site,topic)
+      topic_user_hash=Hash.new
+      topic_user_hash.merge!(:site_key => site.key)
+      topic_user_hash.merge!(:topic_key => topic.key)
+      post path,topic_user_hash
+    end
+
     def post_topics_vote(path,author_name,author_email,vote,site,topic)
       post_vote_hash=Hash.new
       post_vote_hash.merge!(:site_key => site.key)
@@ -429,6 +436,21 @@ describe "Javascript API", "error handling" do
         end
 
       end  
+    end
+    describe "js format" do
+      describe "user like" do
+        it "should display users who liked topic" do
+          create_new_topics
+          topic=Topic.last
+          post_topics_vote('/api/topic/vote.js','author_name1','author_name1@email.com',1,topic.site,topic)
+          response.body.should include("One user liked this")
+          post_topics_vote('/api/topic/vote.js','author_name2','author_name2@email.com',1,topic.site,topic)
+          response.body.should include("2 users liked this")
+          get_topic_liked_users('/api/comments/show_topic_like_users.js',topic.site,topic)
+          response.body.should include("author_name1")
+          response.body.should include("author_name2")
+        end
+      end
     end
   end
 end

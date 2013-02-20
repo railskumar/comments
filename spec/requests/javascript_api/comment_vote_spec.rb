@@ -12,7 +12,14 @@ describe "Javascript API", "error handling" do
       comment = FactoryGirl.create(:comment,:topic_id => topic.id)
     end
     
-    
+    def get_comment_liked_users(path,comment,site,topic)
+      comment_user_hash=Hash.new
+      comment_user_hash.merge!(:comment_key => comment.id)
+      comment_user_hash.merge!(:site_key => site.key)
+      comment_user_hash.merge!(:topic_key => topic.key)      
+      post path,comment_user_hash
+    end    
+
     def post_comment_vote(path,author_name,author_email,vote,site,topic,comment)
       post_comment_hash=Hash.new
       post_comment_hash.merge!(:site_key => site.key)
@@ -495,7 +502,20 @@ describe "Javascript API", "error handling" do
         end
 
       end  
+      describe "user like to topic comments" do
+        it "should display users who liked topic\'s each comment" do
+          create_new_comment
+          comment=Comment.last
+          post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,comment.topic.site,comment.topic,comment)
+          response.body.should include("One user liked this")
+          post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,comment.topic.site,comment.topic,comment)
+          response.body.should include("2 users liked this")
+          
+          get_comment_liked_users('/api/comments/show_like_users.js',comment,comment.topic.site,comment.topic)
+          response.body.should include("author_name1")
+          response.body.should include("author_name2")
+        end
+      end
     end
-   
   end  
 end

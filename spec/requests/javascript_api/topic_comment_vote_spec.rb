@@ -24,7 +24,7 @@ describe "Javascript API", "error handling" do
       )
     end
     
-    it "Guest and User liked this" do
+    it "Guest and User liked this", :js => true do
       Topic.delete_all
       admin = FactoryGirl.create(:admin)
       FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
@@ -76,6 +76,15 @@ describe "Javascript API", "error handling" do
         :author_email => "author_name3@email.com",
         :topic_title => 'my topic', :vote => 1
       response.body.should include("3 users and 2 guests liked this.")
+      topic = Topic.last
+      show_topic(topic.site.key, topic.key)
+      find("#liked_pages").click
+      within("#users_liker") do
+        page.should have_css('#users_like_header', :text => 'People who liked this')
+        find(".modal-body").text.should include("author_name1")
+        find(".modal-body").text.should include("author_name2")
+        find(".modal-body").text.should include("author_name3")
+     end
     end
     
     it "user vote for topic", :js => true do
@@ -185,6 +194,21 @@ describe "Javascript API", "error handling" do
         end
       end
       
+      show_topic(topic.site.key, topic.key)
+      
+      within("#juvia-comments-box") do
+        comment_order = all('.juvia-comment')
+        within("#" + comment_order[0]['id']) do
+          like_link = find(".juvia-vote-to-comment")
+          comment_id = like_link["data-comment-id"]
+          find("#comment-vote-#{comment_id}").click
+        end
+      end
+      
+      within("#users_liker") do
+        page.should have_css('#users_like_header', :text => 'People who liked this')
+        find(".modal-body").text.should include("test")
+     end
       # Need to pass below specs
       #find("#vote_for_unlike").click
       #page.should have_css('#liked_pages',:visible => true, :text => 'One user and 2 guests liked this.')

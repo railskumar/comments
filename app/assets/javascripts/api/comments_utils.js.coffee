@@ -278,7 +278,7 @@ Juvia.showUsers = (users, status) ->
     users_liked_dom = $(".modal-body")
     users_liked_dom.html " "
     if !$.isEmptyObject(users)
-      $("#myModal").modal "show"
+      $("#users_liker").modal "show"
       $.each users, (key, value) ->
         users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a href='/users?juvia=true&email="+value.comment_user_email+"'><img width='64' height='38' src='" + value.comment_user_image + "' data-user-email='" + value.comment_user_email + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_user_name + "</div></div><div style='margin-bottom:10px;'></div>"
         users_liked_dom.html " " + users_liked_str
