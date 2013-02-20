@@ -61,6 +61,7 @@ namespace :update_vote_counts do
 
   task :comment_vote_update => :environment do
     Vote.skip_callback(:save, :after, :update_vote_counts)
+    Vote.skip_callback(:destroy, :after, :update_vote_counts)
     Comment.scoped.each do |comment|
       votes = comment.guest_votes
       if votes.size > 1
@@ -76,6 +77,7 @@ namespace :update_vote_counts do
       end
     end
     Vote.set_callback(:save, :after, :update_vote_counts)
+    Vote.set_callback(:destroy, :after, :update_vote_counts)
   end
 
   task :topic_vote_update => :environment do
