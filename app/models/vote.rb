@@ -39,7 +39,8 @@ class Vote < ActiveRecord::Base
   
   def update_vote_counts
     vote_type = self.votable
-    vote_type.vote_counts = vote_type.total_like
+    vote_type.vote_counts = vote_type.users_and_guests_likes_string
+    vote_type.votes_value = vote_type.total_likes_value
     vote_type.save
   end
   

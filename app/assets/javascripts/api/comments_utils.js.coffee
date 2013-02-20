@@ -368,8 +368,6 @@ Juvia.handleReportComment = (options) ->
     tempFlagsElement = $("#flag-" + options.comment_id)
     tempFlagsElement.html " " + options.flagged
     flag_comment = tempFlagsElement.parent()
-    flag_comment.removeClass "blink_text"
-    flag_comment.css "visibility", "visible"
   else
     alert "Something went wrong!"
 

@@ -62,7 +62,7 @@ module ApplicationHelper
   end
   
   def sorting_options
-    {:popular => "hot_visible",
+    {:popular => "most_popular",
      :newest  => "newest",
      :oldest  => "oldest"}
   end

@@ -163,12 +163,10 @@ Juvia.rdf_comment_box = (option) ->
   flag_span.id = "flag-" + comment_id
   if flagged is "Flagged"
     flag_span.appendChild document.createTextNode(" Flagged")
-    ababb_flag_p.className = "icon-flag"
+    flag_comment_tag.className = "flagged"
   else
     flag_span.appendChild document.createTextNode(" Flag")
-    $(flag_comment_tag).css "visibility", "hidden"
-    ababb_flag_p.className = "icon-flag"
-    flag_comment_tag.className = "blink_text"
+  ababb_flag_p.className = "icon-flag"
   flag_comment_tag.appendChild ababb_flag_p
   flag_comment_tag.appendChild flag_span
   ababb_flag.appendChild flag_comment_tag

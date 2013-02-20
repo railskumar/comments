@@ -9,7 +9,7 @@ class Api::VotesController < ApplicationController
     prepare!([:site_key, :topic_key, :comment_key, :topic_url, :vote], [:html, :js, :json])
     @comment = Topic.lookup(@site_key, @topic_key).comments.find(params[:comment_key])
     if params[:author_name].blank? or params[:author_email].blank?
-      votes = @comment.votes.where(author_email:nil).where(author_name:nil)
+      votes = @comment.guest_votes
       if votes.present?
         votes.first.add_like_unlike_vote(params[:vote])
       else
@@ -39,10 +39,10 @@ class Api::VotesController < ApplicationController
     prepare!([:site_key, :topic_key, :topic_url, :vote], [:html, :js, :json])
     @topic = Topic.lookup_or_create(@site_key, @topic_key,params[:topic_title],params[:topic_url])
     if params[:author_name].blank? or params[:author_email].blank?
-      votes = @topic.votes.where(author_email:nil).where(author_name:nil)
+      votes = @topic.guest_votes
       if votes.present?
         votes.first.add_like_unlike_vote(params[:vote])
-      else
+      else  
         vote = @topic.votes.build(:author_ip => request.env['REMOTE_ADDR'],
              :author_user_agent => request.env['HTTP_USER_AGENT'],
              :referer => request.env['HTTP_REFERER'])

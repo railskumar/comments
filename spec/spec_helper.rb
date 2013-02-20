@@ -18,7 +18,8 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-  Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :selenium
+  Capybara.server_port = 8956
   DatabaseCleaner.logger = Rails.logger
   DatabaseCleaner.strategy = :truncation
 

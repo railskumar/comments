@@ -30,7 +30,7 @@ describe "Topic" do
   end
 
   it 'get popular comments' do
-    @topic.topic_comments.hot_visible.to_a.to_a[0].should eql(@comment4)
+    @topic.topic_comments.most_popular.to_a.to_a[0].should eql(@comment4)
   end
 
   it 'should find the right topic' do

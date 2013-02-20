@@ -11,21 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130131120908) do
+ActiveRecord::Schema.define(:version => 20130211051218) do
 
   create_table "comments", :force => true do |t|
-    t.integer  "topic_id",                         :null => false
-    t.integer  "moderation_status", :default => 0, :null => false
+    t.integer  "topic_id",                          :null => false
+    t.integer  "moderation_status", :default => 0,  :null => false
     t.string   "author_name"
     t.string   "author_email"
-    t.string   "author_ip",                        :null => false
+    t.string   "author_ip",                         :null => false
     t.string   "author_user_agent"
     t.text     "referer"
-    t.text     "content",                          :null => false
-    t.datetime "created_at",                       :null => false
+    t.text     "content",                           :null => false
+    t.datetime "created_at",                        :null => false
     t.integer  "comment_number"
-    t.string   "vote_counts"
+    t.string   "vote_counts",       :default => "", :null => false
     t.string   "flag_status"
+    t.integer  "votes_value"
     t.index ["topic_id"], :name => "index_comments_on_topic_id"
   end
 
@@ -55,13 +56,14 @@ ActiveRecord::Schema.define(:version => 20130131120908) do
   end
 
   create_table "topics", :force => true do |t|
-    t.integer  "site_id",        :null => false
-    t.string   "key",            :null => false
-    t.text     "title",          :null => false
-    t.text     "url",            :null => false
-    t.datetime "created_at",     :null => false
+    t.integer  "site_id",                        :null => false
+    t.string   "key",                            :null => false
+    t.text     "title",                          :null => false
+    t.text     "url",                            :null => false
+    t.datetime "created_at",                     :null => false
     t.datetime "last_posted_at"
-    t.string   "vote_counts"
+    t.string   "vote_counts",    :default => "", :null => false
+    t.integer  "votes_value"
     t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true
     t.index ["site_id"], :name => "index_topics_on_site_id"
   end
