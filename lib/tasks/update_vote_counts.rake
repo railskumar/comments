@@ -60,13 +60,14 @@ namespace :update_vote_counts do
   end
 
   task :comment_vote_update => :environment do
+    Vote.skip_callback(:save, :after, :update_vote_counts)
     Comment.scoped.each do |comment|
       votes = comment.guest_votes
-      if votes.count > 1
+      if votes.size > 1
         puts "deleting vote for comment id: #{comment.id}"
         votes.each_with_index do |vote,index|
           if index == 0
-            vote.update_attribute(:like,votes.count)
+            vote.update_attribute(:like,votes.size)
             puts "updated vote's like: #{vote.like}"
           else
             vote.destroy
@@ -74,6 +75,7 @@ namespace :update_vote_counts do
         end
       end
     end
+    Vote.set_callback(:save, :after, :update_vote_counts)
   end
 
   task :topic_vote_update => :environment do
