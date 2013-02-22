@@ -53,7 +53,8 @@ class Api::CommentsController < ApplicationController
           :author_ip => request.env['REMOTE_ADDR'],
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
-          :content => @content)
+          :content => @content,
+          :comment_id => params[:comment_id])
         render
       else
         render :partial => 'api/site_not_found'

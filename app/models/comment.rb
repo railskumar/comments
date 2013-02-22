@@ -8,6 +8,9 @@ class Comment < ActiveRecord::Base
 
   COMMENT_EDIT_DURATION = 1.hour
   
+  belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'comment_id'
+  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'comment_id'
+  
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable
   has_many :flags, :dependent => :destroy
@@ -183,7 +186,7 @@ private
   end
 
   def notify_moderators
-    #Mailer.comment_posted(self).deliver
+    Mailer.comment_posted(self.parent_comment).deliver
   end
   
   def self.last_comment_number(total_comments)

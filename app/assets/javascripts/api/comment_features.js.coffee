@@ -35,6 +35,7 @@ Juvia.showMoreUserComments = (this_obj) ->
 
 Juvia.replyToComment = ($comment) ->
   $ = @$
+  comment_id = $comment.find("flagcomment")[0].dataset.commentId;
   $container = $comment.closest(".juvia-container")
   text = $(".juvia-comment-pure-content", $comment).text()
   lines = text.split("\n")
@@ -44,7 +45,7 @@ Juvia.replyToComment = ($comment) ->
     lines[i] = "> " + lines[i]
     i++
   $textarea = $("textarea", $container)
-  
+  $('input[name="comment_id"]').val(comment_id);
   #var authorName = $('input[name="author_name"]', $container).val(); 
   authorName = $.trim($(".juvia-author-name", $comment).text())
   newContent = "*In reply to [#" + $comment.data("comment-number") + "](#" + $comment.attr("id") + "') by " + authorName + ":*\n" + lines.join("\n")
