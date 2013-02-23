@@ -19,6 +19,6 @@ production:
   email_method: smtp
 
 staging:
-  base_url: http://rdfnet-staging.herokuapp.com
+  base_url: http://rdfnet-comments-staging.herokuapp.com
   from: niels@richarddawkins.net
   email_method: smtp
