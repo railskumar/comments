@@ -123,8 +123,8 @@ Juvia.rdf_comment_box = (option) ->
   abab.className = "row-fluid juvia-comment-function"
   aba.appendChild abab
   ababa = document.createElement("div")
-  if @user_logged_in
-    ababa.className = "span7"
+  if @user_logged_in and editable() or @user_logged_in
+    ababa.className = "span8"
   else
     ababa.className = "span9"
   abab.appendChild ababa
@@ -142,8 +142,8 @@ Juvia.rdf_comment_box = (option) ->
   ababaa_p.appendChild ababaab_span
   
   bottom_second_colm = document.createElement("div")
-  if @user_logged_in
-    bottom_second_colm.className = "span5"
+  if @user_logged_in and editable() or @user_logged_in
+    bottom_second_colm.className = "span4"
   else
     bottom_second_colm.className = "span3"
   abab.appendChild bottom_second_colm
@@ -152,8 +152,12 @@ Juvia.rdf_comment_box = (option) ->
   $(function_links).css "text-align", "right"
   bottom_second_colm.appendChild function_links
   ababb_flag = document.createElement("div")
-  if editable()
+  if editable() and @user_logged_in
     ababb_flag.className = "span4"
+  else if @user_logged_in and @user_email != comment_user_email
+    ababb_flag.className = "span4"
+  else if @user_logged_in
+    ababb_flag.className = "span6"
   else
     ababb_flag.className = "span6"
   flag_comment_tag = document.createElement("flagcomment")
@@ -173,11 +177,11 @@ Juvia.rdf_comment_box = (option) ->
   function_links.appendChild ababb_flag
   ababb = document.createElement("div")
   if @user_logged_in
-    ababb.className = "span3"
+    ababb.className = "span4"
   else
     ababb.className = "span6"
-  function_links.appendChild ababb
-  unless @user_email is comment_user_email
+  unless @user_email is comment_user_email    
+    function_links.appendChild ababb  
     vote_comment_tag = document.createElement("votecomment")
     vote_comment_tag.className = "juvia-vote-to-comment"
     vote_comment_tag.id = "comment-vote-icon-" + comment_id
@@ -195,7 +199,14 @@ Juvia.rdf_comment_box = (option) ->
     ababb.appendChild vote_comment_tag
   if @user_logged_in and not @restrict_comment_length
     ababc = document.createElement("div")
-    ababc.className = "span3"
+    if editable() and @user_logged_in
+      ababc.className = "span4"
+    else if @user_logged_in and @user_email != comment_user_email
+      ababc.className = "span4"
+    else if @user_logged_in
+      ababc.className = "span6"
+    else
+      ababc.className = "span6"
     function_links.appendChild ababc
     ababca = document.createElement("span")
     ababca.className = "rdf-reply-to-comment"
@@ -203,7 +214,7 @@ Juvia.rdf_comment_box = (option) ->
     ababca.appendChild document.createTextNode("Reply")
   if editable()
     edit_comment_dom = document.createElement("div")
-    edit_comment_dom.className = "span2"
+    edit_comment_dom.className = "span4"
     function_links.appendChild edit_comment_dom
     edit_comment_dom_p = document.createElement("p")
     edit_comment_dom_p.className = "juvia-edit-to-comment"
