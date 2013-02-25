@@ -135,7 +135,7 @@ Juvia.previewComment = (formElement) ->
   @saveCommentBox $container
   input_value = $("textarea[name=\"content\"]", $container).val()
   if input_value is ""
-    $('input[name="comment_id"]').val("");
+    $('input[name="parent_id"]').val("");
   input_value = input_value.substring(0, 140)  if @restrict_comment_length and input_value.length > 140
   html_output = markdown.toHTML(input_value)
   preview = $(".juvia-preview", $container)
@@ -388,7 +388,7 @@ Juvia.submitComment = (event) ->
     restrict_comment_length: @restrict_comment_length
     author_name: $("input[name=\"author_name\"]", form).val()
     author_email: $("input[name=\"author_email\"]", form).val()
-    comment_id: $("input[name=\"comment_id\"]", form).val()
+    parent_id: $("input[name=\"parent_id\"]", form).val()
     content: @compress($("textarea[name=\"content\"]", form).val())
 
 

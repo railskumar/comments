@@ -35,7 +35,7 @@ Juvia.showMoreUserComments = (this_obj) ->
 
 Juvia.replyToComment = ($comment) ->
   $ = @$
-  comment_id = $comment.find("flagcomment")[0].dataset.commentId;
+  parent_id = $comment.find("flagcomment")[0].dataset.commentId;
   $container = $comment.closest(".juvia-container")
   text = $(".juvia-comment-pure-content", $comment).text()
   lines = text.split("\n")
@@ -45,7 +45,7 @@ Juvia.replyToComment = ($comment) ->
     lines[i] = "> " + lines[i]
     i++
   $textarea = $("textarea", $container)
-  $('input[name="comment_id"]').val(comment_id);
+  $('input[name="parent_id"]').val(parent_id);
   #var authorName = $('input[name="author_name"]', $container).val(); 
   authorName = $.trim($(".juvia-author-name", $comment).text())
   newContent = "*In reply to [#" + $comment.data("comment-number") + "](#" + $comment.attr("id") + "') by " + authorName + ":*\n" + lines.join("\n")
@@ -210,3 +210,21 @@ Juvia.showTopicLikeUsers = (event) ->
   opt2 = {}
 
   @loadScript "/api/comments/show_topic_like_users", $.extend(opt1, opt2)
+
+Juvia.authorSetting = (event) ->
+  $ = @$
+  form = event.target
+  $container = $(form).closest(".juvia-container")
+  a_email = $("input[name=\"author_email\"]", $container).val()
+  
+  if $("#juvia-author-setting").hasClass("turn_on")
+    a_notification_setting = 1
+  else
+    a_notification_setting = 0
+  opt1 =
+    author_email: a_email
+    notify_me: a_notification_setting
+  
+  opt2 = {}
+  
+  @loadJsScript "/api/authors/update_author", $.extend(opt1, opt2)

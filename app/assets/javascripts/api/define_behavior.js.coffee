@@ -1,10 +1,19 @@
 Juvia.reinstallBehavior = ->
   self = this
   $ = @$
+  $('input[name="parent_id"]').val("");
+  $('.dropdown-toggle').dropdown();
   unless $(document.body).hasClass("juvia-installed-behavior")
     $(document.body).addClass "juvia-installed-behavior"
     $(document.body).bind "mousedown touchdown", (event) ->
       $(".juvia-help-content").hide()  if not $(event.target).hasClass(".juvia-help-content") and $(event.target).closest(".juvia-help-content").length is 0
+
+  $("#author_email_setting").each ->
+    $this = $(this)
+    unless $this.hasClass("juvia-installed-behavior")
+      $this.addClass "juvia-installed-behavior"
+      $this.bind "click", (event) ->
+        self.authorSetting event
 
   $(".juvia-comment-editable-content:not(juvia-installed-behavior)").each ->
     if self.user_logged_in

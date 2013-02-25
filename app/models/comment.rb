@@ -8,8 +8,8 @@ class Comment < ActiveRecord::Base
 
   COMMENT_EDIT_DURATION = 1.hour
   
-  belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'comment_id'
-  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'comment_id'
+  belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
+  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id'
   
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable
@@ -126,6 +126,19 @@ class Comment < ActiveRecord::Base
     self.votes.user_liked.votes_by_type(vote_type)
   end
 
+  def notify_moderators
+    if parent_comment
+      author = Author.get_user(parent_comment.author_email)
+    else
+      author = Author.get_user(self.author_email)
+    end
+    if parent_comment and author
+      Mailer.comment_posted(parent_comment).deliver if author[0].notify_me
+    else
+      Author.create!(:author_email => self.author_email) if author.blank?
+    end
+  end
+
 private
   AKISMET_HEADERS = {
     'User-Agent' => "Juvia | Rails/#{Rails.version}",
@@ -183,10 +196,6 @@ private
     if topic
       topic.update_attribute(:last_posted_at, Time.now)
     end
-  end
-
-  def notify_moderators
-    Mailer.comment_posted(self.parent_comment).deliver
   end
   
   def self.last_comment_number(total_comments)
