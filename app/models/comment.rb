@@ -12,7 +12,7 @@ class Comment < ActiveRecord::Base
   has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id'
   
   belongs_to :topic, :inverse_of => :comments
-  has_many :votes, :as => :votable
+  has_many :votes, :as => :votable, :dependent => :destroy
   has_many :flags, :dependent => :destroy
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam]
