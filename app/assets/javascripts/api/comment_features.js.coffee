@@ -218,9 +218,9 @@ Juvia.authorSetting = (event) ->
   a_email = $("input[name=\"author_email\"]", $container).val()
   
   if $("#juvia-author-setting").hasClass("turn_on")
-    a_notification_setting = 1
-  else
     a_notification_setting = 0
+  else
+    a_notification_setting = 1
   opt1 =
     author_email: a_email
     notify_me: a_notification_setting
