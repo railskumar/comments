@@ -69,6 +69,11 @@ FactoryGirl.define do
     referer 'http://www.google.com/'
   end
 
+  factory :author do
+    author_email 'example@example.com'
+    notify_me true
+    created_at Time.now
+  end
 end
 
 module FactoryHelpers
