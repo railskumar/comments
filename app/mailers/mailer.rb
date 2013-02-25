@@ -8,6 +8,6 @@ class Mailer < ActionMailer::Base
     @site    = parent_comment.site
     @comment = parent_comment
     @child_comment = child_comment
-    mail(:to => parent_comment.site.user.email, :subject => "[#{@site.name.to_s}] Re: RDF")
+    mail(:to => parent_comment.author_email, :subject => "[#{@site.name.to_s}] Re: RDF")
   end
 end

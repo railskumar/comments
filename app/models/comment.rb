@@ -127,15 +127,12 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_moderators
-    if parent_comment
-      author = Author.get_user(parent_comment.author_email)
-    else
-      author = Author.get_user(self.author_email)
-    end
+    return false if parent_comment.author_email.empty? and author_email.empty?
+    author = Author.get_user(parent_comment ? parent_comment.author_email : author_email)
     if parent_comment and author
-      Mailer.comment_posted(parent_comment,self).deliver if author[0].notify_me
+      Mailer.comment_posted(parent_comment,self).deliver if author[0].notify_me and parent_comment.author_email.present?
     else
-      Author.create!(:author_email => self.author_email) if author.blank?
+      Author.create!(:author_email => author_email) if author.blank?
     end
   end
 
