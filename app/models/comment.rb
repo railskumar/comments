@@ -133,7 +133,7 @@ class Comment < ActiveRecord::Base
       author = Author.get_user(self.author_email)
     end
     if parent_comment and author
-      Mailer.comment_posted(parent_comment).deliver if author[0].notify_me
+      Mailer.comment_posted(parent_comment,self).deliver if author[0].notify_me
     else
       Author.create!(:author_email => self.author_email) if author.blank?
     end
