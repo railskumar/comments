@@ -26,7 +26,7 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :notify_moderators
+  after_create :create_author
   after_create :redis_update
   after_destroy :redis_update
 
@@ -125,15 +125,18 @@ class Comment < ActiveRecord::Base
   def get_users_comment_like(vote_type)
     self.votes.user_liked.votes_by_type(vote_type)
   end
+  
+  def author
+    Author.where(author_email: author_email).first
+  end
 
+  def create_author
+    Author.create!(:author_email => author_email) unless author.present?
+    notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
+  end
+  
   def notify_moderators
-    return false if parent_comment.author_email.empty? and author_email.empty?
-    author = Author.get_user(parent_comment ? parent_comment.author_email : author_email)
-    if parent_comment and author
-      Mailer.comment_posted(parent_comment,self).deliver if author[0].notify_me and parent_comment.author_email.present?
-    else
-      Author.create!(:author_email => author_email) if author.blank?
-    end
+    Mailer.comment_posted(parent_comment,self).deliver
   end
 
 private

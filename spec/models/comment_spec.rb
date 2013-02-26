@@ -39,6 +39,6 @@ describe "Comment" do
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
                                              :parent_id => @comment.id)
     @comment_user.notify_me.should eq(true)
-    @comment_reply.notify_moderators
+    @comment_reply.create_author
   end
 end
