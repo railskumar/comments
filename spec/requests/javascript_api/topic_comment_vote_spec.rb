@@ -220,9 +220,6 @@ describe "Javascript API", "error handling" do
       show_topic(topic.site.key, topic.key)
       find("#vote_for_like").click
       page.should have_css('#liked_pages',:visible => true, :text => 'One user liked this.')
-      find("#vote_for_unlike").click
-      find("#vote_for_like").click
-      page.should have_css('#liked_pages',:visible => true, :text => 'One user liked this.')
       find("#vote_for_like").click
       find("#vote_for_like").click
       page.should have_css('#liked_pages',:visible => true, :text => 'One user liked this.')
@@ -263,11 +260,6 @@ describe "Javascript API", "error handling" do
       find("#vote_for_like").click
       page.should have_css('#liked_pages',:visible => true, :text => 'One guest liked this.')
       find("#vote_for_like").click
-      page.should have_css('#liked_pages',:visible => true, :text => '2 guests liked this.')
-      show_topic(topic.site.key, topic.key, :guest_view => "1")
-      find("#vote_for_unlike").click
-      page.should have_css('#liked_pages',:visible => true, :text => 'One guest liked this.')
-      find("#vote_for_unlike").click
       page.should have_css('#liked_pages',:visible => true, :text => '2 guests liked this.')
       
       within("#juvia-comments-box") do

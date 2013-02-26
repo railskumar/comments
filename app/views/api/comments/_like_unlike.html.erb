@@ -1,15 +1,9 @@
 <div class="juvia-topic-vote">
   <div class="row-fluid">
-  	<div class="span2">
-	  <votetopic class="juvia-vote-to-topic" id="vote_for_like">
+  	<div class="span4">
+  	  <votetopic class="juvia-vote-to-topic" id="vote_for_like">
         <i class="icon-thumbs-up" ></i>
-        <span> Like</span>
-      </votetopic>
-    </div>
-    <div class="span2">
-	  <votetopic class="juvia-vote-to-topic" id="vote_for_unlike" >
-        <i class="icon-thumbs-down" ></i>
-        <span> Unlike</span>
+        <span> Like this topic</span>
       </votetopic>
     </div>
     <div class="span8">
@@ -24,13 +18,6 @@
     var $like = Juvia.$('#vote_for_like')
     $like.addClass('votes-up-active');
     var $like_text = $like.find("span");
-    $like_text.html(" Liked");
-  </script>
-<% elsif @topic.unliked?(@username, @user_email)%>
-  <script type="text/javascript">
-    var $unlike = Juvia.$('#vote_for_unlike');
-    $unlike.addClass('votes-down-active');
-    var $unlike_text = $unlike.find("span");
-    $unlike_text.html(" Unliked");
+    $like_text.html(" Liked this topic");
   </script>
 <% end %>

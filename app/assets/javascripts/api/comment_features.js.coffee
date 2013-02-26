@@ -119,38 +119,18 @@ Juvia.voteTopic = (event, this_obj) ->
   $this = $(this_obj)
   form = event.target
   $container = $(form).closest(".juvia-container")
-  $unlike = $("#vote_for_unlike")
-  $unlike_text = $("#vote_for_unlike").find("span")
   $like = $("#vote_for_like")
   $like_text = $("#vote_for_like").find("span")
   $vote_icon = $this.find("i")
   $vote_text = $this.find("span")
-  if $vote_icon.hasClass("icon-thumbs-up")
-    if $this.hasClass("votes-up-active")
-      up_down = 0
-      $this.removeClass "votes-up-active"
-      $vote_text.html " Like"
-    else
-      up_down = 1
-      if $unlike.hasClass("votes-down-active")
-        $unlike.removeClass "votes-down-active"
-        $unlike_text.html " Unlike"
-      else
-        $this.addClass "votes-up-active"
-        $vote_text.html " Liked"
+  if $this.hasClass("votes-up-active")
+    up_down = 0
+    $this.removeClass "votes-up-active"
+    $vote_text.html " Like this topic"
   else
-    if $this.hasClass("votes-down-active")
-      up_down = 1
-      $this.removeClass "votes-down-active"
-      $vote_text.html " Unlike"
-    else
-      up_down = 0
-      if $like.hasClass("votes-up-active")
-        $like.removeClass "votes-up-active"
-        $like_text.html " Like"
-      else
-        $this.addClass "votes-down-active"
-        $vote_text.html " Unliked"
+    up_down = 1
+    $this.addClass "votes-up-active"
+    $vote_text.html " Liked this topic"
   a_name = $("input[name=\"author_name\"]", $container).val()
   a_email = $("input[name=\"author_email\"]", $container).val()
   opt1 =
