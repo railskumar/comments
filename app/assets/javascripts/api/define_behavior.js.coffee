@@ -125,6 +125,7 @@ Juvia.reinstallBehavior = ->
         $this.bind "click", (event) ->
           if confirm("Are you sure you wish to flag this comment?")
             $(this).removeClass "juvia-installed-behavior"
+            $this.addClass "flagged"
             $this.unbind "click"
             self.reportComment event, this
           else
