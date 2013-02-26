@@ -208,19 +208,29 @@ Juvia.rdf_comment_box = (option) ->
     else
       ababc.className = "span6"
     function_links.appendChild ababc
+    reply_comment_tag = document.createElement("replycomment")
+    reply_comment_tag.className = "rdf-reply-to-comment"
+    reply_comment_tag.setAttribute "data-comment-id", comment_id
+    ababc.appendChild reply_comment_tag
+    ababb_reply_p = document.createElement("i")
+    ababb_reply_p.className = "icon-share-alt"
+    reply_comment_tag.appendChild ababb_reply_p
     ababca = document.createElement("span")
-    ababca.className = "rdf-reply-to-comment"
-    ababc.appendChild ababca
+    reply_comment_tag.appendChild ababca
     ababca.appendChild document.createTextNode("Reply")
   if editable()
     edit_comment_dom = document.createElement("div")
     edit_comment_dom.className = "span4"
     function_links.appendChild edit_comment_dom
-    edit_comment_dom_p = document.createElement("p")
-    edit_comment_dom_p.className = "juvia-edit-to-comment"
-    edit_comment_dom.appendChild edit_comment_dom_p
-    edit_comment_dom_p_a = document.createElement("a")
-    edit_comment_dom_p_a.setAttribute "href", "javascript:void(0)"
-    edit_comment_dom_p_a.appendChild document.createTextNode("Edit")
-    edit_comment_dom_p.appendChild edit_comment_dom_p_a
+    edit_comment_tag = document.createElement("editcomment")
+    edit_comment_tag.className = "juvia-edit-to-comment"
+    edit_comment_tag.setAttribute "data-comment-id", comment_id
+    edit_comment_dom.appendChild edit_comment_tag
+    edit_comment_icon = document.createElement("i")
+    edit_comment_icon.className = "icon-edit"
+    edit_comment_tag.appendChild edit_comment_icon
+    edit_comment_dom_span = document.createElement("span")
+    edit_comment_dom_span.id = "edit-" + comment_id
+    edit_comment_dom_span.appendChild document.createTextNode("Edit")
+    edit_comment_tag.appendChild edit_comment_dom_span
   a

@@ -13,13 +13,13 @@ Juvia.reinstallBehavior = ->
       $this.bind "dblclick", ->
         self.editComment this
 
-  $(".juvia-edit-to-comment a:not(.juvia-installed-behavior)").each ->
+  $("editcomment:not(.juvia-installed-behavior)").each ->
     if self.user_logged_in
       $this = $(this)
       $this.addClass "juvia-installed-behavior"
       $this.bind "click", ->
         $(this).closest(".juvia-comment-content").find(".juvia-comment-editable-content").dblclick()
-  
+
   #self.editComment(this);
   $(".juvia-container:not(.juvia-installed-behavior)").each ->
     $this = $(this)
@@ -70,7 +70,7 @@ Juvia.reinstallBehavior = ->
       self.sortComments event, this
 
 
-  $(".rdf-reply-to-comment:not(.juvia-installed-behavior)").each ->
+  $("replycomment:not(.juvia-installed-behavior)").each ->
     $this = $(this)
     $this.addClass "juvia-installed-behavior"
     $this.bind "click", ->
