@@ -4,12 +4,11 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <%= @child_comment.author_name || 'Anonymous' %> &lt;<%= @child_comment.author_email || 'None given' %>&gt; wrote: <br/> <br/>
+    <%= @child_comment.author_name || 'Anonymous' %> replied to your comment on "<%= @child_comment.topic.title.split[0,5].join(" ").to_s %>...": <br/> <br/>
 
     <%= BlueCloth.new(@child_comment.content, :escape_html => false, :strict_mode => true).to_html.html_safe %> <br/> <br/>
 
-    <a href="<%= @child_comment.referer || 'Unknown' %>">Link to comment</a> <br/> <br/>
+    <a href="<%= @child_comment.topic.url || 'Unknown' %>">Link to article</a> <br/> <br/>
 
-    IP address: <%= @child_comment.author_ip %>
   </body>
 </html>
