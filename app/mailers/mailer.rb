@@ -4,9 +4,10 @@ class Mailer < ActionMailer::Base
   default_url_options[:protocol] = uri.scheme
   default_url_options[:host] = uri.host
 
-  def comment_posted(comment)
-    @site    = comment.site
-    @comment = comment
-    mail(:to => comment.site.user.email, :subject => "New comment posted")
+  def comment_posted(parent_comment, child_comment)
+    @site    = parent_comment.site
+    @comment = parent_comment
+    @child_comment = child_comment
+    mail(:to => parent_comment.author_email, :subject => "Reply to your comment in [#{parent_comment.topic.title.split[0,5].join(" ").to_s}...]")
   end
 end

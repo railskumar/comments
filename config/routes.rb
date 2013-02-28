@@ -1,6 +1,7 @@
 Juvia::Application.routes.draw do
   match 'api/:action(.:format)', :to => 'api'
   match 'api/comments/:action(.:format)', :to => 'api/comments'
+  match 'api/authors/:action(.:format)', :to => 'api/authors'
   match 'api/post/vote' => 'api/votes#posts_vote'
   match 'api/topic/vote' => 'api/votes#topics_vote'
   match 'api/post/flag' => 'api/flags#post_report'

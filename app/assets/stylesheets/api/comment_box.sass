@@ -92,12 +92,12 @@
     width: 55px !important
     margin-top: 15px !important
 
-  .juvia-edit-to-comment
-    width: 45px !important
-
   .juvia-reply-to-comment:hover, :juvia-edit-to-comment:hover
     cursor: pointer
     text-decoration: underline
+
+  .juvia-edit-to-comment
+    margin: -3px 0 0
 
 .juvia-avatar img:hover
   cursor: pointer
@@ -151,3 +151,6 @@ flagcomment.flagged
 flagcomment, votecomment, i, .rdf-reply-to-comment
   cursor: pointer
 
+editcomment, replycomment
+  span
+    margin-left: 4px

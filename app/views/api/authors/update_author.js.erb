@@ -1,0 +1,26 @@
+$author_setting = Juvia.$('#juvia-author-setting');
+$email_icon = Juvia.$('#email_icon');
+$setting_container = Juvia.$('.setting-container');
+$setting_menu = Juvia.$('.setting-menu');
+
+<% if @author.notify_me %>
+  $author_setting.html("Email Notification is ON");
+  $setting_container.children(':first-child').remove();
+  $email_icon.html("<div class='span8'><i class='icon-envelope'></i></div>");
+  $author_setting.addClass("turn_on");
+  $setting_menu.removeClass("span9");
+  $setting_menu.addClass("span4");
+  $author_setting.removeClass("turn_off");
+<% else %>
+  $author_setting.html("Email Notification is OFF");
+  $("<div class='span3'></div>").insertBefore('.setting-menu');
+  $email_icon.removeClass("span8");
+  $email_icon.html(" ");
+  $author_setting.addClass("turn_off");
+  $author_setting.removeClass("turn_on");
+<% end %>
+
+$email_notification = Juvia.$('.juvia_email_notification');
+$email_notification.html("<div class='span11'><div class='alert fade in'><button data-dismiss='alert' class='close' type='button'>×</button><strong>Thanks!</strong> Email notifications were successfully saved.</div></div>");
+$email_notification.show();
+$email_notification.fadeOut(5000);

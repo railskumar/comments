@@ -8,8 +8,11 @@ class Comment < ActiveRecord::Base
 
   COMMENT_EDIT_DURATION = 1.hour
   
+  belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
+  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id'
+  
   belongs_to :topic, :inverse_of => :comments
-  has_many :votes, :as => :votable
+  has_many :votes, :as => :votable, :dependent => :destroy
   has_many :flags, :dependent => :destroy
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam]
@@ -23,7 +26,7 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :notify_moderators
+  after_create :create_author
   after_create :redis_update
   after_destroy :redis_update
 
@@ -122,6 +125,19 @@ class Comment < ActiveRecord::Base
   def get_users_comment_like(vote_type)
     self.votes.user_liked.votes_by_type(vote_type)
   end
+  
+  def author
+    Author.where(author_email: author_email).first
+  end
+
+  def create_author
+    Author.create!(:author_email => author_email) unless author.present?
+    notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
+  end
+  
+  def notify_moderators
+    Mailer.comment_posted(parent_comment,self).deliver
+  end
 
 private
   AKISMET_HEADERS = {
@@ -180,10 +196,6 @@ private
     if topic
       topic.update_attribute(:last_posted_at, Time.now)
     end
-  end
-
-  def notify_moderators
-    #Mailer.comment_posted(self).deliver
   end
   
   def self.last_comment_number(total_comments)

@@ -15,6 +15,7 @@ class Api::CommentsController < ApplicationController
     
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
+      @notify_on = Author.notifier?(@user_email) if @require_external_user and @user_logged_in
       render 
     else
       render :partial => 'api/site_not_found'
@@ -53,7 +54,8 @@ class Api::CommentsController < ApplicationController
           :author_ip => request.env['REMOTE_ADDR'],
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
-          :content => @content)
+          :content => @content,
+          :parent_id => params[:parent_id])
         render
       else
         render :partial => 'api/site_not_found'

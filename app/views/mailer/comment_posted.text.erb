@@ -1,14 +1,5 @@
-# A new comment has been posted on "<%= @site.name %>"
+<%= @child_comment.author_name || 'Anonymous' %> replied to your comment on "<%= @child_comment.topic.title.to_s %>": <br/> <br/>
 
-<% if @comment.moderation_status != :ok %>
-Please moderate this comment at <%= admin_comments_url %>
+<%= @child_comment.content %>
 
-<% end %>
-Topic     : <%= @comment.topic.title %> (<%= admin_topic_url(@comment.topic) %>)
-Name      : <%= @comment.author_name || 'Anonymous' %>
-Email     : <%= @comment.author_email || 'None given' %>
-IP        : <%= @comment.author_ip %>
-User agent: <%= @comment.author_user_agent || 'Unknown' %>
-Referer   : <%= @comment.referer || 'Unknown' %>
-
-<%= @comment.content %>
+<a href="<%= @child_comment.topic.url || 'Unknown' %>">Link to article</a>
