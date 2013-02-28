@@ -2,4 +2,72 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  topic_like: Like this topic
+  topic_liked: Liked this topic
+  topic: Topic
+  anonymous: Anonymous
+  add_comment_title: Add comment
+  error_add_comment: You didn't write anything.
+  email_notification_on: Email Notification is ON
+  email_notification_off: Email Notification is OFF
+  thanks: Thanks!
+  email_notification_success_message: Email notifications were successfully saved.
+  submit_btn: Submit
+  close_btn: Close
+  submitting_please_wait: Submitting, please wait...
+  preview: Preview
+  markdown_help: Help with formatting
+  total_comment_title: comments
+  sort_by_most_popular: Sort by most popular
+  sort_by_newest_first: Sort by newest first
+  sort_by_oldest_first: Sort by oldest first
+  flag: Flag
+  flagged: Flagged
+  like: Like
+  liked: Liked
+  unliked: Unliked
+  edit: Edit
+  reply: Reply
+  people_who_liked_this: People who liked this
+  format_text: Format Text
+  headers: Headers
+  h1_header: H1 Header
+  h2_header: H2 Header
+  text_styles: Text styles
+  for_italic: For italic
+  for_bold: For bold
+  item_1: Item 1
+  item_2: Item 2
+  format: Format
+  example: Example
+  more_help_on_markdown_home_page: More help on markdown home page
+  lists: Lists
+  unordered: Unordered
+  ordered: Ordered
+  miscellaneous: Miscellaneous
+  images: Images
+  links: Links
+  confirm_message_flag: Are you sure you wish to flag this comment?
+  thanks_for_flag: Thank you. This comment has been flagged for moderator attention.
+  show_more: Show More
+  site_not_found_message: Oops, we don't recognize this site key. Please check whether it's correct.
+  akismet_site_error: Site URL required for Akismet check
+  akismet_key_error: Akismet key required
+  akismet_internal_error: Akismet internal error
+  akismet_server_key_error: Unknown Akismet server error, maybe your API key is wrong
+  akismet_key_error: Akismet server error
+  vote_required:Vote is required
+  reference_required: Reference is required
+  site_key_not_found: Site key not found.
+  missing_parameter: Missing required parameter
+  API_invocation_error: API invocation error
+  required_parameter: The required parameter
+  was_not_given: wasn't given
+  no_comments: There are no comments yet.
+  compose_new_comment: Compose new comment
+  in_reply_to: in reply to
+  replied_to_your_comment_on: replied to your comment on
+  link_to_article: Link to article
+  by: by
+  loading: Loading
+  click_here: click here

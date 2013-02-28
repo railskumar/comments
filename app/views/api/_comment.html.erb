@@ -6,7 +6,7 @@
 				width="64"
 				height="38"
 				class="img-circle"
-				alt="<%= comment.author_name || 'Anonymous' %>">
+				alt="<%= comment.author_name || '<%= t(:anonymous) %>' %>">
 			</div>
 		<% else %>
 			<div class="juvia-avatar">
@@ -14,11 +14,11 @@
 				width="64"
 				height="38"
 				class="img-circle"
-				alt="<%= comment.author_name || 'Anonymous' %>">
+				alt="<%= comment.author_name || '<%= t(:anonymous) %>' %>">
 			</div>
 		<% end %>
 		<div class="juvia-author juvia-author-without-email">
-			<%= comment.author_name || 'Anonymous' %>
+			<%= comment.author_name || '<%= t(:anonymous) %>' %>
 			<span class="floatright comment_index"></span>
 		</div>
 		<div class="juvia-creation-date">
