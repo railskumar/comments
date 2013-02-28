@@ -14,13 +14,13 @@
   <div class="span9">
     <div class="juvia-form-actions">
       <div class="juvia-action juvia-submit-button">
-        <input type="submit" value="Submit" />
+        <input type="submit" value="<%= t(:submit_btn)%>" />
         <% if @restrict_comment_length %> 
           <em id="counter" style="">140</em>
         <% end %>
       </div>
       <div class="juvia-action juvia-submitting-button" style="display: none">
-        <input type="submit" value="Submitting, please wait..." disabled />
+        <input type="submit" value="<%= t(:submitting_please_wait) %>..." disabled />
       </div>
       <div class="juvia-error" style="display: none"></div>
     </div>
@@ -47,9 +47,9 @@
                     <a href="javascript:void(0);" tabindex="-1" role="menuitem" id="author_email_setting">
                       <i class="icon-envelope"> </i> 
                       <% if @notify_on %>
-                        <span id="juvia-author-setting" class="turn_on">Email Notification is ON</span>
+                        <span id="juvia-author-setting" class="turn_on"><%= t(:email_notification_on) %></span>
                       <% else %>
-                        <span id="juvia-author-setting" class="turn_off">Email Notification is OFF</span>
+                        <span id="juvia-author-setting" class="turn_off"><%= t(:email_notification_off) %></span>
                       <% end %>
                     </a>
                   </li>

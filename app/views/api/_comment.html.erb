@@ -48,7 +48,7 @@
 			    <p class="juvia-vote-to-comment icon-thumbs-up" id="comment-vote-icon-<%= comment.id.to_s %>" data-comment-id="<%= comment.id %>" > Like</p>
 			  </div>
 			  <div class="span1">
-			    <p class="juvia-reply-to-comment"><a href="javascript:void(0)">Reply</a></p>
+			    <p class="juvia-reply-to-comment"><a href="javascript:void(0)"><%= t(:reply) %></a></p>
 			  </div>
 			</div>
 		</div>
@@ -59,6 +59,6 @@
   <script type="text/javascript">
     $like = $('#comment-vote-icon-<%= comment.id.to_s %>')
 	$like.addClass('icon-thumbs-down');
-    $like.html(" Liked");
+    $like.html(" <%= t(:liked) %>");
   </script>
 <% end %>
