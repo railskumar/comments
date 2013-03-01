@@ -30,10 +30,14 @@
     <div class="row-fluid">
       <div class="span2"></div>
       <div class="span10">
-        <div class="row-fluid setting-container">
+        <div class="row-fluid">
           <% unless @notify_on.nil? %>
-            <% unless @notify_on %> <div class="span3"></div> <% end %>
-            <div class="<% if @notify_on %>span4 <% else %>span9<%end%> setting-menu">
+            <div class="span3" id="email_icon">
+              <% if @notify_on %>
+                <i class="icon-envelope"></i>
+              <% end %>
+            </div>
+            <div class="span9">
               <div class="dropdown">
                 <a href="#" data-toggle="dropdown" role="button" id="juvia-setting" class="dropdown-toggle">
                   <span><i class="icon-cog"> </i></span>
@@ -52,11 +56,6 @@
                   </li>
                 </ul>
               </div>
-            </div>
-            <div class="span8" id="email_icon">
-              <% if @notify_on %>
-                <i class="icon-envelope"></i>
-              <% end %>
             </div>
           <% end %>
         </div>
