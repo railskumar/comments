@@ -5,6 +5,7 @@ en:
   topic_like: Like this topic
   topic_liked: Liked this topic
   topic: Topic
+  comments: Comments
   anonymous: Anonymous
   add_comment_title: Add comment
   error_add_comment: You didn't write anything.
@@ -71,3 +72,4 @@ en:
   by: by
   loading: Loading
   click_here: click here
+  please_login_to_make_comment: Please Login to make comment
