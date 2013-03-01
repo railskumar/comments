@@ -34,6 +34,7 @@ Juvia.reinstallBehavior = ->
     $this = $(this)
     $this.addClass "juvia-installed-behavior"
     addCommentForm = $(".juvia-add-comment-form", this)
+
     $("input[name=author_name]", addCommentForm).example "Your name (optional)",
       className: "juvia-example-text"
     $("input[name=author_email]", addCommentForm).example "Your email (optional)",
@@ -48,6 +49,22 @@ Juvia.reinstallBehavior = ->
         self.submitComment event
       ), 1
 
+    $("#comment_textarea").bind "input focus", ->
+      if this.value.length
+        $("#juvia-cancel-button").show()
+      else
+        $("#juvia-cancel-button").hide()
+
+    $("#juvia-cancel-button").bind "click", (event) ->
+      $container = $(event.target).closest(".juvia-container")
+      $("#comment_textarea",$container).val("")
+      preview = $(".juvia-preview", $container)
+      preview.find(".juvia-preview-content").hide()
+      preview.find(".juvia-preview-content").html("")
+      preview.find(".juvia-preview-empty").show()
+      self.clearAllTextBoxStorage $container
+      $('input[name="parent_id"]').val('')
+      
     $(".juvia-help", this).bind "click", ->
       $this = $(this)
       content = $this.parent().find(".juvia-help-content")

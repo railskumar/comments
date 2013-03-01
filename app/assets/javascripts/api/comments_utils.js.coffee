@@ -308,6 +308,7 @@ Juvia.handleAddComment = (options) ->
   $(".juvia-preview-content", container).hide()
   container.find("form")[0].reset()
   @setSubmitting container, false
+  @showCancelButton container, false
   @saveCommentBox container
   @smoothlyScrollTo comment.offset().top - 20
   comment.hide().fadeIn 2000
@@ -452,3 +453,11 @@ Juvia.restoreCommentBox = (container) ->
       textarea = $("textarea[name=\"content\"]", container)
       textarea.val value
       @previewComment textarea
+      @showCancelButton container, true
+
+Juvia.showCancelButton = (container, display) ->
+  cancelButton = container.find("#juvia-cancel-button")
+  if display
+    cancelButton.show()
+  else 
+    cancelButton.hide()
