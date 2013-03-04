@@ -25,7 +25,7 @@
 	    <%=render :partial=>"sorting", :locals => {:total_comments =>"1 comment", :sorting_option => false}%>
 		<div class="juvia-comments" id="juvia-comments-box"></div>
 	<% elsif comments.size > 1 %>
-		<%=render :partial=>"sorting", :locals => { :total_comments =>" #{comments.size.to_s} comments" , :sorting_option => true}%>
+		<%=render :partial=>"sorting", :locals => { :total_comments =>" #{comments.size.to_s} #{t(:comments)}" , :sorting_option => true}%>
 		<div class="juvia-comments" id="juvia-comments-box"></div>
 	<% else %>
 	    <%=render :partial=>"sorting", :locals => {:total_comments =>"", :sorting_option => false}%>

@@ -37,8 +37,8 @@ module ApplicationHelper
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => comment.vote_counts,
-	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "unliked"),
-	  :flagged => (comment.flag_status),
+	  :liked => user_liked?(username, user_email, comment) ? "true" : "false",
+	  :flagged => comment.is_flagged? ? "true" : "false" ,
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"

@@ -37,4 +37,6 @@ if(Juvia.get_cookie('sorting_order') !== null){
   Juvia.$("#juvia-sort-select").val(Juvia.sorting_order);
 }
 
+Juvia.setLocale("<%= I18n.default_locale %>");
+
 Juvia.reqLoadComment();

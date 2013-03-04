@@ -16,9 +16,93 @@ if (!Juvia) {
     user_email: '',
     use_my_user: 'false',
     root_url: '',
-    juvia_jquery: ''
+    juvia_jquery: '',
+    current_lan: ''
 	};
 }
+
+// Juvia localization 
+
+Juvia = {
+  
+  t: {
+    "flagged" : "Flagged",
+    "flag"    : "Flag",
+    "liked"   : "Liked",
+    "like"    : "Like",
+    "reply"   : "Reply",
+    "edit"    : "Edit",
+    "like_this_topic" : "Like this topic",
+    "liked_this_topic" : "Liked this topic",
+    "ok" : "OK",
+    "cancel" : "Cancel",
+    "markdown_help": "Help with formatting",
+    "click_here": "click here",
+    "format_text": "Format Text",
+    "headers" : "Headers",
+    "h1_header": "H1 Header",
+    "h2_header": "H2 Header",
+    "text_styles": "Text styles",
+    "for_italic": "For italic",
+    "for_bold":"For bold",
+    "lists":"Lists",
+    "unordered":"Unordered",
+    "item_1":"Item 1",
+    "item_2":"Item 2",
+    "ordered":"Ordered",
+    "miscellaneous":"Miscellaneous",
+    "images":"Images",
+    "format":"Format",
+    "example":"Example",
+    "more_help_on_markdown_home_page": "More help on markdown home page",
+    "in_reply_to" : "In reply to",
+    "by" : "by",
+  },
+  
+  es: {
+    "flagged" : "es Flagged",
+    "flag"    : "es Flag",
+    "liked"   : "es Liked",
+    "like"    : "es Like",
+    "reply"   : "es Reply",
+    "edit"    : "es Edit",
+    "like_this_topic" : "es Like this topic",
+    "liked_this_topic" : " es Liked this topic",
+    "ok" : "es OK",
+    "cancel" : "es Cancel",
+    "markdown_help": "es Help with formatting",
+    "click_here": "es click here",
+    "format_text": "es Format Text",
+    "headers" : "es Headers",
+    "h1_header": "es H1 Header",
+    "h2_header": "es H2 Header",
+    "text_styles": "es Text styles",
+    "for_italic": "es For italic",
+    "for_bold":"es For bold",
+    "lists":"es Lists",
+    "unordered":"es Unordered",
+    "item_1":"es Item 1",
+    "item_2":"es Item 2",
+    "ordered":"es Ordered",
+    "miscellaneous":"es Miscellaneous",
+    "images":"es Images",
+    "format":"es Format",
+    "example":"es Example",
+    "more_help_on_markdown_home_page": "es More help on markdown home page",
+    "in_reply_to" : "es In reply to",
+    "by" : "es by",
+  },
+  
+  setLocale: function(lang){
+    var locale = typeof lang == 'undefined' ? 'en' : lang;
+    if (locale == "es" ){
+      this.t = this.es;
+    }
+  }
+  
+};
+
+// Juvia localization 
 
 (function(Juvia) {
     

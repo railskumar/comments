@@ -66,10 +66,11 @@ en:
   was_not_given: wasn't given
   no_comments: There are no comments yet.
   compose_new_comment: Compose new comment
-  in_reply_to: in reply to
+  in_reply_to: In reply to
   replied_to_your_comment_on: replied to your comment on
   link_to_article: Link to article
   by: by
   loading: Loading
   click_here: click here
   please_login_to_make_comment: Please Login to make comment
+  cancel: Cancel
