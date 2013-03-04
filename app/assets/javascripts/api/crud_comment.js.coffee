@@ -100,6 +100,7 @@ Juvia.rdf_comment_box = (option) ->
   a.className = "juvia-comment"
   a.id = "comment-box-" + comment_number  unless comment_number is ""
   a.setAttribute "data-comment-number", comment_number
+  a.setAttribute "data-comment-id", comment_id
   
   # Start Header creation 
   $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + comment_user_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span8'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
