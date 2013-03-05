@@ -57,7 +57,7 @@ en:
   akismet_internal_error: Akismet internal error
   akismet_server_key_error: Unknown Akismet server error, maybe your API key is wrong
   akismet_key_error: Akismet server error
-  vote_required:Vote is required
+  vote_required: Vote is required
   reference_required: Reference is required
   site_key_not_found: Site key not found.
   missing_parameter: Missing required parameter

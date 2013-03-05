@@ -46,13 +46,13 @@ describe "Javascript API", "error handling" do
         create_new_comment
         comment = Comment.last
         post_flag_by_guest('/api/post/flag.json',comment.topic.site,comment.topic,comment)
-        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
       end
       
       describe "guest count" do
         def guest_flag_comment(guest_count,comment)
           post_flag_by_guest('/api/post/flag.json',comment.topic.site,comment.topic,comment)
-          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
           flag_comments = comment.flags.where(:author_name => nil).where(:author_email => nil)
           flag_comments.first.guest_count.should eq(guest_count)        
         end
@@ -87,7 +87,7 @@ describe "Javascript API", "error handling" do
         create_new_comment
         comment = Comment.last
         post_flag_by_user('/api/post/flag.json','test_user','test_user@mailinator.com',comment.topic.site,comment.topic,comment)
-        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
         Flag.last.author_name.should eq('test_user')
         Flag.last.author_email.should eq('test_user@mailinator.com')
       end
@@ -95,7 +95,7 @@ describe "Javascript API", "error handling" do
       describe "user count" do
         def user_flag_comment(user_count,author_name,author_email,comment)
           post_flag_by_user('/api/post/flag.json',author_name,author_email,comment.topic.site,comment.topic,comment)
-          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
           flag_comments = comment.flags.where("author_name IS NOT NULL and author_email  IS NOT NULL")
           flag_comments.count.should eq(user_count)        
         end
@@ -204,13 +204,13 @@ describe "Javascript API", "error handling" do
         create_new_comment
         comment = Comment.last
         post_flag_by_guest('/api/post/flag.js',comment.topic.site,comment.topic,comment)
-        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
       end
       
       describe "guest count" do
         def guest_flag_comment(guest_count,comment)
           post_flag_by_guest('/api/post/flag.js',comment.topic.site,comment.topic,comment)
-          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
           flag_comments = comment.flags.where(:author_name => nil).where(:author_email => nil)
           flag_comments.first.guest_count.should eq(guest_count)        
         end
@@ -245,7 +245,7 @@ describe "Javascript API", "error handling" do
         create_new_comment
         comment = Comment.last
         post_flag_by_user('/api/post/flag.js','test_user','test_user@mailinator.com',comment.topic.site,comment.topic,comment)
-        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+        response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
         Flag.last.author_name.should eq('test_user')
         Flag.last.author_email.should eq('test_user@mailinator.com')
       end
@@ -253,7 +253,7 @@ describe "Javascript API", "error handling" do
       describe "user count" do
         def user_flag_comment(user_count,author_name,author_email,comment)
           post_flag_by_user('/api/post/flag.js',author_name,author_email,comment.topic.site,comment.topic,comment)
-          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"Flagged"}')
+          response.body.should include('{"status":"ok","action":"ReportComment","comment_id":' + comment.id.to_s + ',"flagged":"true"}')
           flag_comments = comment.flags.where("author_name IS NOT NULL and author_email  IS NOT NULL")
           flag_comments.count.should eq(user_count)        
         end
