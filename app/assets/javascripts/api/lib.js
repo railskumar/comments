@@ -58,6 +58,8 @@ Juvia = {
     "in_reply_to" : "In reply to",
     "by" : "by",
     "links": "Links",
+    "first_confirm_msg": "Are you sure you wish to flag this comment?",
+    "second_confirm_msg": "Thank you. This comment has been flagged for moderator attention.",
   },
   
   es: {
@@ -93,6 +95,8 @@ Juvia = {
     "in_reply_to" : "s_In reply to",
     "by" : "s_by",
     "links": "s_Links",
+    "first_confirm_msg": "s_Are you sure you wish to flag this comment?",
+    "second_confirm_msg": "s_Thank you. This comment has been flagged for moderator attention.",
   },
   
   setLocale: function(lang){
