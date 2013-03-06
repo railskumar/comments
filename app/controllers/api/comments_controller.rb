@@ -12,7 +12,7 @@ class Api::CommentsController < ApplicationController
     @topic_title, @topic_url = params[:topic_title], params[:topic_url]
     @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
     prepare!([:site_key, :topic_key, :container, :topic_title, :topic_url], [:html, :js])
-    
+    @current_lan = params[:current_lan]
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
       @notify_on = Author.notifier?(@user_email) if @require_external_user and @user_logged_in

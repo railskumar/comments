@@ -20,6 +20,7 @@
   Juvia.topic_key = '<%= @topic_key%>';
   Juvia.topic_url = '<%= @topic_url%>';
   Juvia.topic_title = '<%= escape_javascript(@topic_title) %>';
+  Juvia.current_lan = '<%= @current_lan %>';
 
 <%
   options = { 
@@ -37,6 +38,6 @@ if(Juvia.get_cookie('sorting_order') !== null){
   Juvia.$("#juvia-sort-select").val(Juvia.sorting_order);
 }
 
-Juvia.setLocale("<%= I18n.default_locale %>");
+Juvia.setLocale("<%= @current_lan %>");
 
 Juvia.reqLoadComment();

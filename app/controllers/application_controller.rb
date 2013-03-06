@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   before_filter :authenticate_user!
+  before_filter :set_locale
   check_authorization :if => :inside_admin_area?
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
   end
   rescue_from UnacceptableFormat do |exception|
     # Do nothing, response already sent.
+  end
+
+  def set_locale
+    I18n.locale = params[:current_lan] if params[:current_lan]
   end
 
   def populate_variables

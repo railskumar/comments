@@ -28,7 +28,36 @@ module ApplicationHelper
       return default_url
     end
   end
-
+  
+  def i18_votes(comment)
+    str = comment.vote_counts.split
+    i18_str = ""
+    if str.present?
+      if str.include? "users"
+        if str.include? "guests"
+          i18_str = t(:users_guests_liked_this, :users => str[str.find_index("users")-1], :guests => str[str.find_index("guests")-1])
+        elsif str.include? "guest"
+          i18_str = t(:users_one_guest_liked_this, :users => str[str.find_index("users")-1])
+        else
+          i18_str = t(:users_liked_this, :users => str[str.find_index("users")-1])
+        end
+      elsif str.include? "user"
+        if str.include? "guests"
+          i18_str = t(:one_user_guests_liked_this, :guests => str[str.find_index("guests")-1])
+        elsif str.include? "guest"
+          i18_str = t(:one_user_one_guest_liked_this)
+        else
+          i18_str = t(:one_user_liked_this)
+        end
+      elsif str.include? "guest"
+        i18_str = t(:one_guest_liked_this)
+      else
+        i18_str = t(:guests_liked_this, :guests => str[str.find_index("guests")-1])
+      end
+    end
+    return i18_str
+  end
+  
   def comment_hash(comment, username, user_email)
     return {:comment_counter => 1,
 	  :comment_id => comment.id,
@@ -36,7 +65,7 @@ module ApplicationHelper
 	  :user_name => comment.author_name,
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
-	  :comment_votes => comment.vote_counts,
+	  :comment_votes => i18_votes(comment),
 	  :liked => user_liked?(username, user_email, comment) ? "true" : "false",
 	  :flagged => comment.is_flagged? ? "true" : "false" ,
 	  :user_email => comment.author_email,

@@ -74,3 +74,11 @@ en:
   click_here: click here
   please_login_to_make_comment: Please Login to make comment
   cancel: Cancel
+  users_guests_liked_this: "%{users} users and %{guests} guests liked this."
+  one_user_one_guest_liked_this: "One user and One guest liked this."
+  one_user_guests_liked_this: "One user and %{guests} guests liked this."
+  users_one_guest_liked_this: "%{users} users and One guest liked this."
+  one_user_liked_this: "One user liked this."
+  one_guest_liked_this: "One guest liked this."
+  users_liked_this: "%{users} users liked this."
+  guests_liked_this: "%{guests} guests liked this."
