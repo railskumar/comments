@@ -1,0 +1,84 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+es:
+  topic_like: es Like this topic
+  topic_liked: es Liked this topic
+  topic: es Topic
+  comments: es Comments
+  anonymous: es Anonymous
+  add_comment_title: es Add comment
+  error_add_comment: es You didn't write anything.
+  email_notification_on: es Email Notification is ON
+  email_notification_off: es Email Notification is OFF
+  thanks: es Thanks!
+  email_notification_success_message: es Email notifications were successfully saved.
+  submit_btn: es Submit
+  close_btn: es Close
+  submitting_please_wait: es Submitting, please wait...
+  preview: es Preview
+  markdown_help: es Help with formatting
+  total_comment_title: es comments
+  sort_by_most_popular: es Sort by most popular
+  sort_by_newest_first: es Sort by newest first
+  sort_by_oldest_first: es Sort by oldest first
+  flag: es Flag
+  flagged: es Flagged
+  like: es Like
+  liked: es Liked
+  unliked: es Unliked
+  edit: es Edit
+  reply: es Reply
+  people_who_liked_this: es People who liked this
+  format_text: es Format Text
+  headers: es Headers
+  h1_header: es H1 Header
+  h2_header: es H2 Header
+  text_styles: es Text styles
+  for_italic: es For italic
+  for_bold: es For bold
+  item_1: es Item 1
+  item_2: es Item 2
+  format: es Format
+  example: es Example
+  more_help_on_markdown_home_page: es More help on markdown home page
+  lists: es Lists
+  unordered: es Unordered
+  ordered: es Ordered
+  miscellaneous: es Miscellaneous
+  images: es Images
+  links: es Links
+  confirm_message_flag: es Are you sure you wish to flag this comment?
+  thanks_for_flag: es Thank you. This comment has been flagged for moderator attention.
+  show_more: es Show More
+  site_not_found_message: es Oops, we don't recognize this site key. Please check whether it's correct.
+  akismet_site_error: es Site URL required for Akismet check
+  akismet_key_error: es Akismet key required
+  akismet_internal_error: es Akismet internal error
+  akismet_server_key_error: es Unknown Akismet server error, maybe your API key is wrong
+  akismet_key_error: es Akismet server error
+  vote_required: esVote is required
+  reference_required: es Reference is required
+  site_key_not_found: es Site key not found.
+  missing_parameter: es Missing required parameter
+  API_invocation_error: es API invocation error
+  required_parameter: es The required parameter
+  was_not_given: es wasn't given
+  no_comments: es There are no comments yet.
+  compose_new_comment: es Compose new comment
+  in_reply_to: es In reply to
+  replied_to_your_comment_on: es replied to your comment on
+  link_to_article: es Link to article
+  by: es by
+  loading: es Loading
+  click_here: es click here
+  please_login_to_make_comment: es Please Login to make comment
+  cancel: es Cancel
+  users_guests_liked_this: "es %{users} users and %{guests} guests liked this."
+  one_user_one_guest_liked_this: "es One user and One guest liked this."
+  one_user_guests_liked_this: "es One user and %{guests} guests liked this."
+  users_one_guest_liked_this: "es %{users} users and One guest liked this."
+  one_user_liked_this: "es One user liked this."
+  one_guest_liked_this: "es One guest liked this."
+  users_liked_this: "es %{users} users liked this."
+  guests_liked_this: "es %{guests} guests liked this."
