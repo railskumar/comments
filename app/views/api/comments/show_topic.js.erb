@@ -38,6 +38,10 @@ if(Juvia.get_cookie('sorting_order') !== null){
   Juvia.$("#juvia-sort-select").val(Juvia.sorting_order);
 }
 
-Juvia.setLocale("<%= @current_lan %>");
+try{
+  Juvia.setLocale("<%= @current_lan %>");
+  }
+catch(e){
+  }
 
 Juvia.reqLoadComment();
