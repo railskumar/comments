@@ -35,7 +35,7 @@ Juvia.showMoreUserComments = (this_obj) ->
 
 Juvia.replyToComment = ($comment) ->
   $ = @$
-  parent_id = $comment.find("flagcomment")[0].dataset.commentId;
+  parent_id = $comment.data("comment-id")
   $container = $comment.closest(".juvia-container")
   text = $(".juvia-comment-pure-content", $comment).text()
   lines = text.split("\n")
