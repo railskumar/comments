@@ -58,7 +58,7 @@ module ApplicationHelper
     return i18_str
   end
   
-  def comment_hash(comment, username, user_email)
+  def comment_hash(comment, username, user_email, options = {})
     return {:comment_counter => 1,
 	  :comment_id => comment.id,
 	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
@@ -66,14 +66,30 @@ module ApplicationHelper
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => i18_votes(comment),
-	  :liked => user_liked?(username, user_email, comment) ? "true" : "false",
-	  :flagged => comment.is_flagged? ? "true" : "false" ,
+	  :liked => like_status(username, user_email, comment, options[:js_status]),
+	  :flagged => flg_status(username, user_email, comment, options[:js_status]),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
   end
 
+  def like_status(username, user_email, comment, status)
+    if status
+      user_liked?(username, user_email, comment) ? "true" : "false"
+    else
+      user_liked?(username, user_email, comment) ? "liked" : "like"
+    end
+  end
+  
+  def flg_status(username, user_email, comment, status)
+    if status
+      comment.is_flagged? ? "true" : "false"
+    else
+      comment.flag_status
+    end
+  end
+  
   def comment_users_hash(vote)
     return {:comment_user_image => avatar_img(vote.author_email, (vote.author_email_md5 rescue '')),
 	  :comment_user_name => vote.author_name,

@@ -65,7 +65,7 @@ class Comment < ActiveRecord::Base
   end
   
   def is_flagged?
-    return flag = self.flagged == 'Flagged' ? true : false
+    return (self.flagged == 'Flagged' ? true : false)
   end
   
   def spam?
