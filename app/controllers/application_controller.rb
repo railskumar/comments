@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     available = %w{en es de}
-    I18n.locale = available.include? params[:current_lan] ? params[:current_lan] : I18n.default_locale
+    I18n.locale = (( available.include? params[:current_lan] ) ? params[:current_lan] : I18n.default_locale)
   end
 
   def populate_variables
