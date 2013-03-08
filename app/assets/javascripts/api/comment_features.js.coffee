@@ -204,6 +204,7 @@ Juvia.authorSetting = (event) ->
   opt1 =
     author_email: a_email
     notify_me: a_notification_setting
+    site_key: $container.data("site-key")
   
   opt2 = {}
   

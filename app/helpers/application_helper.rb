@@ -3,6 +3,10 @@ module ApplicationHelper
 
   PER_PAGE = 60
 
+  def locale_list
+    [['English','en'],['Spanish','es']]
+  end
+  
   def juvia_handle_response(options)
     "Juvia.handleResponse(#{options.to_json})".html_safe
   end

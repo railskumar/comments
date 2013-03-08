@@ -22,8 +22,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    available = %w{en es de}
-    I18n.locale = (( available.include? params[:current_lan] ) ? params[:current_lan] : I18n.default_locale)
+    @site = Site.where(key:params[:site_key]).first
+    I18n.locale = if @site.present? and !@site.locale.blank?
+      @site.locale
+    else
+      I18n.default_locale
+    end
   end
 
   def populate_variables
