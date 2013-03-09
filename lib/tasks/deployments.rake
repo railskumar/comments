@@ -24,4 +24,10 @@ namespace :dep do
     sh "git merge #{branch} --no-commit --no-ff"
   end
 
+  task :pull_data do
+    sh "heroku pgbackups:capture -e --app rdfnet-comments"
+    sh "curl -o latest.dump `heroku pgbackups:url --app rdfnet-comments`"
+    sh "pg_restore --verbose --clean --no-acl --no-owner -h localhost -U dev -d juvia_development latest.dump"
+  end
+
 end

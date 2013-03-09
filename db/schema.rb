@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211051218) do
+ActiveRecord::Schema.define(:version => 20130308094055) do
+
+  create_table "authors", :force => true do |t|
+    t.string   "author_email"
+    t.boolean  "notify_me",    :default => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "topic_id",                          :null => false
@@ -19,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20130211051218) do
     t.string   "author_name"
     t.string   "author_email"
     t.string   "author_ip",                         :null => false
-    t.string   "author_user_agent"
+    t.text     "author_user_agent"
     t.text     "referer"
     t.text     "content",                           :null => false
     t.datetime "created_at",                        :null => false
@@ -27,7 +34,10 @@ ActiveRecord::Schema.define(:version => 20130211051218) do
     t.string   "vote_counts",       :default => "", :null => false
     t.string   "flag_status"
     t.integer  "votes_value"
+    t.integer  "parent_id"
     t.index ["topic_id"], :name => "index_comments_on_topic_id"
+    t.index ["parent_id"], :name => "fk__comments_parent_id"
+    t.foreign_key ["parent_id"], "comments", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "comments_ibfk_1"
   end
 
   create_table "flags", :force => true do |t|
@@ -51,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20130211051218) do
     t.datetime "updated_at",                       :null => false
     t.integer  "moderation_method", :default => 0, :null => false
     t.string   "akismet_key"
+    t.string   "locale"
     t.index ["key"], :name => "index_sites_on_key", :unique => true
     t.index ["user_id"], :name => "index_sites_on_user_id"
   end
