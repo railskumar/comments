@@ -367,9 +367,12 @@ Juvia.handleSortComments = (options) ->
 Juvia.handleReportComment = (options) ->
   $ = @$
   if options.status is "ok"
-    alert "Thank you. This comment has been flagged for moderator attention. "
+    alert @.t.second_confirm_msg
     tempFlagsElement = $("#flag-" + options.comment_id)
-    tempFlagsElement.html " " + options.flagged
+    if options.flagged is "true"
+      tempFlagsElement.html " " + @.t.flagged
+    else
+      tempFlagsElement.html " " + @.t.flag
     flag_comment = tempFlagsElement.parent()
   else
     alert "Something went wrong!"

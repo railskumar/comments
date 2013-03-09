@@ -2,10 +2,10 @@
 	<div class="juvia-field juvia-textarea-field">
       <% if @restrict_comment_length %> 
 		   <textarea data-provide="limit" data-counter="#counter" 
-         placeholder="Compose new comment.." id="comment_textarea" 
+         placeholder="<%= t(:compose_new_comment)%>.." id="comment_textarea" 
          name="content"></textarea>
       <% else %>
-        <textarea placeholder="Compose new comment.." id="comment_textarea" 
+        <textarea placeholder="<%= t(:compose_new_comment)%>.." id="comment_textarea" 
          name="content"></textarea>
       <% end %>
 	</div>
@@ -14,14 +14,14 @@
   <div class="span9">
     <div class="juvia-form-actions">
       <div class="juvia-action juvia-submit-button">
-        <input type="submit" value="Submit" />
-        <input type="button" id="juvia-cancel-button" style="display: none" value="Cancel"/>
+        <input type="submit" value="<%= t(:submit_btn)%>" />
+        <input type="button" id="juvia-cancel-button" style="display: none" value="<%= t(:cancel)%>"/>
         <% if @restrict_comment_length %> 
           <em id="counter" style="">140</em>
         <% end %>
       </div>
       <div class="juvia-action juvia-submitting-button" style="display: none">
-        <input type="submit" value="Submitting, please wait..." disabled />
+        <input type="submit" value="<%= t(:submitting_please_wait) %>..." disabled />
       </div>
       <div class="juvia-error" style="display: none"></div>
     </div>
@@ -48,9 +48,9 @@
                     <a href="javascript:void(0);" tabindex="-1" role="menuitem" id="author_email_setting">
                       <i class="icon-envelope"> </i> 
                       <% if @notify_on %>
-                        <span id="juvia-author-setting" class="turn_on">Email Notification is ON</span>
+                        <span id="juvia-author-setting" class="turn_on"><%= t(:email_notification_on) %></span>
                       <% else %>
-                        <span id="juvia-author-setting" class="turn_off">Email Notification is OFF</span>
+                        <span id="juvia-author-setting" class="turn_off"><%= t(:email_notification_off) %></span>
                       <% end %>
                     </a>
                   </li>
@@ -67,7 +67,7 @@
 <div class="juvia_email_notification row-fluid hide"></div>
 
 <div class="juvia-preview">
-	<h4>Preview</h4>
+	<h4><%= t(:preview) %></h4>
 	<div class="juvia-preview-empty">
 	</div>
 	<div class="juvia-preview-content" style="display: none"></div>

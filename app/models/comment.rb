@@ -64,6 +64,10 @@ class Comment < ActiveRecord::Base
     return return_str
   end
   
+  def is_flagged?
+    return (self.flagged == 'Flagged' ? true : false)
+  end
+  
   def spam?
     response = call_akismet('comment-check', akismet_params)
     if response.body == 'invalid'
