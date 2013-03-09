@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   COMMENT_EDIT_DURATION = 1.hour
   
   belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
-  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id'
+  has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id', :dependent => :nullify
   
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable, :dependent => :destroy

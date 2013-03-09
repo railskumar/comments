@@ -41,4 +41,12 @@ describe "Comment" do
     @comment_user.notify_me.should eq(true)
     @comment_reply.create_author
   end
+  
+  it 'should delete parent comment' do
+    @comment_reply = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
+                                             :author_email => 'author1@example.com', :content => 'reply on comment', 
+                                             :parent_id => @comment.id)
+    @comment.destroy
+    @comment_reply.reload.parent_id.should eq(nil)
+  end
 end
