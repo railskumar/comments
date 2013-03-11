@@ -47,6 +47,7 @@ class Api::CommentsController < ApplicationController
         params[:topic_title],
         params[:topic_url])
       if @topic
+        parent_id = (Comment.where(id:params[:parent_id]).first.present?) ? params[:parent_id] : nil
         @comment = @topic.comments.create!(
           :comment_number => Comment.last_comment_number(@topic.comments) + 1,
           :author_name => params[:author_name],
@@ -55,7 +56,7 @@ class Api::CommentsController < ApplicationController
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
           :content => @content,
-          :parent_id => params[:parent_id])
+          :parent_id => parent_id)
         render
       else
         render :partial => 'api/site_not_found'
