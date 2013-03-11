@@ -3,6 +3,10 @@ module ApplicationHelper
 
   PER_PAGE = 60
 
+  def locale_list
+    [['English','en'],['Spanish','es']]
+  end
+  
   def juvia_handle_response(options)
     "Juvia.handleResponse(#{options.to_json})".html_safe
   end
@@ -28,23 +32,68 @@ module ApplicationHelper
       return default_url
     end
   end
-
-  def comment_hash(comment, username, user_email)
+  
+  def i18_votes(comment)
+    str = comment.vote_counts.split
+    i18_str = ""
+    if str.present?
+      if str.include? "users"
+        if str.include? "guests"
+          i18_str = t(:users_guests_liked_this, :users => str[str.find_index("users")-1], :guests => str[str.find_index("guests")-1])
+        elsif str.include? "guest"
+          i18_str = t(:users_one_guest_liked_this, :users => str[str.find_index("users")-1])
+        else
+          i18_str = t(:users_liked_this, :users => str[str.find_index("users")-1])
+        end
+      elsif str.include? "user"
+        if str.include? "guests"
+          i18_str = t(:one_user_guests_liked_this, :guests => str[str.find_index("guests")-1])
+        elsif str.include? "guest"
+          i18_str = t(:one_user_one_guest_liked_this)
+        else
+          i18_str = t(:one_user_liked_this)
+        end
+      elsif str.include? "guest"
+        i18_str = t(:one_guest_liked_this)
+      else
+        i18_str = t(:guests_liked_this, :guests => str[str.find_index("guests")-1])
+      end
+    end
+    return i18_str
+  end
+  
+  def comment_hash(comment, username, user_email, options = {})
     return {:comment_counter => 1,
 	  :comment_id => comment.id,
 	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
 	  :user_name => comment.author_name,
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
-	  :comment_votes => comment.vote_counts,
-	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "unliked"),
-	  :flagged => (comment.flag_status),
+	  :comment_votes => i18_votes(comment),
+	  :liked => like_status(username, user_email, comment, options[:js_status]),
+	  :flagged => flg_status(username, user_email, comment, options[:js_status]),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
     }
   end
 
+  def like_status(username, user_email, comment, status)
+    if status
+      user_liked?(username, user_email, comment) ? "true" : "false"
+    else
+      user_liked?(username, user_email, comment) ? "liked" : "like"
+    end
+  end
+  
+  def flg_status(username, user_email, comment, status)
+    if status
+      comment.is_flagged? ? "true" : "false"
+    else
+      comment.flag_status
+    end
+  end
+  
   def comment_users_hash(vote)
     return {:comment_user_image => avatar_img(vote.author_email, (vote.author_email_md5 rescue '')),
 	  :comment_user_name => vote.author_name,

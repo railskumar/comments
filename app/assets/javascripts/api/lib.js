@@ -20,6 +20,95 @@ if (!Juvia) {
 	};
 }
 
+// Juvia localization 
+
+Juvia = {
+  
+  t: {
+    "flagged" : "Flagged",
+    "flag"    : "Flag",
+    "liked"   : "Liked",
+    "like"    : "Like",
+    "reply"   : "Reply",
+    "edit"    : "Edit",
+    "like_this_topic" : "Like this topic",
+    "liked_this_topic" : "Liked this topic",
+    "ok" : "OK",
+    "cancel" : "Cancel",
+    "markdown_help": "Help with formatting",
+    "click_here": "click here",
+    "format_text": "Format Text",
+    "headers" : "Headers",
+    "h1_header": "H1 Header",
+    "h2_header": "H2 Header",
+    "text_styles": "Text styles",
+    "for_italic": "For italic",
+    "for_bold":"For bold",
+    "lists":"Lists",
+    "unordered":"Unordered",
+    "item_1":"Item 1",
+    "item_2":"Item 2",
+    "ordered":"Ordered",
+    "miscellaneous":"Miscellaneous",
+    "images":"Images",
+    "format":"Format",
+    "example":"Example",
+    "more_help_on_markdown_home_page": "More help on markdown home page",
+    "in_reply_to" : "In reply to",
+    "by" : "by",
+    "links": "Links",
+    "first_confirm_msg": "Are you sure you wish to flag this comment?",
+    "second_confirm_msg": "Thank you. This comment has been flagged for moderator attention.",
+  },
+  
+es: {
+    "flagged" : "Marcado",
+    "flag"    : "Notificar",
+    "liked"   : "Me gustó",
+    "like"    : "Me gusta",
+    "reply"   : "Contestar",
+    "edit"    : "Editar",
+    "like_this_topic" : "Me gusta este tópico",
+    "liked_this_topic" : "Me gustó este tópico",
+    "ok" : "OK",
+    "cancel" : "Cancelar",
+    "markdown_help": "Para ayuda con el formato",
+    "click_here": "haga clic aquí",
+    "format_text": "Formato de Texto",
+    "headers" : "Títulos",
+    "h1_header": "Título T1",
+    "h2_header": "Título T2",
+    "text_styles": "Estilos de texto",
+    "for_italic": "Para itálicas",
+    "for_bold":"Para negritas",
+    "lists":"Listas",
+    "unordered":"Con viñetas",
+    "item_1":"Elemento 1",
+    "item_2":"Elemento 2",
+    "ordered":"Numerada",
+    "miscellaneous":"Misceláneos",
+    "images":"Imágenes",
+    "format":"Formato",
+    "example":"Ejemplo",
+    "more_help_on_markdown_home_page": "Más ayuda en la página de inicio de markdown",
+    "in_reply_to" : "En respuesta a",
+    "by" : "por",
+    "links": "Enlaces",
+    "first_confirm_msg": "¿Está seguro de querer marcar este comentario?",
+    "second_confirm_msg": "Gracias. El comentario ha sido marcado para la atención del moderador.",
+  },
+    
+  setLocale: function(lang){
+    var locale = typeof lang == 'undefined' ? 'en' : lang;
+    if (locale == "es" ){
+      this.t = this.es;
+    }
+  }
+  
+};
+
+// Juvia localization 
+
 (function(Juvia) {
     
   // jquery-1.7.1.min.js

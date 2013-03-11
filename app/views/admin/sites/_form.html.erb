@@ -46,6 +46,11 @@
     <%= f.text_field :akismet_key %>
   </div>
 
+  <div class="para">
+    <%= f.label :locale, 'Select locale' %><br />
+    <%= f.select :locale, options_for_select(locale_list, @site.locale) %>
+  </div>
+  
   <div class="para actions">
     <%= primary_button_submit_tag(@site.new_record? ? 'Create' : 'Update') %>
     <%= button_link_to 'Cancel', [:admin, @site] %>

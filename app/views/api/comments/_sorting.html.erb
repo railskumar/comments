@@ -5,9 +5,9 @@
   <div class="span3 juvia-sort-select pull-right">
      <% if sorting_option %>
        <select id="juvia-sort-select">
-     	  <option value="<%=sorting_options[:popular]%>">Sort by most popular</option>
-     	  <option value="<%=sorting_options[:newest]%>">Sort by newest first</option>
-     	  <option selected="selected" value="<%=sorting_options[:oldest]%>">Sort by oldest first</option>
+     	  <option value="<%=sorting_options[:popular]%>"><%= t(:sort_by_most_popular) %></option>
+     	  <option value="<%=sorting_options[:newest]%>"><%= t(:sort_by_newest_first) %></option>
+     	  <option selected="selected" value="<%=sorting_options[:oldest]%>"><%= t(:sort_by_oldest_first) %></option>
        </select>
     <% end %>
   </div>

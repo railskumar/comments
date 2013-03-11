@@ -1,7 +1,7 @@
 <div class="row row-markdown">
   <div class="span">
-    Help with formatting
-    <a href="#markdowncollapse" data-toggle="jcollapse">click here</a>
+    <%= t(:markdown_help) %>
+    <a href="#markdowncollapse" data-toggle="jcollapse"><%= t(:click_here) %></a>
   </div>
 </div>  
 <div id="markdowncollapse" class= "markdown_div jcollapse" >
@@ -13,26 +13,26 @@
         </div>
       </div>
       <div class="format_list_div">
-        <h4>Format Text</h4>
-        <p>Headers</p>
-        <pre># H1 Header<br>## H2 Header</pre>
-        <p>Text styles</p>
-        <pre>*For italic*<br>**For bold**</pre>
+        <h4><%= t(:format_text) %></h4>
+        <p><%= t(:headers) %></p>
+        <pre># <%= t(:h1_header) %><br>## <%= t(:h2_header) %></pre>
+        <p><%= t(:text_styles) %></p>
+        <pre>*<%= t(:for_italic) %>*<br>**<%= t(:for_italic) %>**</pre>
       </div>
       <div class="format_list_div">
-        <h4>Lists</h4>
-        <p>Unordered</p>
-        <pre>* Item 1<br>* Item 2</pre>
-        <p>Ordered</p>
-        <pre>1. Item 1<br>2. Item 2</pre>
+        <h4><%= t(:lists) %></h4>
+        <p><%= t(:unordered) %></p>
+        <pre>* <%= t(:item_1) %><br>* <%= t(:item_2) %></pre>
+        <p><%= t(:ordered) %></p>
+        <pre>1. <%= t(:item_1) %><br>2. <%= t(:item_2) %></pre>
       </div>
       <div class="format_list_div miscell">
-        <h4>Miscellaneous</h4>
-        <p>Images</p>
-        <pre>Format: ![Alt Text](url) <br>Example: ![rdf richard](http://rdfrs.com/assets/richard.png)</pre>
-        <p>Links</p>
-        <pre>Example: [Google](http://google.com)</pre>
-        <p class="pull-right"><a href="http://daringfireball.net/projects/markdown/basics" target="_blank">More help on markdown home page</a></p>
+        <h4><%= t(:miscellaneous) %></h4>
+        <p><%= t(:images) %></p>
+        <pre><%= t(:format) %>: ![Alt Text](url) <br><%= t(:example) %>: ![rdf richard](http://rdfrs.com/assets/richard.png)</pre>
+        <p><%= t(:links) %></p>
+        <pre><%= t(:example) %>: [Google](http://google.com)</pre>
+        <p class="pull-right"><a href="http://daringfireball.net/projects/markdown/basics" target="_blank"><%= t(:more_help_on_markdown_home_page) %></a></p>
       </div>
     </div>
   </div>
