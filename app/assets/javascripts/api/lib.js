@@ -61,6 +61,43 @@ Juvia = {
     "second_confirm_msg": "Thank you. This comment has been flagged for moderator attention.",
   },
   
+de: {
+    "flagged" : "G Flagged",
+    "flag"    : "G Flag",
+    "liked"   : "G Liked",
+    "like"    : "G Like",
+    "reply"   : "G Reply",
+    "edit"    : "G Edit",
+    "like_this_topic" : "G Like this topic",
+    "liked_this_topic" : "G Liked this topic",
+    "ok" : "G OK",
+    "cancel" : "G Cancel",
+    "markdown_help": "G Help with formatting",
+    "click_here": "G click here",
+    "format_text": "G Format Text",
+    "headers" : "G Headers",
+    "h1_header": "G H1 Header",
+    "h2_header": "G H2 Header",
+    "text_styles": "G Text styles",
+    "for_italic": "G For italic",
+    "for_bold":"G For bold",
+    "lists":"G Lists",
+    "unordered":"G Unordered",
+    "item_1":"G Item 1",
+    "item_2":"G Item 2",
+    "ordered":"G Ordered",
+    "miscellaneous":"G Miscellaneous",
+    "images":"G Images",
+    "format":"G Format",
+    "example":"G Example",
+    "more_help_on_markdown_home_page": "G More help on markdown home page",
+    "in_reply_to" : "G In reply to",
+    "by" : "G by",
+    "links": "G Links",
+    "first_confirm_msg": "G Are you sure you wish to flag this comment?",
+    "second_confirm_msg": "G Thank you. This comment has been flagged for moderator attention.",
+  },
+
 es: {
     "flagged" : "Marcado",
     "flag"    : "Notificar",
@@ -97,11 +134,14 @@ es: {
     "first_confirm_msg": "¿Está seguro de querer marcar este comentario?",
     "second_confirm_msg": "Gracias. El comentario ha sido marcado para la atención del moderador.",
   },
-    
+
   setLocale: function(lang){
     var locale = typeof lang == 'undefined' ? 'en' : lang;
     if (locale == "es" ){
       this.t = this.es;
+    }
+    else if(locale == "de" ){
+      this.t = this.de;
     }
   }
   

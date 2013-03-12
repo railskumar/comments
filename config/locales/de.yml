@@ -1,0 +1,84 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+de:
+  topic_like: de Like this topic
+  topic_liked: de Liked this topic
+  topic: de Topic
+  comments: de Comments
+  anonymous: de Anonymous
+  add_comment_title: de Add comment
+  error_add_comment: de You didn't write anything.
+  email_notification_on: de Email Notification is ON
+  email_notification_off: de Email Notification is OFF
+  thanks: de Thanks!
+  email_notification_success_message: de Email notifications were successfully saved.
+  submit_btn: de Submit
+  close_btn: de Close
+  submitting_please_wait: de Submitting, please wait...
+  preview: de Preview
+  markdown_help: de Help with formatting
+  total_comment_title: de comments
+  sort_by_most_popular: de Sort by most popular
+  sort_by_newest_first: de Sort by newest first
+  sort_by_oldest_first: de Sort by oldest first
+  flag: de Flag
+  flagged: de Flagged
+  like: de Like
+  liked: de Liked
+  unliked: de Unliked
+  edit: de Edit
+  reply: de Reply
+  people_who_liked_this: de People who liked this
+  format_text: de Format Text
+  headers: de Headers
+  h1_header: de H1 Header
+  h2_header: de H2 Header
+  text_styles: de Text styles
+  for_italic: de For italic
+  for_bold: de For bold
+  item_1: de Item 1
+  item_2: de Item 2
+  format: de Format
+  example: de Example
+  more_help_on_markdown_home_page: de More help on markdown home page
+  lists: de Lists
+  unordered: de Unordered
+  ordered: de Ordered
+  miscellaneous: de Miscellaneous
+  images: de Images
+  links: de Links
+  confirm_message_flag: de Are you sure you wish to flag this comment?
+  thanks_for_flag: de Thank you. This comment has been flagged for moderator attention.
+  show_more: de Show More
+  site_not_found_message: de Oops, we don't recognize this site key. Please check whether it's correct.
+  akismet_site_error: de Site URL required for Akismet check
+  akismet_key_error: de Akismet key required
+  akismet_internal_error: de Akismet internal error
+  akismet_server_key_error: de Unknown Akismet server error, maybe your API key is wrong
+  akismet_key_error: de Akismet server error
+  vote_required: de Vote is required
+  reference_required: de Reference is required
+  site_key_not_found: de Site key not found.
+  missing_parameter: de Missing required parameter
+  API_invocation_error: de API invocation error
+  required_parameter: de The required parameter
+  was_not_given: de wasn't given
+  no_comments: de There are no comments yet.
+  compose_new_comment: de Compose new comment
+  in_reply_to: de In reply to
+  replied_to_your_comment_on: de replied to your comment on
+  link_to_article: de Link to article
+  by: de by
+  loading: de Loading
+  click_here: de click here
+  please_login_to_make_comment: de Please Login to make comment
+  cancel: de Cancel
+  users_guests_liked_this: "de %{users} users and %{guests} guests liked this."
+  one_user_one_guest_liked_this: "de One user and One guest liked this."
+  one_user_guests_liked_this: "de One user and %{guests} guests liked this."
+  users_one_guest_liked_this: "de %{users} users and One guest liked this."
+  one_user_liked_this: "de One user liked this."
+  one_guest_liked_this: "de One guest liked this."
+  users_liked_this: "de %{users} users liked this."
+  guests_liked_this: "de %{guests} guests liked this."
