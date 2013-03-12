@@ -4,7 +4,7 @@ module ApplicationHelper
   PER_PAGE = 60
 
   def locale_list
-    [['English','en'],['Spanish','es']]
+    [['English','en'],['Spanish','es'],['German','de']]
   end
   
   def juvia_handle_response(options)
