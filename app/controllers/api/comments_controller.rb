@@ -13,6 +13,8 @@ class Api::CommentsController < ApplicationController
     @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
     prepare!([:site_key, :topic_key, :container, :topic_title, :topic_url], [:html, :js])
     @topic = Topic.lookup(@site_key, @topic_key)
+    topic_url_arr = params[:topic_url].split('#')
+    @perma_link_comment_id = topic_url_arr[1].blank? ? nil : topic_url_arr[1].split('-')[2]
     if @topic
       @notify_on = Author.notifier?(@user_email) if @require_external_user and @user_logged_in
       render 
@@ -25,7 +27,7 @@ class Api::CommentsController < ApplicationController
     prepare!([:site_key, :topic_key, :topic_title, :topic_url, :sorting_order], [:html, :js])
     @js_status = (params[:topic_url].split("@").include? "new_js") ? true : false
     @topic_title, @topic_url = params[:topic_title], params[:topic_url].split("@").first + "#"
-    list_comments
+    list_comments(params[:perma_link_comment_id])
   end
 
   def show_comments
@@ -139,8 +141,9 @@ private
     end
   end 
 
-  def list_comments
+  def list_comments(perma_link_comment_id = "")
     @topic = Topic.lookup(@site_key, @topic_key)
+    @perma_link_comment = perma_link_comment_id.blank? ? nil : @topic.comments.where(comment_number:perma_link_comment_id).first
     if @topic
       comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sorting_order]
         @topic.topic_comments.send(params[:sorting_order]).visible

@@ -16,7 +16,8 @@ if (!Juvia) {
     user_email: '',
     use_my_user: 'false',
     root_url: '',
-    juvia_jquery: ''
+    juvia_jquery: '',
+    perma_link_comment_id: ''
 	};
 }
 

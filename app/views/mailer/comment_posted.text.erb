@@ -2,4 +2,4 @@
 
 <%= @child_comment.content %>
 
-<a href="<%= @child_comment.topic.url || 'Unknown' %>">Link to article</a>
+<a href="<%= @child_comment.topic.url || 'Unknown' %>#comment-box-<%= @child_comment.comment_number %>">Link to comment</a> <br/> <br/>

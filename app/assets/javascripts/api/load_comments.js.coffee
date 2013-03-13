@@ -25,6 +25,7 @@ Juvia.reqLoadComment = ->
     restrict_comment_length: self.restrict_comment_length
     use_my_user: self.use_my_user
     user_logged_in: self.user_logged_in
+    perma_link_comment_id: self.perma_link_comment_id
 
   s = document.createElement("script")
   s.async = true
