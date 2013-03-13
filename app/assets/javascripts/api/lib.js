@@ -22,7 +22,7 @@ if (!Juvia) {
 
 // Juvia localization 
 
-Juvia = {
+var juvia_locale = {
   
   t: {
     "flagged" : "Flagged",
@@ -4684,6 +4684,8 @@ es: {
   
   Juvia.juvia_jquery = $;
   
+  Juvia.juvia_jquery.extend(Juvia, juvia_locale);
+
   Juvia.set_cookie = function(the_cookie, the_value, options){
     $.cookie(the_cookie, the_value, options);
   }
