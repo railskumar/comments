@@ -88,11 +88,21 @@ class Admin::CommentsController < ApplicationController
 
   def destroy_flag
     comment = Comment.find(params[:id])
-    comment.flags.each do |flag| 
+    comment.flags.each do |flag|
       authorize! :destroy, @flag
       flag.destroy
     end
     redirect_back(flags_admin_comments_path)
+  end
+
+  def destroy_comments_by_author
+    authorize! :destroy, Comment
+    @site = Site.find(params[:site_id])
+    comments = @site.comments.where(:author_email => params[:author_email]) unless @site.blank?
+    comments.each do |comment|
+      comment.destroy
+    end
+    redirect_to admin_comments_path
   end
   
 private
