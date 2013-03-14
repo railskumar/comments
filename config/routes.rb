@@ -16,6 +16,7 @@ Juvia::Application.routes.draw do
     resources :comments do
       collection do
         get :preview, :flags
+        delete :destroy_comments_by_author
       end
       member do
         put :approve

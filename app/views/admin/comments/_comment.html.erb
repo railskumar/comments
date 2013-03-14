@@ -48,6 +48,10 @@
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>
+        <%= remove_button_link_to "Delete All Comments of #{comment.author_name}", destroy_comments_by_author_admin_comments_path(:site_id => @site.id, :author_email => comment.author_email),
+          :method => :delete,
+          :confirm => 'Are you sure?',
+          :return_to => request.fullpath %>
       <% end %>
     </div>
   </div>
