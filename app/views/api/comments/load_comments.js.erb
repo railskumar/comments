@@ -22,3 +22,7 @@ if(Juvia.total_pages > 1){
   <% end %>
 <% end %>
 <%= juvia_reinstall_behavior %>
+
+<% if @perma_link_comment.present? %>
+  window.location = "#comment-box-<%= @perma_link_comment.comment_number.to_s %>";
+<% end %>

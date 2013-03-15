@@ -513,6 +513,20 @@ describe "Javascript API", "error handling" do
 
         end
         
+        describe "permalink to comment" do
+          it "should display comment box attached to permalink on top of the all comments" , :js => true do
+            create_three_comment
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            within("#juvia-comments-box") do
+              comment_order = all('.juvia-comment')
+              comment_order[0]['id'].eql? "comment-box-3"
+              comment_order[1]['id'].eql? "comment-box-1"
+              comment_order[2]['id'].eql? "comment-box-2"
+            end
+          end
+        end
+
         describe "Cancel button" do
           it "should not show by default" , :js => true do
             create_new_topic
