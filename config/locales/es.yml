@@ -1,84 +1,81 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 es:
-  topic_like: es Like this topic
-  topic_liked: es Liked this topic
-  topic: es Topic
-  comments: es Comments
-  anonymous: es Anonymous
-  add_comment_title: es Add comment
-  error_add_comment: es You didn't write anything.
-  email_notification_on: es Email Notification is ON
-  email_notification_off: es Email Notification is OFF
-  thanks: es Thanks!
-  email_notification_success_message: es Email notifications were successfully saved.
-  submit_btn: es Submit
-  close_btn: es Close
-  submitting_please_wait: es Submitting, please wait...
-  preview: es Preview
-  markdown_help: es Help with formatting
-  total_comment_title: es comments
-  sort_by_most_popular: es Sort by most popular
-  sort_by_newest_first: es Sort by newest first
-  sort_by_oldest_first: es Sort by oldest first
-  flag: es Flag
-  flagged: es Flagged
-  like: es Like
-  liked: es Liked
-  unliked: es Unliked
-  edit: es Edit
-  reply: es Reply
-  people_who_liked_this: es People who liked this
-  format_text: es Format Text
-  headers: es Headers
-  h1_header: es H1 Header
-  h2_header: es H2 Header
-  text_styles: es Text styles
-  for_italic: es For italic
-  for_bold: es For bold
-  item_1: es Item 1
-  item_2: es Item 2
-  format: es Format
-  example: es Example
-  more_help_on_markdown_home_page: es More help on markdown home page
-  lists: es Lists
-  unordered: es Unordered
-  ordered: es Ordered
-  miscellaneous: es Miscellaneous
-  images: es Images
-  links: es Links
-  confirm_message_flag: es Are you sure you wish to flag this comment?
-  thanks_for_flag: es Thank you. This comment has been flagged for moderator attention.
-  show_more: es Show More
-  site_not_found_message: es Oops, we don't recognize this site key. Please check whether it's correct.
-  akismet_site_error: es Site URL required for Akismet check
-  akismet_key_error: es Akismet key required
-  akismet_internal_error: es Akismet internal error
-  akismet_server_key_error: es Unknown Akismet server error, maybe your API key is wrong
-  akismet_key_error: es Akismet server error
-  vote_required: esVote is required
-  reference_required: es Reference is required
-  site_key_not_found: es Site key not found.
-  missing_parameter: es Missing required parameter
-  API_invocation_error: es API invocation error
-  required_parameter: es The required parameter
-  was_not_given: es wasn't given
-  no_comments: es There are no comments yet.
-  compose_new_comment: es Compose new comment
-  in_reply_to: es In reply to
-  replied_to_your_comment_on: es replied to your comment on
-  link_to_article: es Link to article
-  by: es by
-  loading: es Loading
-  click_here: es click here
-  please_login_to_make_comment: es Please Login to make comment
-  cancel: es Cancel
-  users_guests_liked_this: "es %{users} users and %{guests} guests liked this."
-  one_user_one_guest_liked_this: "es One user and One guest liked this."
-  one_user_guests_liked_this: "es One user and %{guests} guests liked this."
-  users_one_guest_liked_this: "es %{users} users and One guest liked this."
-  one_user_liked_this: "es One user liked this."
-  one_guest_liked_this: "es One guest liked this."
-  users_liked_this: "es %{users} users liked this."
-  guests_liked_this: "es %{guests} guests liked this."
+  topic_like: Me gusta este tópico
+  topic_liked: Me gustó este tópico
+  topic: Tópico
+  comments: Comentarios
+  anonymous: Anónimo
+  add_comment_title: Añadir comentario
+  error_add_comment: Usted no ha escrito nada aún.
+  email_notification_on: Aviso por correo ACTIVO
+  email_notification_off: Aviso por correo INACTIVO
+  thanks: ¡Gracias!
+  email_notification_success_message: Los avisos por correo se guardaron con éxito.
+  submit_btn: Enviar
+  close_btn: Cerrar
+  submitting_please_wait: Enviando, por favor espere...
+  preview: Vista previa
+  markdown_help: Para ayuda con el formato
+  total_comment_title: comentarios
+  sort_by_most_popular: Ordenar por popularidad
+  sort_by_newest_first: Ver más recientes primero
+  sort_by_oldest_first: Ver más antiguos primero
+  flag: Notificar
+  flagged: Marcado
+  like: Me gusta
+  liked: Me gustó
+  unliked: Ya no me gustó
+  edit: Editar
+  reply: Responder
+  people_who_liked_this: Gente a la que le ha gustado esto
+  format_text: Formato de Texto
+  headers: Títulos
+  h1_header: Título T1
+  h2_header: Título T2
+  text_styles: Estilos de texto
+  for_italic: Para itálicas
+  for_bold: Para negritas
+  item_1: Elemento 1
+  item_2: Elemento 2
+  format: Formato
+  example: Ejemplo
+  more_help_on_markdown_home_page: Más ayuda en la página de inicio de markdown
+  lists: Listas
+  unordered: Con viñetas
+  ordered: Numerada
+  miscellaneous: Misceláneos
+  images: Imágenes
+  links: Enlaces
+  confirm_message_flag: ¿Está seguro de querer notificar este comentario?
+  thanks_for_flag: Gracias. El comentario ha sido marcado para la atención del moderador.
+  show_more: Mostrar Más
+  site_not_found_message: Ups, no reconocemos el código de este sitio. Por favor revise que sea correcto.
+  akismet_site_error: Se requiere el URL del sitio para revisión por Akismet.
+  akismet_key_error: Código de Akismet requerido
+  akismet_internal_error: Error interno en Akismet
+  akismet_server_key_error: Error desconocido en el servidor de Akismet, tal vez su código API esté equivocado
+  akismet_key_error: Error del servidor de Akismet
+  vote_required: Se requiere su voto
+  reference_required: Se requiere una referencia
+  site_key_not_found: Código de sitio no encontrado.
+  missing_parameter: Parámetro requerido faltante
+  API_invocation_error: Error al invocar API
+  required_parameter: El parámetro requerido
+  was_not_given: no fue entregado
+  no_comments: Aún no hay comentarios.
+  compose_new_comment: Redacte un nuevo comentario
+  in_reply_to: En respuesta a
+  replied_to_your_comment_on: respondió a su comentario en
+  link_to_article: Enlace al artículo
+  by: por
+  loading: Cargando
+  click_here: haga clic aquí
+  please_login_to_make_comment: Para comentar, por favor inicie sesión
+  cancel: Cancelar
+  users_guests_liked_this: "A %{users} usuarios y %{guests} invitados les gustó esto."
+  one_user_one_guest_liked_this: "A Un usuario y a Un invitado les gustó esto."
+  one_user_guests_liked_this: "A Un usuario y a %{guests} invitados les gustó esto."
+  users_one_guest_liked_this: "%{users} users and One guest liked this."
+  one_user_liked_this: "A un usuario le gustó esto."
+  one_guest_liked_this: "A Un invitado le gustó esto."
+  users_liked_this: "A %{users} usuarios les gustó esto."
+  guests_liked_this: "A %{guests} invitados les gustó esto."
