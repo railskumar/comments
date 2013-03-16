@@ -1,15 +1,15 @@
 es:
-  topic_like: Me gusta este tópico
-  topic_liked: Me gustó este tópico
-  topic: Tópico
+  topic_like: Me gusta este tÃ³pico
+  topic_liked: Me gustÃ³ este tÃ³pico
+  topic: TÃ³pico
   comments: Comentarios
-  anonymous: Anónimo
-  add_comment_title: Añadir comentario
-  error_add_comment: Usted no ha escrito nada aún.
+  anonymous: AnÃ³nimo
+  add_comment_title: AÃ±adir comentario
+  error_add_comment: Usted no ha escrito nada aÃºn.
   email_notification_on: Aviso por correo ACTIVO
   email_notification_off: Aviso por correo INACTIVO
-  thanks: ¡Gracias!
-  email_notification_success_message: Los avisos por correo se guardaron con éxito.
+  thanks: Â¡Gracias!
+  email_notification_success_message: Los avisos por correo se guardaron con Ã©xito.
   submit_btn: Enviar
   close_btn: Cerrar
   submitting_please_wait: Enviando, por favor espere...
@@ -17,65 +17,65 @@ es:
   markdown_help: Para ayuda con el formato
   total_comment_title: comentarios
   sort_by_most_popular: Ordenar por popularidad
-  sort_by_newest_first: Ver más recientes primero
-  sort_by_oldest_first: Ver más antiguos primero
+  sort_by_newest_first: Ver mÃ¡s recientes primero
+  sort_by_oldest_first: Ver mÃ¡s antiguos primero
   flag: Notificar
   flagged: Marcado
   like: Me gusta
-  liked: Me gustó
-  unliked: Ya no me gustó
+  liked: Me gustÃ³
+  unliked: Ya no me gustÃ³
   edit: Editar
   reply: Responder
   people_who_liked_this: Gente a la que le ha gustado esto
   format_text: Formato de Texto
-  headers: Títulos
-  h1_header: Título T1
-  h2_header: Título T2
+  headers: TÃ­tulos
+  h1_header: TÃ­tulo T1
+  h2_header: TÃ­tulo T2
   text_styles: Estilos de texto
-  for_italic: Para itálicas
+  for_italic: Para itÃ¡licas
   for_bold: Para negritas
   item_1: Elemento 1
   item_2: Elemento 2
   format: Formato
   example: Ejemplo
-  more_help_on_markdown_home_page: Más ayuda en la página de inicio de markdown
+  more_help_on_markdown_home_page: MÃ¡s ayuda en la pÃ¡gina de inicio de markdown
   lists: Listas
-  unordered: Con viñetas
+  unordered: Con viÃ±etas
   ordered: Numerada
-  miscellaneous: Misceláneos
-  images: Imágenes
+  miscellaneous: MiscelÃ¡neos
+  images: ImÃ¡genes
   links: Enlaces
-  confirm_message_flag: ¿Está seguro de querer notificar este comentario?
-  thanks_for_flag: Gracias. El comentario ha sido marcado para la atención del moderador.
-  show_more: Mostrar Más
-  site_not_found_message: Ups, no reconocemos el código de este sitio. Por favor revise que sea correcto.
-  akismet_site_error: Se requiere el URL del sitio para revisión por Akismet.
-  akismet_key_error: Código de Akismet requerido
+  confirm_message_flag: Â¿EstÃ¡ seguro de querer notificar este comentario?
+  thanks_for_flag: Gracias. El comentario ha sido marcado para la atenciÃ³n del moderador.
+  show_more: Mostrar MÃ¡s
+  site_not_found_message: Ups, no reconocemos el cÃ³digo de este sitio. Por favor revise que sea correcto.
+  akismet_site_error: Se requiere el URL del sitio para revisiÃ³n por Akismet.
+  akismet_key_error: CÃ³digo de Akismet requerido
   akismet_internal_error: Error interno en Akismet
-  akismet_server_key_error: Error desconocido en el servidor de Akismet, tal vez su código API esté equivocado
+  akismet_server_key_error: Error desconocido en el servidor de Akismet, tal vez su cÃ³digo API estÃ© equivocado
   akismet_key_error: Error del servidor de Akismet
   vote_required: Se requiere su voto
   reference_required: Se requiere una referencia
-  site_key_not_found: Código de sitio no encontrado.
-  missing_parameter: Parámetro requerido faltante
+  site_key_not_found: CÃ³digo de sitio no encontrado.
+  missing_parameter: ParÃ¡metro requerido faltante
   API_invocation_error: Error al invocar API
-  required_parameter: El parámetro requerido
+  required_parameter: El parÃ¡metro requerido
   was_not_given: no fue entregado
-  no_comments: Aún no hay comentarios.
+  no_comments: AÃºn no hay comentarios.
   compose_new_comment: Redacte un nuevo comentario
   in_reply_to: En respuesta a
-  replied_to_your_comment_on: respondió a su comentario en
-  link_to_article: Enlace al artículo
+  replied_to_your_comment_on: respondiÃ³ a su comentario en
+  link_to_article: Enlace al artÃ­culo
   by: por
   loading: Cargando
-  click_here: haga clic aquí
-  please_login_to_make_comment: Para comentar, por favor inicie sesión
+  click_here: haga clic aquÃ­
+  please_login_to_make_comment: Para comentar, por favor inicie sesiÃ³n
   cancel: Cancelar
-  users_guests_liked_this: "A %{users} usuarios y %{guests} invitados les gustó esto."
-  one_user_one_guest_liked_this: "A Un usuario y a Un invitado les gustó esto."
-  one_user_guests_liked_this: "A Un usuario y a %{guests} invitados les gustó esto."
+  users_guests_liked_this: "A %{users} usuarios y %{guests} invitados les gustÃ³ esto."
+  one_user_one_guest_liked_this: "A Un usuario y a Un invitado les gustÃ³ esto."
+  one_user_guests_liked_this: "A Un usuario y a %{guests} invitados les gustÃ³ esto."
   users_one_guest_liked_this: "%{users} users and One guest liked this."
-  one_user_liked_this: "A un usuario le gustó esto."
-  one_guest_liked_this: "A Un invitado le gustó esto."
-  users_liked_this: "A %{users} usuarios les gustó esto."
-  guests_liked_this: "A %{guests} invitados les gustó esto."
+  one_user_liked_this: "A un usuario le gustÃ³ esto."
+  one_guest_liked_this: "A Un invitado le gustÃ³ esto."
+  users_liked_this: "A %{users} usuarios les gustÃ³ esto."
+  guests_liked_this: "A %{guests} invitados les gustÃ³ esto."
