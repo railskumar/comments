@@ -234,8 +234,6 @@ Juvia.handleLoadTopic = (options) ->
   @restoreCommentBox $container.find("> .juvia-container")
   if options.css and $("style.juvia").length is 0
     style = document.createElement("style")
-    extend_css = ".juvia-container [class^=\"icon-\"],.juvia-container [class*=\" icon-\"] {background-image: url( this.root_url + \"/assets/glyphicons-halflings.png\" %>);}"
-    options.css += extend_css
     rules = document.createTextNode(options.css)
     style.type = "text/css"
     style.className = "juvia"

@@ -24,7 +24,8 @@
   options = { 
     :action    => 'LoadTopic',
     :container => @container,
-    :html      => render(:partial => 'topic', :formats => [:html], :locals => { :topic => @topic })
+    :html      => render(:partial => 'topic', :formats => [:html], :locals => { :topic => @topic }),
+    :css       => '.juvia-container [class^="icon-"],.juvia-container [class*=" icon-"] {background-image: url(" ' + Settings.juvia_comment.url + '/assets/glyphicons-halflings.png");}'
   }
 %>
 <%= juvia_handle_response(options) %>

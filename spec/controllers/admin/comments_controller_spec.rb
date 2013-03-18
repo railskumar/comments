@@ -43,7 +43,7 @@ describe Admin::CommentsController do
       topic2_comment2 = create_comment(topic2.id, {:author_email => "abc@gmail.com" })
       delete :destroy_comments_by_author, {:site_id => @site.id, :author_email => 'xyz@gmail.com'}
       @site.comments.should_not eq([topic1_comment1,topic2_comment1])
-      @site.comments.should eq([topic1_comment2,topic2_comment2])
+      @site.comments.should eq([topic2_comment2,topic1_comment2])
       response.should redirect_to(admin_comments_path)
     end
   end
