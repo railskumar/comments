@@ -126,28 +126,43 @@ Juvia.rdf_comment_box = (option) ->
   aba.appendChild abab
   ababa = document.createElement("div")
   if @user_logged_in and editable() or @user_logged_in
-    ababa.className = "span8"
+    ababa.className = "span7"
   else
-    ababa.className = "span9"
+    ababa.className = "span8"
   abab.appendChild ababa
+  abba_row = document.createElement("div")
+  abba_row.className = "row-fluid"
+  ababa.appendChild abba_row
+  abba_div5 = document.createElement("div")
+  if @user_logged_in
+    abba_div5.className = "span5"
+  else
+    abba_div5.className = "span4"
+  abba_row.appendChild abba_div5
   ababaa_p = document.createElement("p")
-  ababa.appendChild ababaa_p
+  abba_div5.appendChild ababaa_p
   ababaaa_span = document.createElement("span")
   ababaaa_span.appendChild document.createTextNode(creation_date)
   ababaa_p.appendChild ababaaa_span
+  abba_div7 = document.createElement("div")
+  if @user_logged_in
+    abba_div7.className = "span7"
+  else
+    abba_div7.className = "span8"
+  abba_row.appendChild abba_div7
+  ababbaa_p = document.createElement("p")
+  abba_div7.appendChild ababbaa_p
   ababaab_span = document.createElement("span")
   ababaab_span.id = "comment-vote-" + comment_id
   ababaab_span.className = "comment-vote"
   ababaab_span.setAttribute "data-comment-id", comment_id
-  ababaab_span.setAttribute "style", "margin-left:15px"
   ababaab_span.appendChild document.createTextNode(comment_votes)
-  ababaa_p.appendChild ababaab_span
-  
+  ababbaa_p.appendChild ababaab_span
   bottom_second_colm = document.createElement("div")
   if @user_logged_in and editable() or @user_logged_in
-    bottom_second_colm.className = "span4"
+    bottom_second_colm.className = "span5"
   else
-    bottom_second_colm.className = "span3"
+    bottom_second_colm.className = "span4"
   abab.appendChild bottom_second_colm
   function_links = document.createElement("div")
   function_links.className = "row-fluid"
