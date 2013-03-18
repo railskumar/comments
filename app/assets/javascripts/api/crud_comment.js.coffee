@@ -91,6 +91,7 @@ Juvia.rdf_comment_box = (option) ->
   comment_votes = option.comment_votes
   liked = option.liked
   flagged = option.flagged
+  comment_permalink = option.permalink
   comment_user_email = option.user_email
   editable = ->
     return true  if option.can_edit is "true"
@@ -103,7 +104,7 @@ Juvia.rdf_comment_box = (option) ->
   a.setAttribute "data-comment-id", comment_id
   
   # Start Header creation 
-  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + comment_user_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span8'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
+  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + comment_user_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span2'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
   
   # end Comment Header Bar
   ab = document.createElement("div")
