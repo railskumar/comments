@@ -74,7 +74,8 @@ module ApplicationHelper
 	  :flagged => flg_status(username, user_email, comment, options[:js_status]),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
-	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false"
+	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
+    :permalink => comment.permalink
     }
   end
 

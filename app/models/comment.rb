@@ -134,6 +134,10 @@ class Comment < ActiveRecord::Base
     Author.where(author_email: author_email).first
   end
 
+  def permalink
+    self.topic.url.blank? ? "#" : self.topic.url + "#comment-box-#{self.comment_number}"
+  end
+
   def create_author
     Author.create!(:author_email => author_email) unless author.present?
     notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me

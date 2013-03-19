@@ -51,6 +51,14 @@ describe "Javascript API", "error handling" do
 
       show_topic(topic.site.key, topic.key)
     end
+    
+    def create_one_comment
+      create_new_topic
+      topic = Topic.last
+      show_topic(topic.site.key, topic.key)
+      fill_in 'content', :with => 'hello world 1'
+      click_button 'Submit'
+    end
  
     describe "js format" do
       describe "comment" do      
@@ -513,6 +521,29 @@ describe "Javascript API", "error handling" do
 
         end
         
+        describe "permalink to comment" do
+          it "should display comment box attached to permalink on top of the all comments" , :js => true do
+            create_three_comment
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            within("#juvia-comments-box") do
+              comment_order = all('.juvia-comment')
+              comment_order[0]['id'].eql? "comment-box-3"
+              comment_order[1]['id'].eql? "comment-box-1"
+              comment_order[2]['id'].eql? "comment-box-2"
+            end
+          end
+          
+          it "should create permalink for comment" , :js => true do
+            create_one_comment
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            find("#permalink-" + topic.comments.first.comment_number.to_s).click
+            find("#comment_permalink_label").text.should include("Link to this comment")
+            find("#comment-permalink input").value.should eq(topic.url.to_s+"#"+"comment-box-"+topic.comments.first.comment_number.to_s)
+          end
+        end
+
         describe "Cancel button" do
           it "should not show by default" , :js => true do
             create_new_topic

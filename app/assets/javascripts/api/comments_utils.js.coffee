@@ -268,8 +268,13 @@ Juvia.handleLoadUserComment = (options) ->
 
 
 Juvia.handleLoadComment = (options) ->
-  dom_ele = @rdf_comment_box(options)
-  @appendComment dom_ele
+  if options.perma_link_comment_box == 'true'
+    dom_ele = @rdf_comment_box(options)
+    @appendComment dom_ele
+  else
+    if options.comment_number != options.perma_link_comment_id
+      dom_ele = @rdf_comment_box(options)
+      @appendComment dom_ele
 
 Juvia.showUsers = (users, status) ->
   users_liked_str = ""

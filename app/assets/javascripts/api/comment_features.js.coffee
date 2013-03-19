@@ -209,3 +209,11 @@ Juvia.authorSetting = (event) ->
   opt2 = {}
   
   @loadJsScript "/api/authors/update_author", $.extend(opt1, opt2)
+
+Juvia.permalinkToComment = (link) ->
+  $ = @$
+  permalink_str = ""
+  permalink_dom = $("#comment-permalink")
+  $("#comment_permalink").modal "show"
+  permalink_str = permalink_str + "<input type='text' value=" + link + " class='permalink-anchored-to' readonly='true' onclick = 'this.select()'>"
+  permalink_dom.html " " + permalink_str
