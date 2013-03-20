@@ -272,7 +272,7 @@ Juvia.handleLoadComment = (options) ->
     dom_ele = @rdf_comment_box(options)
     @appendComment dom_ele
   else
-    if options.comment_number != options.perma_link_comment_id
+    unless options.comment_number.toString() is @perma_link_comment_id
       dom_ele = @rdf_comment_box(options)
       @appendComment dom_ele
 
