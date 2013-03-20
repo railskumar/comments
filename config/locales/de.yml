@@ -82,3 +82,4 @@ de:
   one_guest_liked_this: "de One guest liked this."
   users_liked_this: "de %{users} users liked this."
   guests_liked_this: "de %{guests} guests liked this."
+  link_to_this_comment: "de Link to this comment"

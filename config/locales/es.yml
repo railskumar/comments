@@ -79,3 +79,4 @@ es:
   one_guest_liked_this: "A Un invitado le gustó esto."
   users_liked_this: "A %{users} usuarios les gustó esto."
   guests_liked_this: "A %{guests} invitados les gustó esto."
+  link_to_this_comment: "Link to this comment"

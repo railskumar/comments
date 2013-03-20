@@ -82,3 +82,4 @@ en:
   one_guest_liked_this: "One guest liked this."
   users_liked_this: "%{users} users liked this."
   guests_liked_this: "%{guests} guests liked this."
+  link_to_this_comment: "Link to this comment"
