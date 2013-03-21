@@ -1,5 +1,5 @@
 <% if @require_external_user %>
-  Juvia.root_url = '<%= Settings.juvia_comment.url %>';
+  Juvia.root_url = '<%= escape_javascript(Settings.juvia_comment.url) %>';
 <% end %>
 
 <% if @require_external_user %>
@@ -8,8 +8,8 @@
 
 <% if @user_logged_in %> 
   Juvia.user_logged_in = true;
-  Juvia.username = '<%= @username%>';
-  Juvia.user_email = '<%= @user_email%>';
+  Juvia.username = '<%= escape_javascript(@username) %>';
+  Juvia.user_email = '<%= escape_javascript(@user_email) %>';
 <% end %>
 
 <% if @restrict_comment_length %> 

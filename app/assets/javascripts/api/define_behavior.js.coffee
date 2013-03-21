@@ -2,6 +2,7 @@ Juvia.reinstallBehavior = ->
   self = this
   $ = @$
   $('input[name="parent_id"]').val("");
+  $('.juvia-comment-content img').lightBox();
   $('.dropdown-toggle').dropdown();
   unless $(document.body).hasClass("juvia-installed-behavior")
     $(document.body).addClass "juvia-installed-behavior"
