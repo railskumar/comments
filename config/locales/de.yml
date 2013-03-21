@@ -1,67 +1,81 @@
-
 de:
-  comments: Kommentare
-  anonymous: Unbekannt
   add_comment_title: Kommentar hinzufügen
-  error_add_comment: Sie haben nichts eingegeben
-  thanks: Vielen Dank!
-  submit_btn: Einsenden
+  akismet_internal_error: Interner Akismet-Fehler
+  akismet_key_error: Akismet-Schlüssel erforderlich
+  akismet_key_error: Akismet Server-Fehler
+  akismet_server_key_error: Unbekannter Akismet Server-Fehler, Ihr API-Schlüssel ist möglicherweise falsch
+  akismet_site_error: URL notwendig zum Akismet check
+  anonymous: Unbekannt
+  API_invocation_error: API Aufruf gescheitert
+  by: "von"
+  cancel: Abbrechen
+  click_here: Hier klicken
   close_btn: Schließen
-  submitting_please_wait: Übertragung läuft, bitte warten...
+  comments: Kommentare
+  compose_new_comment: Neuen Kommentar erstellen
+  confirm_message_flag: Sind Sie sicher, dass Sie diesen Kommentar melden möchten?
+  edit: Bearbeiten
+  email_notification_off: Die Email-Benachrichtigung ist deaktiviert
+  email_notification_on: Die Email-Benachrichtigung ist aktiviert
+  email_notification_success_message: Email-Benachrichtigung wurde erfolgreich aktiviert
+  error_add_comment: Sie haben nichts eingegeben
+  example: Beispiel
+  flag: melden
+  flagged: gemeldet
+  for_bold: Fett
+  for_italic: Kursiv
+  format: Format
+  format_text: Textformat
+  guests_liked_this: "%{guests} Besuchern gefällt das."
+  h1_header: H1 Kopfzeile
+  h2_header: H2 Kopfzeile
+  headers: Kopfzeilen
+  images: Bilder
+  in_reply_to: Antwort auf
+  item_1: Objekt 1
+  item_2: Objekt 2
+  like: Gefällt mir
+  liked: Gefallen
+  link_to_article: Link zum Artikel
+  link_to_this_comment: "Link to zu diesem Kommentar"
+  links: Links
+  lists: Listen
+  loading: laden
+  markdown_help: Hilfe bei der Formatierung
+  miscellaneous: Diverses
+  missing_parameter: Ein erforderlicher Parameter fehlt
+  more_help_on_markdown_home_page: Mehr Hilfe auf der Markdown Homepage
+  no_comments: Es wurden noch keine Kommentare abgegeben
+  one_guest_liked_this: "Einem Besucher gefällt das."
+  one_user_guests_liked_this: "Einem Benutzer und %{guests} Besuchern gefällt das."
+  one_user_liked_this: "Einem Benutzer gefällt das."
+  one_user_one_guest_liked_this: "Einem Benutzer und einem Besucher gefällt das."
+  ordered: Geordnet
+  people_who_liked_this: "%{people} Personen gefällt das"
+  please_login_to_make_comment: Bitte loggen Sie sich ein, um einen Kommentar abzugeben
   preview: Vorschau
-  total_comment_title: Kommentar
+  reference_required: Quellenangabe erforderlich
+  replied_to_your_comment_on: "%{username} hat auf Ihren Kommentar zu %{topic} geantwortet"
+  reply: Antworten
+  required_parameter: Der erforderliche Parameter wurde nicht eingegeben
+  show_more: Mehr zeigen
+  site_key_not_found: Die Seite konnte nicht gefunden werden
+  site_not_found_message: Die Adresse für diese Seite wurde nicht erkannt. Bitte überprüfen Sie die Adresse auf korrekte Schreibweise.
   sort_by_most_popular: Beliebteste zuerst
   sort_by_newest_first: Neueste zuerst
   sort_by_oldest_first: Älteste zuerst
-  flag: melden
-  flagged: gemeldet
-  like: Gefällt mir
-  edit: Bearbeiten
-  reply: Antworten
-  people_who_liked_this: "%{people} Personen gefällt das"
-  format_text: Textformat
-  headers: Kopfzeilen
-  h1_header: H1 Kopfzeile
-  h2_header: H2 Kopfzeile
+  submit_btn: Einsenden
+  submitting_please_wait: Übertragung läuft, bitte warten...
   text_styles: Schriftarten
-  for_italic: Kursiv
-  for_bold: Fett
-  item_1: Objekt 1
-  item_2: Objekt 2
-  format: Format
-  example: Beispiel
-  lists: Listen
-  unordered: Ungeordnet
-  ordered: Geordnet
-  miscellaneous: Diverses
-  images: Bilder
-  links: Links
-  confirm_message_flag: Sind Sie sicher, dass Sie diesen Kommentar melden möchten?
+  thanks: Vielen Dank!
   thanks_for_flag: Vielen Dank. Dieser Kommentar wurde zur Begutachtung durch die Moderatoren gekennzeichnet
-  show_more: Mehr zeigen
-  site_not_found_message: Die Adresse für diese Seite wurde nicht erkannt. Bitte überprüfen Sie die Adresse auf korrekte Schreibweise.
-  akismet_key_error: Akismet-Schlüssel erforderlich
-  akismet_internal_error: Interner Akismet-Fehler
-  akismet_server_key_error: Unbekannter Akismet Server-Fehler, Ihr API-Schlüssel ist möglicherweise falsch
-  akismet_key_error: Akismet Server-Fehler
+  topic: Thema
+  topic_like: "Thema positiv bewerten"
+  topic_liked: "Thema wurde positiv bewertet"
+  total_comment_title: Kommentar
+  unordered: Ungeordnet
+  users_guests_liked_this: "%{users} Benutzerern und %{guests} Besuchern gefällt das."
+  users_liked_this: "%{users} Benutzerern gefällt das."
+  users_one_guest_liked_this: "%{users} Benutzerern und einem Besucher gefällt das."
   vote_required: Abstimmung erforderlich
-  reference_required: Quellenangabe erforderlich
-  site_key_not_found: Die Seite konnte nicht gefunden werden
-  no_comments: Es wurden noch keine Kommentare abgegeben
-  compose_new_comment: Neuen Kommentar erstellen
-  in_reply_to: Antwort auf
-  replied_to_your_comment_on: "%{username} hat auf Ihren Kommentar zu %{topic} geantwortet"
-  link_to_article: Link zum Artikel
-  by: von
-  loading: laden
-  click_here: Hier klicken
-  please_login_to_make_comment: Bitte loggen Sie sich ein, um einen Kommentar abzugeben
-  cancel: Abbrechen
-  users_guests_liked_this: "%{users} Mitgliedern und %{guests} Besuchern gefällt das."
-  one_user_one_guest_liked_this: "Einem Mitglied und einem Besucher gefällt das."
-  one_user_guests_liked_this: "Einem Mitglied und %{guests} Besuchern gefällt das."
-  users_one_guest_liked_this: "%{users} Mitgliedern und einem Besucher gefällt das."
-  one_user_liked_this: "Einem Mitglied gefällt das."
-  one_guest_liked_this: "Einem Besucher gefällt das."
-  users_liked_this: "%{users} Mitgliedern gefällt das."
-  guests_liked_this: "%{guests} Besuchern gefällt das."
+  was_not_given: war nicht gegeben
