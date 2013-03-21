@@ -2,21 +2,30 @@ class Admin::TopicsController < InheritedResources::Base
   layout 'admin'
 
   load_and_authorize_resource
-  before_filter :set_navigation_ids, :expect => [:show, :sites_topics]
-  before_filter :set_topic_navi, :only => [:show, :sites_topics]
+  before_filter :set_navigation_ids, :expect => [:show, :index]
+  before_filter :set_topic_navi, :only => [:show, :index]
 
   def show
     show! do
+      @site = Site.find(params[:site_id])
       @comments = @topic.comments.page(params[:page])
     end
   end
 
   def destroy
-    destroy! { admin_site_path(@topic.site) }
+    destroy! { admin_site_topics_path }
   end
 
   def index
-    raise "Not allowed"
+    authorize! :read, Site
+    @sites = Site.accessible_by(current_ability, :read).order('created_at ASC')
+    redirect_to admin_sites_path , notice: "There are no sites available" and return if @sites.blank?
+    @site = if( !params[:site_id].blank? )
+      @sites.where( :id => params[:site_id])[0]
+    else
+      @sites[0]
+    end
+    redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
   end
 
   def new
@@ -33,18 +42,6 @@ class Admin::TopicsController < InheritedResources::Base
 
   def update
     raise "Not allowed"
-  end
-
-  def sites_topics
-    authorize! :read, Site
-    @sites = Site.accessible_by(current_ability, :read).order('created_at ASC')
-    redirect_to admin_sites_path , notice: "There are no sites available" and return if @sites.blank?
-    @site = if( !params[:site_id].blank? )
-      @sites.where( :id => params[:site_id])[0]
-    else
-      @sites[0]
-    end
-    redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
   end
 
 private

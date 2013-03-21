@@ -12,6 +12,15 @@ reinstallBehavior = (context)->
                 $('.preview .content', form).html(html)
             $.get('/admin/comments/preview', content: textarea.val(), callback) 
 
+jumpToAnotherSite = ($this)->
+  urlArray = window.location.pathname.split('/')
+  if urlArray[2] == "sites"
+    urlArray[3] = $($this).val()
+  window.location.pathname = urlArray.join('/')
+
+
 $(document).ready ->
     reinstallBehavior()
+    $('#site_id').bind "change", (event)->
+      jumpToAnotherSite this
 
