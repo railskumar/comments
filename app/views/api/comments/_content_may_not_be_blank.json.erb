@@ -3,5 +3,5 @@
   :action    => 'ShowFormError',
   :site_key  => @site_key,
   :topic_key => @topic_key,
-  :text      => t(:error_add_comment)
+  :text      => escape_javascript(t(:error_add_comment))
 }.to_json.html_safe %>
