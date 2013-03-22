@@ -5,4 +5,9 @@ class Author < ActiveRecord::Base
     author = Author.where(author_email:author_email).first
     return author.present? ? author.notify_me : false
   end
+
+  def update_author_last_posted_on
+    self.last_posted_on = Time.zone.now
+    self.save
+  end
 end

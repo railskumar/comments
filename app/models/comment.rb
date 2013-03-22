@@ -7,6 +7,7 @@ class Comment < ActiveRecord::Base
   end
 
   COMMENT_EDIT_DURATION = 1.hour
+  COMMENT_POST_DURATION = 1.minute
   
   belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
   has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id', :dependent => :nullify
@@ -23,10 +24,12 @@ class Comment < ActiveRecord::Base
   validates_presence_of :content
   validates_presence_of :author_ip
   
+  validate :can_post_comment
+  
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :create_author
+  after_create :create_author, :update_author
   after_create :redis_update
   after_destroy :redis_update
 
@@ -143,8 +146,19 @@ class Comment < ActiveRecord::Base
     notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
   end
   
+  def update_author
+    author.update_author_last_posted_on if author.present?
+  end
+
   def notify_moderators
     Mailer.comment_posted(parent_comment,self).deliver
+  end
+
+  def can_post_comment
+    author = Author.get_user(author_email).first
+    if author.present? and (COMMENT_POST_DURATION > Time.zone.now - author.last_posted_on)
+      errors.add(:last_posted_on, "please try again")
+    end
   end
 
 private

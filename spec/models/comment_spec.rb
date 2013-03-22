@@ -49,4 +49,14 @@ describe "Comment" do
     @comment.destroy
     @comment_reply.reload.parent_id.should eq(nil)
   end
+
+  it 'can not post comment within 1 minute' do
+    @comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
+                                             :author_email => 'author1@example.com', :content => 'reply on comment', 
+                                             :parent_id => '')
+    @comment2 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
+                                             :author_email => 'author1@example.com', :content => 'reply on comment', 
+                                             :parent_id => '')
+    
+  end 
 end
