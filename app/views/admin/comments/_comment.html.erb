@@ -20,7 +20,7 @@
       <% if local_assigns[:show_topic] %>
         <div class="associated-topic">
           (<%= link_to comment.site.name, [:admin, comment.site] %> /
-           <%= link_to comment.topic.title, [:admin, comment.topic] %>)
+           <%= link_to comment.topic.title, [:admin, comment.site, comment.topic] %>)
         </div>
       <% end %>
   	</div>
@@ -36,19 +36,19 @@
         <% else %>
           <% raise "Unknown moderation status #{comment.moderation_status.inspect}" %>
         <% end %>
-        <%= positive_primary_approve_button_link_to 'Approve', approve_admin_comment_path(comment), :method => :put %>
+        <%= positive_primary_approve_button_link_to 'Approve', approve_admin_site_comment_path(comment, :site_id => comment.site), :method => :put %>
       <% end %>
-      <%= edit_button_link_to 'Edit', edit_admin_comment_path(comment, :return_to => request.fullpath) %>
+      <%= edit_button_link_to 'Edit', edit_admin_site_comment_path(comment, :site_id => comment.site.id, :return_to => request.fullpath) %>
       <%= button_group do %>
-        <%= remove_button_link_to 'Mark as spam & delete', admin_comment_path(comment, :spam => true),
+        <%= remove_button_link_to 'Mark as spam & delete', admin_site_comment_path(comment, :site_id => comment.site.id, :spam => true),
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>
-        <%= remove_button_link_to 'Delete', [:admin, comment],
+        <%= remove_button_link_to 'Delete', [:admin, comment.site, comment],
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>
-        <%= remove_button_link_to "Delete All Comments of #{comment.author_name}", destroy_comments_by_author_admin_comments_path(:site_id => comment.site.id, :author_email => comment.author_email),
+        <%= remove_button_link_to "Delete All Comments of #{comment.author_name}", destroy_comments_by_author_admin_site_comments_path(:site_id => comment.site.id, :author_email => comment.author_email),
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>

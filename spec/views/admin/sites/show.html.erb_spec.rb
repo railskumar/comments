@@ -12,8 +12,4 @@ describe "admin/sites/show.html.erb" do
     rendered.should include(@site.key)
   end
 
-  it "shows a list of topics" do
-    render
-    rendered.should have_selector('.topics.list')
-  end
 end

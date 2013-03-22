@@ -30,7 +30,7 @@ describe Admin::CommentsController do
     it "should list comments of @site" do
       topic1 = create_topic(@site.id)
       topic1_comment1 = create_comment(topic1.id,{:author_email => "xyz@gmail.com" })
-      get :index
+      get :index, {:site_id => @site}
       response.should render_template("admin/comments/index")
     end
 
@@ -44,7 +44,7 @@ describe Admin::CommentsController do
       delete :destroy_comments_by_author, {:site_id => @site.id, :author_email => 'xyz@gmail.com'}
       @site.comments.should_not include(topic1_comment1,topic2_comment1)
       @site.comments.should include(topic1_comment2,topic2_comment2)
-      response.should redirect_to(admin_comments_path)
+      response.should redirect_to(admin_site_comments_path)
     end
   end
   

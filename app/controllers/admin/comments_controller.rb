@@ -26,6 +26,7 @@ class Admin::CommentsController < ApplicationController
   end
   
   def edit
+    @site = Site.find(params[:site_id])
     @comment = Comment.find(params[:id])
     authorize! :update, @comment
   end
@@ -34,7 +35,7 @@ class Admin::CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     authorize! :update, @comment
     if @comment.update_attributes(params[:comment], :as => current_user.role)
-      redirect_back(admin_comments_path)
+      redirect_back(admin_site_comments_path)
     else
       render :action => 'edit'
     end
@@ -54,7 +55,7 @@ class Admin::CommentsController < ApplicationController
       end
       @comment.save!
     end
-    redirect_back(admin_comments_path)
+    redirect_back(admin_site_comments_path)
   end
 
   def destroy
@@ -66,7 +67,7 @@ class Admin::CommentsController < ApplicationController
       end
       @comment.destroy
     end
-    redirect_back(admin_comments_path)
+    redirect_back(admin_site_comments_path)
   end
 
   def flags
@@ -78,7 +79,7 @@ class Admin::CommentsController < ApplicationController
       @sites[0]
     end
     redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
-     @sites_comment = @site.comments;
+    @sites_comment = @site.comments
     comments = @sites_comment.where(:id => [Flag.latest.select(:comment_id).map { |e| e.comment_id }.uniq]).sort { |x, y| x.flags.size <=> y.flags.size }.reverse
     @flagcomments, flagcomment = [], Struct.new(:flaggers, :comment)
     comments.each do |comment|
@@ -92,7 +93,7 @@ class Admin::CommentsController < ApplicationController
       authorize! :destroy, @flag
       flag.destroy
     end
-    redirect_back(flags_admin_comments_path)
+    redirect_back(flags_admin_site_comments_path)
   end
 
   def destroy_comments_by_author
@@ -102,7 +103,7 @@ class Admin::CommentsController < ApplicationController
     comments.each do |comment|
       comment.destroy
     end
-    redirect_to admin_comments_path
+    redirect_to admin_site_comments_path
   end
   
 private

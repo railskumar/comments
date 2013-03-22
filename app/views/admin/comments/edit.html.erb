@@ -1,6 +1,6 @@
 <h1>Editing comment by <%= @comment.author_name || 'Anonymous' %></h1>
 
-<%= form_for([:admin, @comment], :html => { :class => 'comment' }) do |f| %>
+<%= form_for([:admin, @comment.site, @comment], :html => { :class => 'comment' }) do |f| %>
   <% if @comment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
@@ -30,6 +30,6 @@
   
   <div class="para actions">
     <%= f.submit :class => 'primary button' %>
-    <%= button_link_to 'Cancel', session[:return_to] || admin_comments_path %>
+    <%= button_link_to 'Cancel', session[:return_to] || admin_site_comments_path %>
   </div>
 <% end %>

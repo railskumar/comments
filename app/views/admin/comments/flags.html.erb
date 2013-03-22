@@ -1,17 +1,4 @@
-<div class='search-div'>
-  <form class="well form-search" action="/admin/comments/flags" method="get">  
-    <select id='sites' name="site_id" class= "dropdown_box_class">
-      <% @sites.each_with_index do | site, index | %>
-        <% if @site.id == site.id %>
-          <option selected= "selected" value= <%= site.id %>><%= site.name %></option>
-        <% else %>
-          <option value= <%= site.id %>><%= site.name %></option>
-        <% end %>
-      <% end %>
-    </select>
-    <button type = "submit" class = "search-button">Go</button>  
-  </form>  
-</div>
+<%= render :partial => 'admin/shared/site_navigation' %>
 <h3>Flagged Comments</h3>
 <hr>
 <div class="comments list">
@@ -27,7 +14,7 @@
       	    </strong>
       	  </div>
       	  <div class="j-left">
-      	    <%= remove_button_link_to 'Delete flags', destroy_flag_admin_comment_path(flagcomment.comment),
+      	    <%= remove_button_link_to 'Delete flags', destroy_flag_admin_site_comment_path(flagcomment.comment, :site_id => @site),
             :method => :delete,
             :confirm => 'Are you sure?',
             :return_to => request.fullpath %>

@@ -6,31 +6,34 @@ Juvia::Application.routes.draw do
   match 'api/topic/vote' => 'api/votes#topics_vote'
   match 'api/post/flag' => 'api/flags#post_report'
 
-  get 'admin/sites_topics', :to => 'admin/topics#sites_topics'
-
   root :to => 'admin/dashboard#index'
 
   devise_for :users
   
   namespace :admin do
-    resources :comments do
-      collection do
-        get :preview, :flags
-        delete :destroy_comments_by_author
-      end
-      member do
-        put :approve
-        delete :destroy_flag
-      end
-    end
+    
     resources :sites do
       member do
         get :created
         get :test
       end
+      resources :topics do
+        collection do
+          get :sites_topics
+        end
+      end
+      resources :comments do
+        collection do
+          get :preview, :flags
+          delete :destroy_comments_by_author
+        end
+        member do
+          put :approve
+          delete :destroy_flag
+        end
+      end   
     end
     resources :users
-    resources :topics
   end
   
   get 'admin/dashboard', :to => 'admin/dashboard#index', :as => :dashboard
