@@ -5,11 +5,14 @@ describe "Comment" do
   before(:each) do
   	@topic = FactoryGirl.create(:topic, :site => hatsuneshima)
     @comment = FactoryGirl.create(:comment, :author_email => 'author@example.com', :author_name => 'author', :content => 'first post', :topic => @topic)
-    @comment_user = FactoryGirl.create(:author, :author_email => 'author@example.com', :notify_me => true)
-    @site_key  = hatsuneshima.key
-    @topic_key = @topic.key
+    @comment_user = FactoryGirl.create(:author, :author_email => 'author1@example.com', :notify_me => true)
   end
-  
+
+  def create_comment(topic)
+    topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1', :author_email => 'author1@example.com', 
+                            :content => 'reply on comment', :parent_id => '') 
+  end
+
   it 'should check reply on comment' do
     @comment_reply = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1', 
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
@@ -50,13 +53,24 @@ describe "Comment" do
     @comment_reply.reload.parent_id.should eq(nil)
   end
 
-  it 'can not post comment within 1 minute' do
+  it 'should not post comment within 1 minute' do
+    @comment.class.set_callback(:validate, :before, :can_post_comment)
     @comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
                                              :parent_id => '')
-    @comment2 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
+    expect { create_comment(@topic) }.to raise_error(ActiveRecord::RecordInvalid)
+  end  
+
+  it 'should post comment with 1 minute break' do
+    @comment.class.set_callback(:validate, :before, :can_post_comment)
+    @comment_user.update_attributes(:last_posted_on => @comment_user.last_posted_on - 1.minute)
+    comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author',
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
                                              :parent_id => '')
-    
-  end 
+    @comment_user.update_attributes(:last_posted_on => @comment_user.last_posted_on - 1.minute)
+    comment2 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author',
+                                             :author_email => 'author1@example.com', :content => 'reply on comment', 
+                                             :parent_id => '')
+    @topic.comments.should include(comment1,comment2)
+  end
 end
