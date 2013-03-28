@@ -55,8 +55,6 @@ FactoryGirl.define do
     author_user_agent 'Firefox'
     referer 'http://www.google.com/'
     created_at Time.now
-    
-    after(:build) { |comment| comment.class.skip_callback(:validate, :before, :can_post_comment) }
   end
   
   factory :vote do

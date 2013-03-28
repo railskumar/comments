@@ -8,11 +8,6 @@ describe "Comment" do
     @comment_user = FactoryGirl.create(:author, :author_email => 'author1@example.com', :notify_me => true)
   end
 
-  def create_comment(topic)
-    topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1', :author_email => 'author1@example.com', 
-                            :content => 'reply on comment', :parent_id => '') 
-  end
-
   it 'should check reply on comment' do
     @comment_reply = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1', 
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
@@ -53,21 +48,13 @@ describe "Comment" do
     @comment_reply.reload.parent_id.should eq(nil)
   end
 
-  it 'should not post comment within 1 minute' do
-    @comment.class.set_callback(:validate, :before, :can_post_comment)
-    @comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author1',
-                                             :author_email => 'author1@example.com', :content => 'reply on comment', 
-                                             :parent_id => '')
-    expect { create_comment(@topic) }.to raise_error(ActiveRecord::RecordInvalid)
-  end  
-
-  it 'should post comment with 1 minute break' do
-    @comment.class.set_callback(:validate, :before, :can_post_comment)
-    @comment_user.update_attributes(:last_posted_on => @comment_user.last_posted_on - 1.minute)
+  it 'should post comment with some delay' do
+    post_delay = Settings.juvia_comment.COMMENT_POST_DURATION.to_i.minutes
+    @comment_user.update_attributes(:last_posted_at => @comment_user.last_posted_at - post_delay)
     comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author',
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
                                              :parent_id => '')
-    @comment_user.update_attributes(:last_posted_on => @comment_user.last_posted_on - 1.minute)
+    @comment_user.update_attributes(:last_posted_at => @comment_user.last_posted_at - post_delay)
     comment2 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author',
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 
                                              :parent_id => '')

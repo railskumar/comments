@@ -65,4 +65,4 @@ de:
   one_guest_liked_this: "Einem Besucher gefällt das."
   users_liked_this: "%{users} Mitgliedern gefällt das."
   guests_liked_this: "%{guests} Besuchern gefällt das."
-  please_post_comment_after_one_minute: Please post comment after one minute.
+  post_comment_delay_message: "Please post comment after %{post_delay} minute."

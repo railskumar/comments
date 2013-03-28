@@ -83,4 +83,4 @@ en:
   users_liked_this: "%{users} users liked this."
   guests_liked_this: "%{guests} guests liked this."
   link_to_this_comment: "Link to this comment"
-  please_post_comment_after_one_minute: Please post comment after one minute.
+  post_comment_delay_message: "Please post comment after %{post_delay} minute."

@@ -41,7 +41,8 @@ class Api::CommentsController < ApplicationController
       render :partial => 'content_may_not_be_blank'
       return
     end
-      
+    comment_post_ability!(params[:author_email])
+    
     Topic.transaction do
       @topic = Topic.lookup_or_create(
         @site_key,
@@ -50,19 +51,15 @@ class Api::CommentsController < ApplicationController
         params[:topic_url])
       if @topic
         parent_id = (Comment.where(id:params[:parent_id]).first.present?) ? params[:parent_id] : nil
-        begin
-          @comment = @topic.comments.create!(
-            :comment_number => Comment.last_comment_number(@topic.comments) + 1,
-            :author_name => params[:author_name],
-            :author_email => params[:author_email],
-            :author_ip => request.env['REMOTE_ADDR'],
-            :author_user_agent => request.env['HTTP_USER_AGENT'],
-            :referer => request.env['HTTP_REFERER'],
-            :content => @content,
-            :parent_id => parent_id)
-          rescue
-            render :partial => 'can_not_post_comment'
-          end
+        @comment = @topic.comments.create!(
+          :comment_number => Comment.last_comment_number(@topic.comments) + 1,
+          :author_name => params[:author_name],
+          :author_email => params[:author_email],
+          :author_ip => request.env['REMOTE_ADDR'],
+          :author_user_agent => request.env['HTTP_USER_AGENT'],
+          :referer => request.env['HTTP_REFERER'],
+          :content => @content,
+          :parent_id => parent_id)
       else
         render :partial => 'api/site_not_found'
       end
