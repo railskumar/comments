@@ -1,5 +1,6 @@
 // = require api/lib.js
 // = require api/lightbox.js
+// = require api/jalert.js
 // = require api/comment_features.js
 // = require api/comments_utils.js
 // = require api/crud_comment.js
