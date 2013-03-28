@@ -6,7 +6,7 @@ if(Juvia.total_pages > 1){
 
 <% if @perma_link_comment.present? %>
   <% 
-    options = comment_hash(@perma_link_comment, @username, @user_email, {:js_status => @js_status, :topic_url => @topic.url })
+    options = comment_hash(@perma_link_comment, @username, @user_email, {:topic_url => @topic.url })
     options.merge!({'action' => 'LoadComment', 'perma_link_comment_id' => @perma_link_comment.comment_number, 'perma_link_comment_box' => 'true'})
   %>
   <%= juvia_handle_load_comment(options) %>
@@ -15,7 +15,7 @@ if(Juvia.total_pages > 1){
 <% if (comments = @comments).size > 0 %>
   <% comments.each_with_index do |comment, index| %>
     <% 
-      options = comment_hash(comment, @username, @user_email, {:js_status => @js_status, :topic_url => @topic.url})
+      options = comment_hash(comment, @username, @user_email, {:topic_url => @topic.url})
       options.merge!({'action' => 'LoadComment', 'perma_link_comment_id' => @perma_link_comment.blank? ? "" : @perma_link_comment.comment_number, 'perma_link_comment_box' => 'false'})
     %>
     <%= juvia_handle_load_comment(options) %>

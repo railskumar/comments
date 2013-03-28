@@ -25,8 +25,7 @@ class Api::CommentsController < ApplicationController
 
   def load_comments
     prepare!([:site_key, :topic_key, :topic_title, :topic_url, :sorting_order], [:html, :js])
-    @js_status = (params[:topic_url].split("@").include? "new_js") ? true : false
-    @topic_title, @topic_url = params[:topic_title], params[:topic_url].split("@").first + "#"
+    @topic_title, @topic_url = params[:topic_title], params[:topic_url]
     list_comments(params[:perma_link_comment_id])
   end
 

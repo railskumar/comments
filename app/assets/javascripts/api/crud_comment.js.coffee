@@ -182,7 +182,7 @@ Juvia.rdf_comment_box = (option) ->
   ababb_flag_p = document.createElement("i")
   flag_span = document.createElement("span")
   flag_span.id = "flag-" + comment_id
-  if flagged is "true"
+  if flagged is "Flagged"
     flag_span.appendChild document.createTextNode(" " + @.t.flagged)
     flag_comment_tag.className = "flagged"
   else
@@ -205,7 +205,7 @@ Juvia.rdf_comment_box = (option) ->
     vote_comment_tag.setAttribute "data-comment-id", comment_id
     ababba = document.createElement("i")
     like_span = document.createElement("span")
-    if liked is "true"
+    if liked is "liked"
       ababba.className = "icon-thumbs-up down-active"
       like_span.appendChild document.createTextNode(" " + @.t.liked)
     else
