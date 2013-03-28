@@ -75,7 +75,7 @@ module ApplicationHelper
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
-    :permalink => comment.permalink
+    :permalink => comment.permalink(options[:topic_url])
     }
   end
 
