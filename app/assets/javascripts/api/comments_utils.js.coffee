@@ -316,6 +316,11 @@ Juvia.handleAddComment = (options) ->
   @smoothlyScrollTo comment.offset().top - 20
   comment.hide().fadeIn 2000
 
+Juvia.handleDestroyComment = (options) ->
+  $ = @$
+  if options.status is 'deleted'
+    $('div[data-comment-id="' + options.comment_key + '"]').remove()
+  
 
 Juvia.handlePreviewComment = (options) ->
   $ = @$

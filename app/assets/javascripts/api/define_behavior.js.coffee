@@ -23,7 +23,7 @@ Juvia.reinstallBehavior = ->
       $this.bind "dblclick", ->
         self.editComment this
 
-  $("editcomment:not(.juvia-installed-behavior)").each ->
+  $("li.editcomment:not(.juvia-installed-behavior)").each ->
     if self.user_logged_in
       $this = $(this)
       $this.addClass "juvia-installed-behavior"
@@ -189,4 +189,19 @@ Juvia.reinstallBehavior = ->
       else
         $("#comment_sign_" + @dataset.divid).addClass "icon-minus"
         $("#comment_sign_" + @dataset.divid).removeClass "icon-plus"
+  
+  $(".more-options").each ->
+    $this = $(this)
+    $this.bind "click", (event) ->
+       $('#'+ $this.attr("data-wrapper")).css({'overflow':'visible'})
+    $this.bind "openClassRemoved", (event) ->
+       $('#'+ $this.attr("data-wrapper")).css({'overflow':'inherit'})
 
+  $("li.deletecomment:not(.juvia-installed-behavior)").each ->
+    $this = $(this)  
+    $this.addClass "juvia-installed-behavior"
+    $this.bind "click", (event) ->
+      if confirm(Juvia.t.delete_confirm_msg)
+        self.deleteComment event, this
+      else
+        false
