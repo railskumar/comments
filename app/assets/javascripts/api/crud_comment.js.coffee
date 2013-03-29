@@ -89,6 +89,7 @@ Juvia.rdf_comment_box = (option) ->
   comment_text = option.comment_text
   creation_date = option.creation_date
   comment_votes = option.comment_votes
+  user_like_comment = option.user_like_comment
   liked = option.liked
   flagged = option.flagged
   comment_permalink = option.permalink
@@ -154,7 +155,10 @@ Juvia.rdf_comment_box = (option) ->
   abba_div7.appendChild ababbaa_p
   ababaab_span = document.createElement("span")
   ababaab_span.id = "comment-vote-" + comment_id
-  ababaab_span.className = "comment-vote"
+  if user_like_comment is "true"
+    ababaab_span.className = "comment-vote user_like"
+  else
+    ababaab_span.className = "comment-vote guest_like"
   ababaab_span.setAttribute "data-comment-id", comment_id
   ababaab_span.appendChild document.createTextNode(comment_votes)
   ababbaa_p.appendChild ababaab_span
