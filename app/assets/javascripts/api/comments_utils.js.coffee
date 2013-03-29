@@ -370,7 +370,7 @@ Juvia.handleSortComments = (options) ->
 Juvia.handleReportComment = (options) ->
   $ = @$
   if options.status is "ok"
-    jAlert @.t.second_confirm_msg, "Alert Dialog"
+    jAlert @.t.second_confirm_msg, "Alert"
     tempFlagsElement = $("#flag-" + options.comment_id)
     if options.flagged is "true"
       tempFlagsElement.html " " + @.t.flagged
