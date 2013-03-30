@@ -18,6 +18,7 @@
 
   Juvia.site_key = '<%= @site_key%>';
   Juvia.topic_key = '<%= @topic_key%>';
+  Juvia.topic_url = '<%= @topic_url%>';
   Juvia.topic_title = '<%= escape_javascript(@topic_title) %>';
   Juvia.perma_link_comment_id = '<%= @perma_link_comment_id %>';
 
@@ -40,9 +41,7 @@ if(Juvia.get_cookie('sorting_order') !== null){
 
 try{
   Juvia.setLocale("<%= I18n.locale %>");
-  Juvia.topic_url = '<%= @topic_url%>'+'@new_js';
 }catch(e){
-  Juvia.topic_url = '<%= @topic_url%>'+'@old_js';
 }
 
 Juvia.reqLoadComment();

@@ -70,29 +70,13 @@ module ApplicationHelper
 	  :comment_text => render_markdown(comment.content),
 	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
 	  :comment_votes => i18_votes(comment),
-	  :liked => like_status(username, user_email, comment, options[:js_status]),
-	  :flagged => flg_status(username, user_email, comment, options[:js_status]),
+	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "like"),
+	  :flagged => (comment.flag_status),
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
-    :permalink => comment.permalink
+    :permalink => comment.permalink(options[:topic_url])
     }
-  end
-
-  def like_status(username, user_email, comment, status)
-    if status
-      user_liked?(username, user_email, comment) ? "true" : "false"
-    else
-      user_liked?(username, user_email, comment) ? "liked" : "like"
-    end
-  end
-  
-  def flg_status(username, user_email, comment, status)
-    if status
-      comment.is_flagged? ? "true" : "false"
-    else
-      comment.flag_status
-    end
   end
   
   def comment_users_hash(vote)

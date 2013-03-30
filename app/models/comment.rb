@@ -65,7 +65,7 @@ class Comment < ActiveRecord::Base
   end
   
   def is_flagged?
-    return (self.flagged == 'Flagged' ? true : false)
+    return (self.flag_status == 'Flagged' ? true : false)
   end
   
   def spam?
@@ -134,8 +134,8 @@ class Comment < ActiveRecord::Base
     Author.where(author_email: author_email).first
   end
 
-  def permalink
-    self.topic.url.blank? ? "#" : self.topic.url + "#comment-box-#{self.comment_number}"
+  def permalink(url)
+    url.blank? ? "#" : url + "#comment-box-#{self.comment_number}"
   end
 
   def create_author
