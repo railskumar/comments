@@ -7,7 +7,7 @@
       </votetopic>
     </div>
     <div class="span7">
-    	<span id="liked_pages"><%= i18_votes(@topic) %></span>
+    	<span id="liked_pages" class= "<%= (user_likes?(@topic)) ? 'user_like' : 'guest_like' %>" ><%= i18_votes(@topic) %></span>
     </div>
   </div>
 </div>

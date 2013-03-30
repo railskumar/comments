@@ -32,7 +32,11 @@ module ApplicationHelper
       return default_url
     end
   end
-  
+
+  def user_likes?(topic_or_comment)
+    (topic_or_comment.vote_counts.to_s.include? "user") ? true : false
+  end
+
   def i18_votes(comment)
     str = comment.vote_counts.split
     i18_str = ""
@@ -75,7 +79,8 @@ module ApplicationHelper
 	  :user_email => comment.author_email,
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
-    :permalink => comment.permalink(options[:topic_url])
+    :permalink => comment.permalink(options[:topic_url]),
+    :user_like_comment => user_likes?(comment) ? "true" : "false"
     }
   end
   
