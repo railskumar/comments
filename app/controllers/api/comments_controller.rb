@@ -90,10 +90,11 @@ class Api::CommentsController < ApplicationController
     @comment = Comment.find(params[:comment_key])
     if !@comment.blank? and (@comment.author_email == params[:user_email]) 
       @comment.destroy
-      render :json => {:status => 'deleted',:action => 'DestroyComment', :comment_key => params[:comment_key]}
+      render
     else
-      render :json => {:status => 'something wrong',:action => 'DestroyComment'}
+      render :partial => 'api/site_not_found'
     end
+
   end
 
   def sort_comment
