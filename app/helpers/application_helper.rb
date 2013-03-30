@@ -72,7 +72,7 @@ module ApplicationHelper
 	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
 	  :user_name => comment.author_name,
 	  :comment_text => render_markdown(comment.content),
-	  :creation_date => comment.created_at.strftime("%m/%d/%Y %H:%M %p"), 
+	  :creation_date => comment.created_at.strftime("%d-%b-%Y %H:%M %p"), 
 	  :comment_votes => i18_votes(comment),
 	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "like"),
 	  :flagged => (comment.flag_status),

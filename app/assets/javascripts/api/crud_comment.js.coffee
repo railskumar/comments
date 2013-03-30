@@ -135,10 +135,8 @@ Juvia.rdf_comment_box = (option) ->
   abba_row.className = "row-fluid"
   ababa.appendChild abba_row
   abba_div5 = document.createElement("div")
-  if @user_logged_in
-    abba_div5.className = "span5"
-  else
-    abba_div5.className = "span4"
+  
+  abba_div5.className = "span5"
   abba_row.appendChild abba_div5
   ababaa_p = document.createElement("p")
   abba_div5.appendChild ababaa_p
@@ -146,10 +144,8 @@ Juvia.rdf_comment_box = (option) ->
   ababaaa_span.appendChild document.createTextNode(creation_date)
   ababaa_p.appendChild ababaaa_span
   abba_div7 = document.createElement("div")
-  if @user_logged_in
-    abba_div7.className = "span7"
-  else
-    abba_div7.className = "span8"
+  
+  abba_div7.className = "span7"
   abba_row.appendChild abba_div7
   ababbaa_p = document.createElement("p")
   abba_div7.appendChild ababbaa_p
