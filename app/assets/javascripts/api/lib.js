@@ -60,6 +60,7 @@ var juvia_locale = {
     "links": "Links",
     "first_confirm_msg": "Are you sure you wish to flag this comment?",
     "second_confirm_msg": "Thank you. This comment has been flagged for moderator attention.",
+    "delete_confirm_msg": "Are you sure you wish to delete this comment?",
   },
   
 de: {
@@ -97,6 +98,7 @@ de: {
     "first_confirm_msg": "Sind Sie sicher, dass Sie diesen Kommentar melden möchten?",
     "second_confirm_msg": "Vielen Dank. Dieser Kommentar wurde zur Begutachtung durch die Moderatoren gemeldet.",
     "more_help_on_markdown_home_page": "Mehr Hilfe auf der Markdown Homepage",
+    "delete_confirm_msg": "Sind Sie sicher, dass Sie diesen Kommentar löschen?",
   },
 
 es: {
@@ -134,6 +136,7 @@ es: {
     "links": "Enlaces",
     "first_confirm_msg": "¿Está seguro de querer marcar este comentario?",
     "second_confirm_msg": "Gracias. El comentario ha sido marcado para la atención del moderador.",
+    "delete_confirm_msg": "¿Está seguro de querer eliminar este comentario?",
   },
 
   setLocale: function(lang){
@@ -2161,7 +2164,9 @@ es: {
     , Dropdown = function (element) {
         var $el = $(element).on('click.dropdown.data-api', this.toggle)
         $('html').on('click.dropdown.data-api', function () {
+          $el.trigger('openClassRemoved')
           $el.parent().removeClass('open')
+          
         })
       }
 
@@ -2236,7 +2241,9 @@ es: {
 
   function clearMenus() {
     $(toggle).each(function () {
+      $(this).trigger('openClassRemoved')
       getParent($(this)).removeClass('open')
+      
     })
   }
 

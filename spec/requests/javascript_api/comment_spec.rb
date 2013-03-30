@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
-require 'zlib'
+
 describe "Javascript API", "error handling" do
   describe "comment" do
 
@@ -8,14 +8,14 @@ describe "Javascript API", "error handling" do
       site  = FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
       topic = FactoryGirl.create(:topic,:site_id => site.id)
     end
-
+    
     def show_topic(site_key, topic_key, options = {})
       super(site_key, topic_key, options.merge(
         :pre_js => %Q{
           var Juvia = { supportsCors: false };
         })
       )
-    end    
+    end  
 
     def post_comment_vote(path,author_name,author_email,vote,site,topic,comment_id)
       post_comment_hash = Hash.new
@@ -584,15 +584,55 @@ describe "Javascript API", "error handling" do
           end
 
           it "should not show after submit comment" , :js => true do
-            create_new_topic
-            topic = Topic.last
-            show_topic(topic.site.key, topic.key)
-            fill_in 'content', :with => 'hello world'
-            click_button 'Submit'
+            create_one_comment
             page.should have_css('#juvia-cancel-button', :visible => false)
           end
         end
-        
+
+        describe "More options" do
+          before :each do
+            create_one_comment
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            @comment = topic.comments.first
+          end
+          it "should show more option", :js => true do
+            find("a.more-options")["data-wrapper"].should eq('divid'+ @comment.id.to_s)
+          end
+
+          it "should show delete option", :js => true do
+            within("#comment-box-"+ @comment.comment_number.to_s) do
+              find("li.deletecomment")["data-comment-id"].should eq(@comment.id.to_s)
+            end
+          end
+
+          it "should show edit option", :js => true do
+            within("#comment-box-"+ @comment.comment_number.to_s) do
+              find("li.editcomment")["data-comment-id"].should eq(@comment.id.to_s)
+            end
+          end
+
+          it "should delete comment", :js => true do
+            within("#comment-box-"+ @comment.comment_number.to_s) do
+              find("a.more-options").click
+              find("li.deletecomment").click
+            end
+            page.driver.browser.switch_to.alert.accept
+            
+          end
+
+          it "should edit comment", :js => true do
+            within("#comment-box-"+ @comment.comment_number.to_s) do
+              find("a.more-options").click
+              find("li.editcomment").click
+            end
+            content_field = find_field('edit_area')
+            fill_in 'edit_area', :with => content_field.value + 'hello world 2' 
+            find("button.update_comment").click
+          end
+        end
+         
+
       end
 
     end

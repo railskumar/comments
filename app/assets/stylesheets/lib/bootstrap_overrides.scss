@@ -1962,7 +1962,7 @@
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 160px;
+  min-width: 120px;
   padding: 4px 0;
   margin: 1px 0 0;
   list-style: none;
@@ -1984,6 +1984,13 @@
 .juvia-container .dropdown-menu.pull-right {
   right: 0;
   left: auto;
+}
+.juvia-container .dropdown-menu .margin_right {
+  margin-right: 10px;
+}
+.juvia-container .dropdown a:hover {
+  text-decoration: none;
+  cursor: pointer;
 }
 .juvia-container .dropdown-menu .divider {
   *width: 100%;

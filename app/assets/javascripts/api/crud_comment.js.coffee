@@ -4,7 +4,7 @@ Juvia.editComment = (this_obj) ->
   self.uniq_edit_id = self.uniq_edit_id or 123
   self.uniq_edit_id = self.uniq_edit_id + 1
   return  if $(this_obj).find("textarea").length > 0
-  $textarea = $("<textarea class=\"juvia-text-area\" />")
+  $textarea = $("<textarea class=\"juvia-text-area\" name=\"edit_area\" />")
   $textarea.delayedObserver ->
     self.previewEditComment this
 
@@ -178,7 +178,7 @@ Juvia.rdf_comment_box = (option) ->
   else if @user_logged_in and @user_email != comment_user_email
     ababb_flag.className = "span4"
   else if @user_logged_in
-    ababb_flag.className = "span6"
+    ababb_flag.className = "span4"
   else
     ababb_flag.className = "span6"
   flag_comment_tag = document.createElement("flagcomment")
@@ -225,7 +225,7 @@ Juvia.rdf_comment_box = (option) ->
     else if @user_logged_in and @user_email != comment_user_email
       ababc.className = "span4"
     else if @user_logged_in
-      ababc.className = "span6"
+      ababc.className = "span4"
     else
       ababc.className = "span6"
     function_links.appendChild ababc
@@ -239,19 +239,54 @@ Juvia.rdf_comment_box = (option) ->
     ababca = document.createElement("span")
     reply_comment_tag.appendChild ababca
     ababca.appendChild document.createTextNode(" " + @.t.reply)
-  if editable()
+  if @user_email is comment_user_email 
+
     edit_comment_dom = document.createElement("div")
     edit_comment_dom.className = "span4"
     function_links.appendChild edit_comment_dom
-    edit_comment_tag = document.createElement("editcomment")
-    edit_comment_tag.className = "juvia-edit-to-comment"
-    edit_comment_tag.setAttribute "data-comment-id", comment_id
-    edit_comment_dom.appendChild edit_comment_tag
-    edit_comment_icon = document.createElement("i")
-    edit_comment_icon.className = "icon-edit"
-    edit_comment_tag.appendChild edit_comment_icon
-    edit_comment_dom_span = document.createElement("span")
-    edit_comment_dom_span.id = "edit-" + comment_id
-    edit_comment_dom_span.appendChild document.createTextNode(" " + @.t.edit)
-    edit_comment_tag.appendChild edit_comment_dom_span
+
+    btn_group_dom = document.createElement("div")
+    btn_group_dom.className = "dropdown"
+    edit_comment_dom.appendChild btn_group_dom
+
+    btn_dom = document.createElement("a")
+    btn_dom.className = "dropdown-toggle more-options"
+    btn_dom.setAttribute 'data-toggle', 'dropdown'
+    btn_dom.setAttribute "data-wrapper", "divid" + comment_id
+
+    text_span = document.createElement("span")
+    text_span.appendChild document.createTextNode("More")
+    caret_span = document.createElement("span")
+    caret_span.className = "caret"
+    btn_dom.appendChild text_span
+    btn_dom.appendChild caret_span
+    btn_group_dom.appendChild btn_dom
+
+    ul_dom = document.createElement("ul")
+    ul_dom.className = "dropdown-menu pull-right left"
+    if editable()
+      li_edit = document.createElement("li")
+      li_edit.className = "editcomment juvia-edit-to-comment"
+      li_edit.setAttribute "data-comment-id", comment_id
+      a_edit = document.createElement("a")
+      edit_icon = document.createElement("i")
+      edit_icon.className = "icon-edit margin_right"
+      a_edit.appendChild edit_icon 
+      a_edit.appendChild document.createTextNode(" Edit")
+      li_edit.appendChild a_edit
+      ul_dom.appendChild li_edit
+      li_divider = document.createElement("li")
+      li_divider.className = "divider"
+      ul_dom.appendChild li_divider
+    li_delete = document.createElement("li")
+    li_delete.className = "deletecomment"
+    li_delete.setAttribute "data-comment-id", comment_id
+    a_delete = document.createElement("a")
+    delete_icon = document.createElement("i")
+    delete_icon.className = "icon-trash margin_right"
+    a_delete.appendChild delete_icon
+    a_delete.appendChild document.createTextNode(" Delete")
+    li_delete.appendChild a_delete
+    ul_dom.appendChild li_delete
+    btn_group_dom.appendChild ul_dom
   a

@@ -217,3 +217,15 @@ Juvia.permalinkToComment = (link) ->
   $("#comment_permalink").modal "show"
   permalink_str = permalink_str + "<input type='text' value=" + link + " class='permalink-anchored-to' readonly='true' onclick = 'this.select()'>"
   permalink_dom.html " " + permalink_str
+
+Juvia.deleteComment = (event, this_obj) ->
+  $ = @$
+  $this = $(this_obj)
+  form = event.target
+  $container = $(form).closest(".juvia-container")
+  @loadScript "/api/comments/destroy",
+    site_key: $container.data("site-key")
+    comment_key: $this.data("comment-id")
+    user_email: @user_email
+
+  false

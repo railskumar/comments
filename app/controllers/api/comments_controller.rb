@@ -84,6 +84,18 @@ class Api::CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    prepare!([:site_key, :comment_key, :user_email], [:js, :json])
+    @comment = Comment.find(params[:comment_key])
+    if !@comment.blank? and (@comment.author_email == params[:user_email]) 
+      @comment.destroy
+      render
+    else
+      render :partial => 'api/site_not_found'
+    end
+
+  end
+
   def sort_comment
     @username = params[:author_name]
     @user_email = params[:author_email]
