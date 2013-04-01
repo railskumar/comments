@@ -243,3 +243,70 @@ describe Admin::SitesController do
     end
   end
 end
+
+describe Admin::SitesController do
+
+  def create_moderator
+    @moderator = User.create!({:email => 'moderator@gmail.com',
+     :password => 123456,
+     :password_confirmation => 123456,
+     :roles => ["site_moderator", ""]
+     })
+  end
+
+  def assign_site(user,site)
+    user.site_moderators.create!(:site_id => site.id)
+  end
+
+  before :each do
+    create_moderator
+    sign_in(@moderator)
+  end
+
+  def create_site
+    @site ||= FactoryGirl.create(:site1,:user =>admin)
+  end
+
+  describe "GET show" do
+    before :each do
+      create_site
+    end
+
+    it "site moderator should not see un-assigned site" do
+      get :show, :id => @site.id.to_s
+      response.should render_template("shared/forbidden")
+    end
+
+    it "site moderator should only see assigned site" do
+      assign_site(@moderator,@site)
+      get :show, :id => @site.id.to_s
+      assigns(:site).should eq(@site)
+      response.should render_template("admin/sites/show")
+    end
+
+  end
+
+  describe "GET new" do
+    it "site moderator should not create new site" do
+      get :new
+      assigns(:site).should eq(nil)
+    end
+  end
+
+  describe "DELETE destroy" do
+    it "site moderator should not delete site" do
+      site = create_site
+      delete :destroy, :id => site.id.to_s
+      response.should render_template("shared/forbidden")
+    end
+  end
+
+  describe "POST update" do
+    it "site moderator should not update site" do
+      site = create_site
+      post :update, :id => site.id.to_s, :site => {}
+      response.should render_template("shared/forbidden")
+    end
+  end
+
+end

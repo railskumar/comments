@@ -3,9 +3,9 @@ FactoryGirl.define do
     email 'admin@admin.com'
     password 123456
     password_confirmation 123456
-    admin true
+    roles_mask 1
   end
-  
+
   factory :kotori, :class => User do
     email 'kotori@kotori.jp'
     password 123456

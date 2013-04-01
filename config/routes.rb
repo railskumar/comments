@@ -33,7 +33,13 @@ Juvia::Application.routes.draw do
         end
       end   
     end
-    resources :users
+    resources :users do
+      member do
+        put :assign_site
+        get :show_site
+        delete :unassign_site
+      end
+    end
   end
   
   get 'admin/dashboard', :to => 'admin/dashboard#index', :as => :dashboard

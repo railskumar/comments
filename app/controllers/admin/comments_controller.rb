@@ -90,7 +90,7 @@ class Admin::CommentsController < ApplicationController
   def destroy_flag
     comment = Comment.find(params[:id])
     comment.flags.each do |flag|
-      authorize! :destroy, @flag
+      authorize! :destroy, flag
       flag.destroy
     end
     redirect_back(flags_admin_site_comments_path)
