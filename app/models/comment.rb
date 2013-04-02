@@ -26,7 +26,7 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :create_author
+  after_create :create_author, :update_author
   after_create :redis_update
   after_destroy :redis_update
 
@@ -143,6 +143,10 @@ class Comment < ActiveRecord::Base
     notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
   end
   
+  def update_author
+    author.update_author_last_posted_at if author.present?
+  end
+
   def notify_moderators
     Mailer.comment_posted(parent_comment,self).deliver
   end

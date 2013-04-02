@@ -53,6 +53,7 @@ de:
   ordered: Geordnet
   people_who_liked_this: "%{people} Personen gefällt das"
   please_login_to_make_comment: Bitte loggen Sie sich ein, um einen Kommentar abzugeben
+  post_comment_delay_message: "Please post comment after %{post_delay} minute."
   preview: Vorschau
   reference_required: Quellenangabe erforderlich
   replied_to_your_comment_on: "%{username} hat auf Ihren Kommentar zu %{topic} geantwortet"

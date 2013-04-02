@@ -53,6 +53,7 @@ es:
   ordered: Numerada
   people_who_liked_this: Gente a la que le ha gustado esto
   please_login_to_make_comment: Para comentar, por favor inicie sesión
+  post_comment_delay_message: "Please post comment after %{post_delay} minute."
   preview: Vista previa
   reference_required: Se requiere una referencia
   replied_to_your_comment_on: respondió a su comentario en

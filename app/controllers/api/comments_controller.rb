@@ -40,7 +40,8 @@ class Api::CommentsController < ApplicationController
       render :partial => 'content_may_not_be_blank'
       return
     end
-      
+    comment_post_ability!(params[:author_email])
+    
     Topic.transaction do
       @topic = Topic.lookup_or_create(
         @site_key,
@@ -58,7 +59,6 @@ class Api::CommentsController < ApplicationController
           :referer => request.env['HTTP_REFERER'],
           :content => @content,
           :parent_id => parent_id)
-        render
       else
         render :partial => 'api/site_not_found'
       end

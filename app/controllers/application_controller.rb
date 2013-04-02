@@ -13,12 +13,18 @@ class ApplicationController < ActionController::Base
   end
   class UnacceptableFormat < StandardError
   end
+  class CanNotPostComment < StandardError
+  end
 
   rescue_from MissingParameter do |exception|
     render :partial => 'api/missing_parameter'
   end
   rescue_from UnacceptableFormat do |exception|
     # Do nothing, response already sent.
+  end
+  rescue_from CanNotPostComment do |exception|
+    flash[:err_msg] = "#{t(:post_comment_delay_message, :post_delay => Settings.juvia_comment.COMMENT_POST_DURATION)}"
+    render :partial => 'can_not_post_comment'
   end
 
   def set_locale
@@ -82,6 +88,11 @@ class ApplicationController < ActionController::Base
     raise UnacceptableFormat if performed?
   end
 
+  def comment_post_ability!(email)
+    unless Author.can_post?(params[:author_email])
+      raise CanNotPostComment
+    end
+  end
 private
   ### before filters
   

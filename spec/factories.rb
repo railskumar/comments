@@ -56,7 +56,7 @@ FactoryGirl.define do
     referer 'http://www.google.com/'
     created_at Time.now
   end
-
+  
   factory :vote do
     author_ip '127.0.0.1'
     author_user_agent 'Firefox'
