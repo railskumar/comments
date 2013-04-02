@@ -13,6 +13,9 @@
       <% if user.admin? %>
         <div class="admin">admin</div>
       <% end %>
+      <% if user.role?(:site_moderator) %>
+        <div class="assign_site"><%= link_to 'Assign Site', show_site_admin_user_path(user) %></div>
+      <%end%>
     <% end %>
   <% end %>
   </div>

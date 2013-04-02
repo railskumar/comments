@@ -12,8 +12,10 @@ class Admin::TopicsController < InheritedResources::Base
     end
   end
 
-  def destroy
-    destroy! { admin_site_topics_path }
+  def destroy    
+    destroy! do
+      redirect_to admin_site_topics_path and return
+    end
   end
 
   def index

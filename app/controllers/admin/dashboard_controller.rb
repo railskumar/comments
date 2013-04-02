@@ -8,7 +8,7 @@ class Admin::DashboardController < ApplicationController
   before_filter :set_navigation_ids
   
   def index
-    if User.where(:admin => true).count == 0
+    if User.with_role("admin").count == 0
       redirect_to :action => 'new_admin'
     elsif current_user && current_user.accessible_sites.count == 0
       redirect_to :action => 'new_site'
@@ -23,7 +23,7 @@ class Admin::DashboardController < ApplicationController
   
   def create_admin
     @user = User.new(params[:user])
-    @user.admin = true
+    @user.roles = ["admin"]
     if @user.save
       sign_in(@user)
       redirect_to dashboard_path
@@ -48,7 +48,7 @@ class Admin::DashboardController < ApplicationController
 
 private
   def require_no_admins_defined
-    if User.where(:admin => true).count > 0
+    if User.with_role("admin").count > 0
       render :template => 'shared/forbidden'
     end
   end

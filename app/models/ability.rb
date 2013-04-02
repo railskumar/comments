@@ -31,19 +31,13 @@ class Ability
     crud = [:create, :read, :update, :destroy]
 
     if user.admin?
-      can crud, :all
-      can :list, :all
-      can :flags, Comment
-      can :approve, Comment
-      can :destroy_flag , Comment
-      can :make_admin, User
-      can :sites_topics, Topic
-      can :destroy_comments_by_author, Comment
-    else
-      can [:read, :update, :destroy], User, :id => user.id
-      can crud, Site, :user_id => user.id
-      can crud, Topic, :site => { :user_id => user.id }
-      can crud, Comment, :topic => { :site => { :user_id => user.id } }
+      can :manage, :all
+    elsif user.role?(:site_moderator)
+      can [:read, :update, :destroy], User, :id => user.id      
+      can [:read], Site, :users_as_moderator => { :id => user.id}      
+      can [:create, :read, :update, :destroy], Topic, :site => { :users_as_moderator => { :id => user.id} }      
+      can [:create, :read, :update, :destroy, :flags, :destroy_flag, :approve, :destroy_comments_by_author], Comment, :topic => { :site => { :users_as_moderator => { :id => user.id} } }
+      can crud, Flag, :comment => { :topic => { :site => { :users_as_moderator => { :id => user.id} } }}
     end
   end
 end

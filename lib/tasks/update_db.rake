@@ -13,4 +13,12 @@ namespace :update_db do
     end
   end
 
+  desc "Making admin to existing user"
+  task :make_admin_to_existing_user => :environment do
+    User.all.each do |user|
+      puts "updating user: #{user.email}"
+      user.roles_mask = 1
+      user.save
+    end
+  end
 end

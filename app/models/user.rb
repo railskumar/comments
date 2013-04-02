@@ -4,16 +4,24 @@ class User < ActiveRecord::Base
   has_many :sites, :inverse_of => :user, :order => 'name'
   has_many :topics, :through => :sites
   
+  has_many :site_moderators
+  has_many :sites_as_moderator, :through => :site_moderators, :source => :site
+  
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable,
          :timeoutable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :admin, :as => :admin
+  attr_accessible :roles, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :roles, :email, :password, :password_confirmation, :remember_me, :admin, :as => :admin
   
   before_validation :nullify_blank_password_on_update
+
+  scope :with_role, lambda { |role| {:conditions => "roles_mask & #{2**ROLES.index(role.to_s)} > 0"} }
+
+  # Defines the roles that exist. To see what roles can do see the ability contorller.
+  ROLES = %w[admin site_moderator]
   
   def comments
     Comment.
@@ -23,7 +31,7 @@ class User < ActiveRecord::Base
   end
   
   def accessible_comments
-    if admin?
+    if role?(:admin)
       Comment.where(nil)
     else
       comments
@@ -31,7 +39,7 @@ class User < ActiveRecord::Base
   end
   
   def accessible_sites
-    if admin?
+    if role?(:admin)
       Site.where(nil)
     else
       sites
@@ -47,12 +55,36 @@ class User < ActiveRecord::Base
   end
 
   def role
-    if admin?
+    if role?(:admin)
       :admin
     else
       nil
     end
   end
+
+  def admin?
+    role?(:admin)
+  end
+
+  def role?(role)
+    return false unless ROLES.include?(role.to_s)
+    roles.include?(role.to_s)
+  end
+
+  # Makes a roles mask to push and pull mutliple roles out of the database using a bit mask.
+  # http://railscasts.com/episodes/189-embedded-association
+  def roles=(roles)
+    self.roles_mask = (roles & ROLES).map { |r| 2**ROLES.index(r) }.sum
+  end
+
+  def roles
+    ROLES.reject { |r| ((roles_mask.to_i || 0) & 2**ROLES.index(r)).zero? }
+  end
+
+  def role_symbols
+    roles.map(&:to_sym)
+  end
+
 
 private
   def nullify_blank_password_on_update
