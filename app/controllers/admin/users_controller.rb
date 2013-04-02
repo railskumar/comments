@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @sites = (@user.admin?) ? @user.sites : @user.sites_as_moderator
+    @sites = (@user.admin?) ? Site.all : @user.sites_as_moderator
     @topics   = @user.topics
     
     respond_to do |format|
