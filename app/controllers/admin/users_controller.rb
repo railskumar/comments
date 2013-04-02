@@ -23,9 +23,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @sites    = @user.sites
+    @sites = (@user.admin?) ? @user.sites : @user.sites_as_moderator
     @topics   = @user.topics
-
+    
     respond_to do |format|
       format.html
       format.json { render :json => @user }
