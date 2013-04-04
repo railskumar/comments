@@ -46,7 +46,7 @@ class Admin::TopicsController < InheritedResources::Base
     raise "Not allowed"
   end
 
-  def show_hide_commenting
+  def open_close_commenting
     topic = Topic.find(params[:id])
     topic.update_attribute(:comments_open, !topic.comments_open)
     redirect_to(:back) and return

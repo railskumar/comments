@@ -74,20 +74,20 @@ describe Admin::TopicsController do
     it "should Open commenting on topic" do
       assign_site(@moderator,@site)
       create_topic(@site)
-      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
+      get :open_close_commenting, :site_id => @site.id, :id => @topic.id.to_s
       response.should redirect_to "where_i_came_from"
     end
 
     it "should Close commenting on topic" do
       assign_site(@moderator,@site)
       create_topic(@site)
-      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
+      get :open_close_commenting, :site_id => @site.id, :id => @topic.id.to_s
       response.should redirect_to "where_i_came_from"
     end
 
     it "should not Open/Close commenting on topic" do
       create_topic(@site)
-      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
+      get :open_close_commenting, :site_id => @site.id, :id => @topic.id.to_s
       response.should render_template("shared/forbidden")
     end
   end

@@ -4,26 +4,29 @@
 	data-topic-title="<%= @topic_title %>"
 	data-topic-url="<%= @topic_url %>">
 <div class="juvia-topic">
-	<% if @require_external_user %>
-	  <% if @user_logged_in %> 
-	    <%= render :partial => 'like_unlike'%>
-	    <% if @topic.comments_open %>
+  <% if @require_external_user %>
+    <% if @user_logged_in %> 
+      <%= render :partial => 'like_unlike'%>
+      <% if @topic.comments_open %>
         <h3><%= t(:add_comment_title) %></h3>
-	      <%= render :partial => 'user_form' %>
+        <%= render :partial => 'user_form' %>
         <%= render :partial => 'markdown_help' %>
       <% else %>
         <div class="row-fluid"><h3><%= t(:commenting_closed)%></h3></div>
       <% end %>
-	  <% else %>
-	    <h3><%= @logged_in_message.html_safe %></h3>
-	    <%= render :partial => 'like_unlike'%>
-	  <% end %>
     <% else %>
+      <h3><%= @logged_in_message.html_safe %></h3>
       <%= render :partial => 'like_unlike'%>
-      <h3><%= t(:add_comment_title) %></h3>
-      <%= render :partial => 'form' %>
-      <%= render :partial => 'markdown_help' %>
+      <% unless @topic.comments_open %>
+        <div class="row-fluid"><h3><%= t(:commenting_closed)%></h3></div>
+      <% end %>
     <% end %>
+  <% else %>
+    <%= render :partial => 'like_unlike'%>
+    <h3><%= t(:add_comment_title) %></h3>
+    <%= render :partial => 'form' %>
+    <%= render :partial => 'markdown_help' %>
+  <% end %>
 	<% comments = topic.comments.visible.to_a %>
 	<% if comments.size == 1 %>
 	    <%=render :partial=>"sorting", :locals => {:total_comments =>"1 comment", :sorting_option => false}%>

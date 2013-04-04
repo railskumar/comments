@@ -22,7 +22,7 @@ Juvia::Application.routes.draw do
           get :sites_topics
         end
         member do
-          get :show_hide_commenting
+          get :open_close_commenting
         end
       end
       resources :comments do

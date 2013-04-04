@@ -35,7 +35,7 @@ class Ability
     elsif user.role?(:site_moderator)
       can [:read, :update, :destroy], User, :id => user.id
       can [:read], Site, :users_as_moderator => { :id => user.id}
-      can [:create, :read, :update, :destroy, :show_hide_commenting], Topic, :site => { :users_as_moderator => { :id => user.id} }
+      can [:create, :read, :update, :destroy, :open_close_commenting], Topic, :site => { :users_as_moderator => { :id => user.id} }
       can [:create, :read, :update, :destroy, :flags, :destroy_flag, :approve, :destroy_comments_by_author], Comment, :topic => { :site => { :users_as_moderator => { :id => user.id} } }
       can crud, Flag, :comment => { :topic => { :site => { :users_as_moderator => { :id => user.id} } }}
     end

@@ -26,7 +26,7 @@
       </td>
       <td>
         <% btn_txt = @topic.comments_open ? 'Close Commenting' : 'Open Commenting' %>
-        <%= button_link_to btn_txt , show_hide_commenting_admin_site_topic_path(@topic, :site_id => @topic.site.id ) %>
+        <%= button_link_to btn_txt , open_close_commenting_admin_site_topic_path(@topic, :site_id => @topic.site.id ) %>
       </td>
     </tr>
     </table>
