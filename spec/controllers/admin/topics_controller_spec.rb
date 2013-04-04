@@ -28,6 +28,7 @@ describe Admin::TopicsController do
       create_site
       create_moderator
       sign_in(@moderator)
+      request.env["HTTP_REFERER"] = "where_i_came_from"
     end
 
     it "should show topic of assigned site" do
@@ -67,6 +68,26 @@ describe Admin::TopicsController do
     it "should not delete topics of un-assigned site" do
       create_topic(@site)
       get :destroy, :site_id => @site.id, :id => @topic.id.to_s
+      response.should render_template("shared/forbidden")
+    end
+
+    it "should Open commenting on topic" do
+      assign_site(@moderator,@site)
+      create_topic(@site)
+      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
+      response.should redirect_to "where_i_came_from"
+    end
+
+    it "should Close commenting on topic" do
+      assign_site(@moderator,@site)
+      create_topic(@site)
+      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
+      response.should redirect_to "where_i_came_from"
+    end
+
+    it "should not Open/Close commenting on topic" do
+      create_topic(@site)
+      get :show_hide_commenting, :site_id => @site.id, :id => @topic.id.to_s
       response.should render_template("shared/forbidden")
     end
   end

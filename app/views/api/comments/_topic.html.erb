@@ -7,9 +7,13 @@
 	<% if @require_external_user %>
 	  <% if @user_logged_in %> 
 	    <%= render :partial => 'like_unlike'%>
-	    <h3><%= t(:add_comment_title) %></h3>
-	    <%= render :partial => 'user_form' %>
-      <%= render :partial => 'markdown_help' %>
+	    <% if @topic.comments_open %>
+        <h3><%= t(:add_comment_title) %></h3>
+	      <%= render :partial => 'user_form' %>
+        <%= render :partial => 'markdown_help' %>
+      <% else %>
+        <div class="row-fluid"><h3><%= t(:commenting_closed)%></h3></div>
+      <% end %>
 	  <% else %>
 	    <h3><%= @logged_in_message.html_safe %></h3>
 	    <%= render :partial => 'like_unlike'%>

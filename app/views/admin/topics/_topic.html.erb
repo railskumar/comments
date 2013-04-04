@@ -1,10 +1,14 @@
 <%= div_for(topic, :class => 'item container') do %>
   <div class="row">
-    <div class="col_8 identity_column">
+    <div class="col_6 identity_column">
       <%= small_identity_tag :topic, topic.title, admin_site_topic_path(topic, :site_id => topic.site.id) %>
     </div>
     <div class="col_4 last info_column">
       <%= topic_comments_count_and_last_comment_date(topic) %>
+    </div>
+    <div class="col_2 last info_column">
+      <% btn_txt = topic.comments_open ? 'Close Commenting' : 'Open Commenting' %>
+      <%= button_link_to btn_txt , show_hide_commenting_admin_site_topic_path(topic, :site_id => topic.site.id ) %>
     </div>
   </div>
 <% end %>

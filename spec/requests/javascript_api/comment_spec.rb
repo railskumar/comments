@@ -544,6 +544,28 @@ describe "Javascript API", "error handling" do
           end
         end
 
+        describe "Show/Hide commenting for topic" do
+          before(:each) do
+            @admin = FactoryGirl.create(:admin)
+            @site  = FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
+          end
+          it "should not display comment box." , :js => true do
+            topic = FactoryGirl.create(:topic,:site_id => @site.id, :comments_open => false)
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            page.has_no_field?("#comment_textarea")
+            page.has_text?("Commenting closed")
+          end
+
+          it "should display comment box." , :js => true do
+            topic = FactoryGirl.create(:topic,:site_id => @site.id)
+            topic = Topic.last
+            show_topic(topic.site.key, topic.key)
+            page.has_field?("#comment_textarea")
+            page.has_no_text?("Commenting closed")
+          end
+        end
+
         describe "Cancel button" do
           it "should not show by default" , :js => true do
             create_new_topic

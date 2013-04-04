@@ -22,7 +22,12 @@
       <td class="align_right label pad_right">Actions</td>
       <td><%= remove_button_link_to 'Delete entire topic', [:admin, @topic.site, @topic],
         :method => :delete,
-        :confirm => 'Are you sure? All containing comments will also be removed!' %></td>
+        :confirm => 'Are you sure? All containing comments will also be removed!' %>
+      </td>
+      <td>
+        <% btn_txt = @topic.comments_open ? 'Close Commenting' : 'Open Commenting' %>
+        <%= button_link_to btn_txt , show_hide_commenting_admin_site_topic_path(@topic, :site_id => @topic.site.id ) %>
+      </td>
     </tr>
     </table>
   </div>

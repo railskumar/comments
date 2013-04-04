@@ -21,6 +21,9 @@ Juvia::Application.routes.draw do
         collection do
           get :sites_topics
         end
+        member do
+          get :show_hide_commenting
+        end
       end
       resources :comments do
         collection do

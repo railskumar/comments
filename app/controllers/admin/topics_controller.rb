@@ -46,6 +46,12 @@ class Admin::TopicsController < InheritedResources::Base
     raise "Not allowed"
   end
 
+  def show_hide_commenting
+    topic = Topic.find(params[:id])
+    topic.update_attribute(:comments_open, !topic.comments_open)
+    redirect_to(:back) and return
+  end
+
 private
   def set_navigation_ids
     @navigation_ids = [:dashboard, :sites]
