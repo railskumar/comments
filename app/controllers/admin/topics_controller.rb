@@ -27,6 +27,10 @@ class Admin::TopicsController < InheritedResources::Base
     else
       @sites[0]
     end
+    total_topics = @site.topics.order("last_posted_at desc")
+    no_comment_topics = total_topics.select{|topic| topic.comments.size == 0}
+    total_topics.reject!{|topic| topic.comments.size == 0}
+    @topics = Kaminari.paginate_array(total_topics + no_comment_topics).page(params[:page])
     redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
   end
 

@@ -151,7 +151,7 @@ module ApplicationHelper
   end
 
   def topic_comments_count_and_last_comment_date(topic)
-    count = topic.comments.count
+    count = topic.comments.size
     if count == 1
       result = "1 comment"
     else
