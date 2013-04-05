@@ -59,7 +59,7 @@ class UsersController < ApplicationController
         format.html { redirect_to(admin_users_path, :notice => 'User was successfully updated.') }
         format.json { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => "show" }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end
