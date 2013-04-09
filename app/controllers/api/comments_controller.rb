@@ -97,15 +97,23 @@ class Api::CommentsController < ApplicationController
   end
 
   def sort_comment
+    case params[:sort]
+      when "oldest"
+        params_sort = "oldest"
+      when "newest"
+        params_sort = "newest"
+      when "popular"
+        params_sort = "popular"
+    end
     @username = params[:author_name]
     @user_email = params[:author_email]
     prepare!([:site_key, :topic_key, :topic_url, :topic_title, :sort], [:html, :js, :json])
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sort]
-        @topic.topic_comments.send(params[:sort]).visible
-      elsif sorting_options[:popular] == params[:sort]
-        Kaminari.paginate_array(@topic.topic_comments.send(params[:sort]))
+      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params_sort
+        @topic.topic_comments.send(params_sort).visible
+      elsif sorting_options[:popular] == params_sort
+        Kaminari.paginate_array(@topic.topic_comments.send(params_sort))
       else
         @topic.topic_comments.oldest.visible
       end
@@ -153,13 +161,21 @@ private
   end 
 
   def list_comments(perma_link_comment_id = "")
+    case params[:sorting_order]
+      when "oldest"
+        sorting_order = "oldest"
+      when "newest"
+        sorting_order = "newest"
+      when "popular"
+        sorting_order = "popular"
+    end
     @topic = Topic.lookup(@site_key, @topic_key)
     @perma_link_comment = perma_link_comment_id.blank? ? nil : @topic.comments.where(comment_number:perma_link_comment_id).first
     if @topic
-      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params[:sorting_order]
-        @topic.topic_comments.send(params[:sorting_order]).visible
-      elsif sorting_options[:popular] == params[:sorting_order]
-        Kaminari.paginate_array(@topic.topic_comments.send(params[:sorting_order]))
+      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? sorting_order
+        @topic.topic_comments.send(sorting_order).visible
+      elsif sorting_options[:popular] == sorting_order
+        Kaminari.paginate_array(@topic.topic_comments.send(sorting_order))
       else
         @topic.topic_comments.oldest.visible
       end
