@@ -68,5 +68,9 @@ module Juvia
 
       config.action_mailer.delivery_method = config.email_method.to_sym
     end
+    
+    # Whitelist mass assignments
+    config.active_record.whitelist_attributes = true
   end
+  
 end
