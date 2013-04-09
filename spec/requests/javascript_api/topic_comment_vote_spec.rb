@@ -87,7 +87,7 @@ describe "Javascript API", "error handling" do
      end
     end
     
-    it "user vote for topic", :js => true do
+    pending "user vote for topic", :js => true do
       create_new_topic
       topic = Topic.last
       show_topic(topic.site.key, topic.key)
@@ -248,7 +248,7 @@ describe "Javascript API", "error handling" do
       
     end
     
-    it "guest vote for topic and comment", :js => true, :focus => true do
+    pending "guest vote for topic and comment", :js => true, :focus => true do
       create_new_topic
       topic = Topic.last
       show_topic(topic.site.key, topic.key, :guest_view => "1")

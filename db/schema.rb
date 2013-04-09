@@ -11,13 +11,58 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130308094055) do
+ActiveRecord::Schema.define(:version => 20130402141712) do
 
   create_table "authors", :force => true do |t|
     t.string   "author_email"
-    t.boolean  "notify_me",    :default => false
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.boolean  "notify_me",      :default => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
+    t.datetime "last_posted_at", :default => '2013-04-02 09:21:16', :null => false
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.boolean  "admin",                                 :default => false, :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+    t.integer  "roles_mask"
+    t.index ["email"], :name => "index_users_on_email", :unique => true, :order => {"email" => :asc}
+    t.index ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true, :order => {"reset_password_token" => :asc}
+  end
+
+  create_table "sites", :force => true do |t|
+    t.integer  "user_id",                          :null => false
+    t.string   "key",                              :null => false
+    t.string   "name",                             :null => false
+    t.string   "url"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.integer  "moderation_method", :default => 0, :null => false
+    t.string   "akismet_key"
+    t.string   "locale"
+    t.index ["key"], :name => "index_sites_on_key", :unique => true, :order => {"key" => :asc}
+    t.index ["user_id"], :name => "index_sites_on_user_id", :order => {"user_id" => :asc}
+    t.foreign_key ["user_id"], "users", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "sites_user_id_fkey"
+  end
+
+  create_table "topics", :force => true do |t|
+    t.integer  "site_id",                          :null => false
+    t.string   "key",                              :null => false
+    t.text     "title",                            :null => false
+    t.text     "url",                              :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "last_posted_at"
+    t.string   "vote_counts",    :default => "",   :null => false
+    t.integer  "votes_value"
+    t.boolean  "comments_open",  :default => true
+    t.index ["site_id"], :name => "index_topics_on_site_id", :order => {"site_id" => :asc}
+    t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true, :order => {"site_id" => :asc, "key" => :asc}
+    t.foreign_key ["site_id"], "sites", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "topics_site_id_fkey"
   end
 
   create_table "comments", :force => true do |t|
@@ -35,9 +80,10 @@ ActiveRecord::Schema.define(:version => 20130308094055) do
     t.string   "flag_status"
     t.integer  "votes_value"
     t.integer  "parent_id"
-    t.index ["topic_id"], :name => "index_comments_on_topic_id"
-    t.index ["parent_id"], :name => "fk__comments_parent_id"
-    t.foreign_key ["parent_id"], "comments", ["id"], :on_update => :restrict, :on_delete => :restrict, :name => "comments_ibfk_1"
+    t.index ["parent_id"], :name => "fk__comments_parent_id", :order => {"parent_id" => :asc}
+    t.index ["topic_id"], :name => "index_comments_on_topic_id", :order => {"topic_id" => :asc}
+    t.foreign_key ["parent_id"], "comments", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "comments_parent_id_fkey"
+    t.foreign_key ["topic_id"], "topics", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "comments_topic_id_fkey"
   end
 
   create_table "flags", :force => true do |t|
@@ -49,47 +95,19 @@ ActiveRecord::Schema.define(:version => 20130308094055) do
     t.text     "referer"
     t.integer  "guest_count"
     t.datetime "created_at",        :null => false
-    t.index ["comment_id"], :name => "index_flags_on_comment_id"
+    t.index ["comment_id"], :name => "index_flags_on_comment_id", :order => {"comment_id" => :asc}
+    t.foreign_key ["comment_id"], "comments", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "flags_comment_id_fkey"
   end
 
-  create_table "sites", :force => true do |t|
-    t.integer  "user_id",                          :null => false
-    t.string   "key",                              :null => false
-    t.string   "name",                             :null => false
-    t.string   "url"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.integer  "moderation_method", :default => 0, :null => false
-    t.string   "akismet_key"
-    t.string   "locale"
-    t.index ["key"], :name => "index_sites_on_key", :unique => true
-    t.index ["user_id"], :name => "index_sites_on_user_id"
-  end
-
-  create_table "topics", :force => true do |t|
-    t.integer  "site_id",                        :null => false
-    t.string   "key",                            :null => false
-    t.text     "title",                          :null => false
-    t.text     "url",                            :null => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "last_posted_at"
-    t.string   "vote_counts",    :default => "", :null => false
-    t.integer  "votes_value"
-    t.index ["site_id", "key"], :name => "index_topics_on_site_id_and_key", :unique => true
-    t.index ["site_id"], :name => "index_topics_on_site_id"
-  end
-
-  create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "",    :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.boolean  "admin",                                 :default => false, :null => false
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
-    t.index ["email"], :name => "index_users_on_email", :unique => true
-    t.index ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  create_table "site_moderators", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "site_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.index ["site_id"], :name => "fk__site_moderators_site_id", :order => {"site_id" => :asc}
+    t.index ["user_id"], :name => "fk__site_moderators_user_id", :order => {"user_id" => :asc}
+    t.foreign_key ["site_id"], "sites", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "site_moderators_site_id_fkey"
+    t.foreign_key ["user_id"], "users", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "site_moderators_user_id_fkey"
   end
 
   create_table "votes", :force => true do |t|
