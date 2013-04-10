@@ -120,7 +120,14 @@ Juvia.rdf_comment_box = (option) ->
     abaa.className = "juvia-comment-pure-content juvia-comment-editable-content"
   else
     abaa.className = "juvia-comment-pure-content"
-  $(abaa).html comment_text
+    
+  stringOfHtml = comment_text;
+  wrappedString = '<div>' + stringOfHtml + '</div>';
+  noScript = wrappedString.replace(/script/g, "THISISNOTASCRIPTREALLY");
+  html = $(noScript);
+  html.find('THISISNOTASCRIPTREALLY').remove();
+  $(abaa).html html
+
   aba.appendChild abaa
   abab = document.createElement("div")
   abab.className = "row-fluid juvia-comment-function"
