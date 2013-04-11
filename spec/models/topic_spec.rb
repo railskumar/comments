@@ -29,7 +29,7 @@ describe "Topic" do
     @topic.topic_comments.oldest.visible.to_a[0].should eql(@comment1)
   end
 
-  pending 'get popular comments' do
+  it 'get popular comments' do
     @topic.topic_comments.most_popular.to_a[0].should eql(@comment4)
   end
 
