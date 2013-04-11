@@ -102,8 +102,8 @@ class Api::CommentsController < ApplicationController
         params_sort = "oldest"
       when "newest"
         params_sort = "newest"
-      when "popular"
-        params_sort = "popular"
+      when "most_popular"
+        params_sort = "most_popular"
     end
     @username = params[:author_name]
     @user_email = params[:author_email]
@@ -166,8 +166,8 @@ private
         sorting_order = "oldest"
       when "newest"
         sorting_order = "newest"
-      when "popular"
-        sorting_order = "popular"
+      when "most_popular"
+        sorting_order = "most_popular"
     end
     @topic = Topic.lookup(@site_key, @topic_key)
     @perma_link_comment = perma_link_comment_id.blank? ? nil : @topic.comments.where(comment_number:perma_link_comment_id).first
