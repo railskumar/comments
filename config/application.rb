@@ -70,7 +70,7 @@ module Juvia
     end
     
     # Whitelist mass assignments
-    # config.active_record.whitelist_attributes = true
+    config.active_record.whitelist_attributes = true
   end
   
 end

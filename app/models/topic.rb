@@ -1,4 +1,5 @@
 class Topic < ActiveRecord::Base
+  attr_accessible :site_id, :key, :title, :url, :last_posted_at, :vote_counts, :votes_value
   belongs_to :site, :inverse_of => :topics
   has_many :comments, :order =>'created_at DESC', :inverse_of => :topic, :dependent => :destroy
   has_many :votes, :as => :votable, :dependent => :destroy

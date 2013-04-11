@@ -1,4 +1,5 @@
 class Author < ActiveRecord::Base
+  attr_accessible :author_email, :notify_me, :last_posted_at
   scope :get_user, lambda{ |email| where('author_email = ?', email) }
     
   def Author.notifier?(author_email)

@@ -1,7 +1,7 @@
 require 'digest/md5'
 
 class Vote < ActiveRecord::Base
-
+  attr_accessible :votable_id, :votable_type, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :like, :unlike
   belongs_to :votable, :polymorphic => true
   validate :presense_reference, :presense_vote
 

@@ -34,7 +34,7 @@ class Admin::CommentsController < ApplicationController
   def update
     @comment = Comment.find(params[:id])
     authorize! :update, @comment
-    if @comment.update_attributes(params[:comment], :as => current_user.role)
+    if @comment.update_attributes(params[:comment])
       redirect_back(admin_site_comments_path)
     else
       render :action => 'edit'

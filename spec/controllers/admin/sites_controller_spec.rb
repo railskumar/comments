@@ -251,7 +251,7 @@ describe Admin::SitesController do
      :password => 123456,
      :password_confirmation => 123456,
      :roles => ["site_moderator", ""]
-     })
+     }, :as => :admin)
   end
 
   def assign_site(user,site)
@@ -264,7 +264,7 @@ describe Admin::SitesController do
   end
 
   def create_site
-    @site ||= FactoryGirl.create(:site1,:user =>admin)
+    @site ||= FactoryGirl.create(:site1,:user => admin)
   end
 
   describe "GET show" do
