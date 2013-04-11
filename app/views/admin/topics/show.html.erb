@@ -34,6 +34,6 @@
 <div class="prevent_margin_collapse"></div>
 
 <div class="para comments list">
-  <%= render @comments %>
+  <%= render :partial => 'admin/comments/comment', :collection => @comments %>
   <%= paginate @comments %>
 </div>

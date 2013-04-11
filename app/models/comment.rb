@@ -5,7 +5,7 @@ require 'cgi'
 class Comment < ActiveRecord::Base
   class AkismetError < StandardError
   end
-
+  attr_accessible :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id
   COMMENT_EDIT_DURATION = 1.hour
   
   belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
