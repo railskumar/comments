@@ -17,12 +17,6 @@ class Admin::CommentsController < ApplicationController
       @sites[0]
     end
     redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
-    
-    #@all_comments = Comment.
-      #accessible_by(current_ability).
-      #order('created_at DESC').
-      #includes(:topic)
-    #@comments = @all_comments.page(params[:page])
   end
   
   def edit

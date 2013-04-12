@@ -158,6 +158,7 @@ private
     else
       decompress(params[:content]).to_s
     end
+    @content = view_context.strip_tags @content
   end 
 
   def list_comments(perma_link_comment_id = "")
