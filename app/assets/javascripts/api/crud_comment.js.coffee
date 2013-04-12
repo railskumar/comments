@@ -121,7 +121,7 @@ Juvia.rdf_comment_box = (option) ->
   else
     abaa.className = "juvia-comment-pure-content"
   
-  comment_content = $(comment_text).clone().find("script,noscript,style").remove().end().html();
+  comment_content = $(comment_text).clone().find("script,noscript").remove().end().html();
   $(abaa).html comment_content
 
   aba.appendChild abaa
