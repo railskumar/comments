@@ -3,7 +3,7 @@ class Site < ActiveRecord::Base
   has_many :topics, :inverse_of => :site
   has_many :comments, :order =>'created_at DESC', :through => :topics
   
-  has_many :site_moderators
+  has_many :site_moderators, :dependent => :destroy
   has_many :users_as_moderator, :through => :site_moderators, :source => :user
   
   acts_as_enum :moderation_method, [:none, :akismet, :manual]
