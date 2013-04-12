@@ -14,7 +14,7 @@ class Author < ActiveRecord::Base
 
   def Author.can_post?(author_email)
     author = Author.get_user(author_email).first
-    if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_i.minutes > Time.zone.now - author.last_posted_at)
+    if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes > Time.zone.now - author.last_posted_at)
      return false
     else
      return true
