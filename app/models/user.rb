@@ -1,10 +1,10 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
-  has_many :sites, :inverse_of => :user, :order => 'name'
+  has_many :sites, :inverse_of => :user, :order => 'name', :dependent => :destroy
   has_many :topics, :through => :sites
   
-  has_many :site_moderators
+  has_many :site_moderators, :dependent => :destroy
   has_many :sites_as_moderator, :through => :site_moderators, :source => :site
   
   # Include default devise modules. Others available are:
