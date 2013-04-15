@@ -41,6 +41,7 @@ group :development, :test do
   gem 'spork', '0.9.0.rc9', :require => false
   gem 'taps'
   gem 'sqlite3'
+  gem 'thin'
 end
 
 # Gems used only for assets and not required
