@@ -1,6 +1,6 @@
 class Site < ActiveRecord::Base
   belongs_to :user, :inverse_of => :sites
-  has_many :topics, :inverse_of => :site
+  has_many :topics, :inverse_of => :site, :dependent => :destroy
   has_many :comments, :order =>'created_at DESC', :through => :topics
   
   has_many :site_moderators, :dependent => :destroy
