@@ -19,4 +19,19 @@ class Api::AuthorsController < ApplicationController
     @author.save
     render
   end
+  
+  def update_topic_notification
+    prepare!([:author_email, :notify_me], [:js])
+    @author = Author.lookup_or_create_author(params[:author_email], params[:notify_me])
+    @topic = Topic.lookup_or_create(params[:site_key], params[:topic_key], params[:topic_title], params[:topic_url])
+    @topic_notification = TopicNotification.lookup_or_create_topic_notification(@author.id, @topic.id) if @topic.present?
+  end
+  
+  def destroy_topic_notification
+    prepare!([:author_email, :notify_me], [:js])
+    author = Author.lookup_or_create_author(params[:author_email], params[:notify_me])
+    topic = Topic.lookup_or_create(params[:site_key], params[:topic_key], params[:topic_title], params[:topic_url])
+    @topic_notification = TopicNotification.get_topic_notification(author.id, topic.id).first if topic.present?
+    @topic_notification.destroy if @topic_notification.present?
+  end
 end

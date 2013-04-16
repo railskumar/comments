@@ -26,7 +26,7 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :create_author, :update_author
+  after_create :create_author, :update_author, :notify_comment_subscribers
   after_create :redis_update
   after_destroy :redis_update
 
@@ -216,5 +216,18 @@ private
   
   def redis_update
     $redis.set("#{self.topic.site.key}_#{self.topic.key.to_s}", self.topic.comments.size)
+  end
+  
+  def topic_notification
+    TopicNotification.where("topic_id=?", topic_id)
+  end
+  
+  def notify_comment_subscribers
+    topic_comments = topic_notification
+    if topic_comments.present?
+      topic_comments.each do |topic_comment|
+        Mailer.delay.send_comment_notification_to_subscriber(self, topic_comment.author)
+      end
+    end
   end
 end

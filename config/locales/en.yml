@@ -74,6 +74,8 @@ en:
   topic: Topic
   topic_like: Like this topic
   topic_liked: Liked this topic
+  topic_notification: Notification about this topic
+  topic_notified: Notified this topic
   total_comment_title: comments
   unliked: Unliked
   unordered: Unordered

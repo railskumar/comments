@@ -2,7 +2,7 @@ class Topic < ActiveRecord::Base
   belongs_to :site, :inverse_of => :topics
   has_many :comments, :order =>'created_at DESC', :inverse_of => :topic, :dependent => :destroy
   has_many :votes, :as => :votable, :dependent => :destroy
-
+  has_many :topic_notifications, :dependent => :destroy
   has_many :topic_comments, :class_name => "Comment", :include => "votes" do
   
     def oldest

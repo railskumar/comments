@@ -10,4 +10,10 @@ class Mailer < ActionMailer::Base
     @child_comment = child_comment
     mail(:to => parent_comment.author_email, :subject => "Reply to your comment in [#{parent_comment.topic.title.split[0,5].join(" ").to_s}...]")
   end
+  
+  def send_comment_notification_to_subscriber(comment,author_detail)
+    @site    = comment.site
+    @comment = comment
+    mail(:to => author_detail.author_email, :subject => "Comment on your notified topic in [#{comment.topic.title.split[0,5].join(" ").to_s}...]")
+  end
 end
