@@ -1,4 +1,5 @@
 // = require api/lib.js
+// = require api/translations.js
 // = require api/lightbox.js
 // = require api/delayed-observer.js
 // = require api/jquery.example.min.js
@@ -19,3 +20,4 @@
 // = require api/crud_comment.js
 // = require api/define_behavior.js
 // = require api/load_comments.js
+
