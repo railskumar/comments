@@ -1,9 +1,9 @@
 class Site < ActiveRecord::Base
   belongs_to :user, :inverse_of => :sites
-  has_many :topics, :inverse_of => :site
+  has_many :topics, :inverse_of => :site, :dependent => :destroy
   has_many :comments, :order =>'created_at DESC', :through => :topics
   
-  has_many :site_moderators
+  has_many :site_moderators, :dependent => :destroy
   has_many :users_as_moderator, :through => :site_moderators, :source => :user
   
   acts_as_enum :moderation_method, [:none, :akismet, :manual]
@@ -17,8 +17,7 @@ class Site < ActiveRecord::Base
   before_validation :nullify_blank_fields
   
   attr_accessible :name, :url, :moderation_method, :akismet_key, :locale
-  attr_accessible :user, :user_id, :name, :key, :url,
-    :moderation_method, :akismet_key, :locale, :as => :admin
+  attr_accessible :user, :user_id, :name, :key, :url,:moderation_method, :akismet_key, :locale, :as => :admin
   
   default_value_for(:key) { SecureRandom.hex(20).to_i(16).to_s(36) }
 

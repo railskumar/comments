@@ -9,7 +9,7 @@ describe Admin::CommentsController do
        :password => 123456,
        :password_confirmation => 123456,
        :roles => ["site_moderator", ""]
-       })
+       }, :as => :admin)
     end
 
     def assign_site(user,site)

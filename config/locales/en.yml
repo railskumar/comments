@@ -54,7 +54,7 @@ en:
   ordered: Ordered
   people_who_liked_this: People who liked this
   please_login_to_make_comment: Please Login to make comment
-  post_comment_delay_message: "Please post comment after %{post_delay} minute."
+  post_comment_delay_message: "You can post again in %{post_delay} seconds"
   preview: Preview
   reference_required: Reference is required
   replied_to_your_comment_on: replied to your comment on

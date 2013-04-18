@@ -17,12 +17,6 @@ class Admin::CommentsController < ApplicationController
       @sites[0]
     end
     redirect_to admin_sites_path, warning: "There are no site available" and return if @site.blank?
-    
-    #@all_comments = Comment.
-      #accessible_by(current_ability).
-      #order('created_at DESC').
-      #includes(:topic)
-    #@comments = @all_comments.page(params[:page])
   end
   
   def edit
@@ -34,7 +28,7 @@ class Admin::CommentsController < ApplicationController
   def update
     @comment = Comment.find(params[:id])
     authorize! :update, @comment
-    if @comment.update_attributes(params[:comment], :as => current_user.role)
+    if @comment.update_attributes(params[:comment])
       redirect_back(admin_site_comments_path)
     else
       render :action => 'edit'

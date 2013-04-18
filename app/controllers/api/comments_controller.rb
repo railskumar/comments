@@ -97,27 +97,12 @@ class Api::CommentsController < ApplicationController
   end
 
   def sort_comment
-    case params[:sort]
-      when "oldest"
-        params_sort = "oldest"
-      when "newest"
-        params_sort = "newest"
-      when "popular"
-        params_sort = "popular"
-    end
     @username = params[:author_name]
     @user_email = params[:author_email]
     prepare!([:site_key, :topic_key, :topic_url, :topic_title, :sort], [:html, :js, :json])
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic
-      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? params_sort
-        @topic.topic_comments.send(params_sort).visible
-      elsif sorting_options[:popular] == params_sort
-        Kaminari.paginate_array(@topic.topic_comments.send(params_sort))
-      else
-        @topic.topic_comments.oldest.visible
-      end
-      @comments = comments.page(params[:page] || 1).per(PER_PAGE)
+      @comments = order_by_params(params[:sort]).page(params[:page] || 1).per(PER_PAGE)
       render
     else
       render :partial => 'api/site_not_found'
@@ -158,31 +143,32 @@ private
     else
       decompress(params[:content]).to_s
     end
+    @content = view_context.strip_tags @content
   end 
 
   def list_comments(perma_link_comment_id = "")
-    case params[:sorting_order]
-      when "oldest"
-        sorting_order = "oldest"
-      when "newest"
-        sorting_order = "newest"
-      when "popular"
-        sorting_order = "popular"
-    end
     @topic = Topic.lookup(@site_key, @topic_key)
     @perma_link_comment = perma_link_comment_id.blank? ? nil : @topic.comments.where(comment_number:perma_link_comment_id).first
     if @topic
-      comments = if [sorting_options[:newest], sorting_options[:oldest]].include? sorting_order
-        @topic.topic_comments.send(sorting_order).visible
-      elsif sorting_options[:popular] == sorting_order
-        Kaminari.paginate_array(@topic.topic_comments.send(sorting_order))
-      else
-        @topic.topic_comments.oldest.visible
-      end
-      @comments = comments.page(params[:page] || 1).per(PER_PAGE)
+      @comments = order_by_params(params[:sorting_order]).page(params[:page] || 1).per(PER_PAGE)
       render
     else
       render :partial => 'api/site_not_found'
     end
   end
+  
+  def order_by_params sort_order
+    case sort_order
+      when "oldest"
+        comments = @topic.topic_comments.send("oldest")
+      when "newest"
+        comments = @topic.topic_comments.send("newest")
+      when "most_popular"
+        comments = @topic.topic_comments.send("most_popular")
+      else
+        comments = @topic.topic_comments.send("oldest")
+    end
+    Kaminari.paginate_array(comments.visible)
+  end
+  
 end

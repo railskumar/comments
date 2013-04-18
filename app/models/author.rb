@@ -1,5 +1,6 @@
 class Author < ActiveRecord::Base
   has_many :topic_notifications, :dependent => :destroy
+  attr_accessible :author_email, :notify_me, :last_posted_at
   scope :get_user, lambda{ |email| where('author_email = ?', email) }
     
   def Author.notifier?(author_email)
@@ -14,7 +15,7 @@ class Author < ActiveRecord::Base
 
   def Author.can_post?(author_email)
     author = Author.get_user(author_email).first
-    if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_i.minutes > Time.zone.now - author.last_posted_at)
+    if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes > Time.zone.now - author.last_posted_at)
      return false
     else
      return true

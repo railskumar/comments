@@ -3757,6 +3757,7 @@ es: {
 
         // At this point the first [...] has been parsed. See what follows to find
         // out which kind of link we are (reference or direct url)
+        var t = text.match(/]\s/);
         text = text.substr( consumed );
 
         // [link text](/path/to/img.jpg "Optional title")
@@ -3766,7 +3767,7 @@ es: {
         //    ([here](/url/(test))
         // The parens have to be balanced
         var m = text.match( /^\s*\([ \t]*(\S+)(?:[ \t]+(["'])(.*?)\2)?[ \t]*\)/ );
-        if ( m ) {
+        if ( !t && m ) {
           var url = m[1];
           consumed += m[0].length;
 
@@ -3932,7 +3933,7 @@ es: {
   Markdown.dialects.Gruber.inline["**"] = strong_em("strong", "**");
   Markdown.dialects.Gruber.inline["__"] = strong_em("strong", "__");
   Markdown.dialects.Gruber.inline["*"]  = strong_em("em", "*");
-  Markdown.dialects.Gruber.inline["_"]  = strong_em("em", "_");
+  //Markdown.dialects.Gruber.inline["_"]  = strong_em("em", "_");
 
 
   // Build default order from insertion order.

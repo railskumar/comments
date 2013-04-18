@@ -1,10 +1,10 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
-  has_many :sites, :inverse_of => :user, :order => 'name'
+  has_many :sites, :inverse_of => :user, :order => 'name', :dependent => :destroy
   has_many :topics, :through => :sites
   
-  has_many :site_moderators
+  has_many :site_moderators, :dependent => :destroy
   has_many :sites_as_moderator, :through => :site_moderators, :source => :site
   
   # Include default devise modules. Others available are:
@@ -13,12 +13,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :validatable,
          :timeoutable
 
-  attr_accessible :roles, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   attr_accessible :roles, :email, :password, :password_confirmation, :remember_me, :admin, :as => :admin
   
   before_validation :nullify_blank_password_on_update
 
-  scope :with_role, lambda { |role| {:conditions => "roles_mask & #{2**ROLES.index(role.to_s)} > 0"} }
+  scope :with_role, lambda { |role| where("roles_mask & ? > 0", 2**ROLES.index(role.to_s) )}
 
   # Defines the roles that exist. To see what roles can do see the ability contorller.
   ROLES = %w[admin site_moderator]

@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
+    # @user.destroy
 
     respond_to do |format|
       format.html { redirect_to(admin_users_path) }

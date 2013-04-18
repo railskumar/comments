@@ -7,7 +7,7 @@ ruby "1.9.3"
 gem 'pg'
 gem 'dalli'
 gem 'heroku'
-gem 'thin'
+gem 'unicorn'
 
 gem 'schema_plus'
 gem 'default_value_for'
@@ -42,6 +42,7 @@ group :development, :test do
   gem 'spork', '0.9.0.rc9', :require => false
   gem 'taps'
   gem 'sqlite3'
+  gem 'thin'
 end
 
 # Gems used only for assets and not required

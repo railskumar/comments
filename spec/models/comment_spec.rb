@@ -49,7 +49,7 @@ describe "Comment" do
   end
 
   it 'should post comment with some delay' do
-    post_delay = Settings.juvia_comment.COMMENT_POST_DURATION.to_i.minutes
+    post_delay = Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes
     @comment_user.update_attributes(:last_posted_at => @comment_user.last_posted_at - post_delay)
     comment1 = @topic.comments.create!(:author_ip => '127.0.0.1', :author_name => 'author',
                                              :author_email => 'author1@example.com', :content => 'reply on comment', 

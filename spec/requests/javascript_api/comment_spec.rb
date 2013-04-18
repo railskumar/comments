@@ -177,7 +177,7 @@ describe "Javascript API", "error handling" do
           end
         end
 
-        pending "comment sort by popular now" , :js => true do
+        it "comment sort by popular now" , :js => true do
           create_three_comment
           topic = Topic.last
           show_topic(topic.site.key, topic.key)  
@@ -206,7 +206,7 @@ describe "Javascript API", "error handling" do
 
         end
 
-        pending "toggel collapse" , :js => true, :focus => true do
+        it "toggel collapse" , :js => true, :focus => true do
           create_three_comment
           within("#comment-box-3") do
             find(".collapse_link_class").click
