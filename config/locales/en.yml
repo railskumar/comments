@@ -14,6 +14,8 @@ en:
   comments: Comments
   compose_new_comment: Compose new comment
   confirm_message_flag: Are you sure you wish to flag this comment?
+  delete_confirm_msg: Are you sure you wish to delete this comment?
+  delete: Delete
   edit: Edit
   email_notification_off: Email Notification is OFF
   email_notification_on: Email Notification is ON
@@ -44,8 +46,10 @@ en:
   markdown_help: Help with formatting
   miscellaneous: Miscellaneous
   missing_parameter: Missing required parameter
+  more: More
   more_help_on_markdown_home_page: More help on markdown home page
   no_comments: There are no comments yet.
+  ok: OK
   one_guest_liked_this: "One guest liked this."
   one_user_guests_liked_this: "One user and %{guests} guests liked this."
   one_user_liked_this: "One user liked this."

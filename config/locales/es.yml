@@ -14,6 +14,8 @@ es:
   comments: Comentarios
   compose_new_comment: Redacte un nuevo comentario
   confirm_message_flag: ¿Está seguro de querer notificar este comentario?
+  delete_confirm_msg: ¿Está seguro de querer eliminar este comentario?
+  delete: Delete
   edit: Editar
   email_notification_off: Aviso por correo INACTIVO
   email_notification_on: Aviso por correo ACTIVO
@@ -44,8 +46,10 @@ es:
   markdown_help: Para ayuda con el formato
   miscellaneous: Misceláneos
   missing_parameter: Parámetro requerido faltante
+  more: More
   more_help_on_markdown_home_page: Más ayuda en la página de inicio de markdown
   no_comments: Aún no hay comentarios.
+  ok: OK
   one_guest_liked_this: "A Un invitado le gustó esto."
   one_user_guests_liked_this: "A Un usuario y a %{guests} invitados les gustó esto."
   one_user_liked_this: "A un usuario le gustó esto."
