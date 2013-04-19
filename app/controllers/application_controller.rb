@@ -38,7 +38,6 @@ class ApplicationController < ActionController::Base
   end
 
   def convert_yaml_to_json_locale
-    js_namespace = 'Ext.locale = '
     locale_path = File.join(Rails.root, 'config', 'locales/', I18n.locale.to_s) + '.yml'
     @json_locale = YAML::load(IO.read(locale_path))[I18n.locale.to_s].to_json
   end
