@@ -48,7 +48,7 @@ Juvia.replyToComment = ($comment) ->
   $('input[name="parent_id"]').val(parent_id);
   #var authorName = $('input[name="author_name"]', $container).val(); 
   authorName = $.trim($(".juvia-author-name", $comment).text())
-  newContent = "*" + @.t.in_reply_to + " [#" + $comment.data("comment-number") + "](#" + $comment.attr("id") + "') " + @.t.by + " " + authorName + ":*\n" + lines.join("\n")
+  newContent = "*" + @translated_locale.in_reply_to + " [#" + $comment.data("comment-number") + "](#" + $comment.attr("id") + "') " + @translated_locale.by + " " + authorName + ":*\n" + lines.join("\n")
   unless $textarea.val() is ""
     newContent += "\n\n"
     newContent += $textarea.val()
@@ -91,12 +91,12 @@ Juvia.voteComment = (event, this_obj) ->
   if $vote_icon.hasClass("up-active")
     $vote_icon.removeClass "up-active"
     $vote_icon.addClass "down-active"
-    $vote_text.html " " + @.t.liked
+    $vote_text.html " " + @translated_locale.liked
     up_down = 1
   else
     $vote_icon.removeClass "down-active"
     $vote_icon.addClass "up-active"
-    $vote_text.html " " + @.t.like
+    $vote_text.html " " + @translated_locale.like
     up_down = 0
   a_name = $("input[name=\"author_name\"]", $container).val()
   a_email = $("input[name=\"author_email\"]", $container).val()
@@ -127,11 +127,11 @@ Juvia.voteTopic = (event, this_obj) ->
   if $this.hasClass("votes-up-active")
     up_down = 0
     $this.removeClass "votes-up-active"
-    $vote_text.html " " + @.t.like_this_topic
+    $vote_text.html " " + @translated_locale.topic_like
   else
     up_down = 1
     $this.addClass "votes-up-active"
-    $vote_text.html " " + @.t.liked_this_topic
+    $vote_text.html " " + @translated_locale.topic_liked
   a_name = $("input[name=\"author_name\"]", $container).val()
   a_email = $("input[name=\"author_email\"]", $container).val()
   opt1 =

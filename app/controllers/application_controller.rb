@@ -1,8 +1,9 @@
+require 'yaml'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
   before_filter :authenticate_user!
-  before_filter :set_locale
+  before_filter :set_locale, :convert_yaml_to_json_locale
   check_authorization :if => :inside_admin_area?
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -36,6 +37,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def convert_yaml_to_json_locale
+    locale_path = File.join(Rails.root, 'config', 'locales/', I18n.locale.to_s) + '.yml'
+    @json_locale = YAML::load(IO.read(locale_path))[I18n.locale.to_s].to_json
+  end
+  
   def populate_variables
     @container      = params[:container]
     @site_key       = params[:site_key]

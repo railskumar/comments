@@ -8,8 +8,8 @@ Juvia.editComment = (this_obj) ->
   $textarea.delayedObserver ->
     self.previewEditComment this
 
-  $buttons = $("<div class=\"edit-buttons\"><button class=\"btn update_comment\" type=\"button\">"+@.t.ok+"</button><button class=\"btn\" type=\"button\" onclick=\"Juvia.resumeEdit($(this).parent().parent())\">"+@.t.cancel+"</button></div>")
-  edit_preview_help = $("<div class='row row-markdown'><div class='span'>" + @.t.markdown_help + " <a href='#markdowncollapse_" + self.uniq_edit_id + "'data-toggle='jcollapse'>" + @.t.click_here + "</a></div></div><div id='markdowncollapse_" + self.uniq_edit_id + "'class='edit_markdown_div jcollapse'><div class='edit_markdown_child_div'><div class='edit_markdown_upper_div'><div class='row'><div class='span pull-right'><a href='#markdowncollapse_" + self.uniq_edit_id + "'data-toggle='jcollapse'>X</a></div></div><div class='format_list_div'><h4>" + @.t.format_text + "</h4><p>" + @.t.headers + "</p><pre>#" + @.t.h1_header + "<br>##" + @.t.h2_header + "</pre><p>" + @.t.text_styles + "</p><pre>*" + @.t.for_italic + "*<br>**" + @.t.for_bold + "**</pre></div><div class='format_list_div'><h4>" + @.t.lists + "</h4><p>" + @.t.unordered + "</p><pre>*" + @.t.item_1 + "<br>*" + @.t.item_2 + "</pre><p>" + @.t.ordered + "</p><pre>1."+ @.t.item_1 + "<br>2." + @.t.item_2 + "</pre></div><div class='format_list_div edit_miscell'><h4>" + @.t.miscellaneous + "</h4><p>" + @.t.images + "</p><pre>" + @.t.format + ":![Alt Text](url)<br>" + @.t.example + ": ![rdf richard](http://rdfrs.com/assets/richard.png)</pre><p>" + @.t.links + "</p><pre>" + @.t.example + ": [Google](http://google.com)</pre><p class='pull-right'><a href='http://daringfireball.net/projects/markdown/basics'target='_blank'>" + @.t.more_help_on_markdown_home_page + "</a></p></div></div></div></div>")
+  $buttons = $("<div class=\"edit-buttons\"><button class=\"btn update_comment\" type=\"button\">"+@translated_locale.ok+"</button><button class=\"btn\" type=\"button\" onclick=\"Juvia.resumeEdit($(this).parent().parent())\">"+@translated_locale.cancel+"</button></div>")
+  edit_preview_help = $("<div class='row row-markdown'><div class='span'>" + @translated_locale.markdown_help + " <a href='#markdowncollapse_" + self.uniq_edit_id + "'data-toggle='jcollapse'>" + @translated_locale.click_here + "</a></div></div><div id='markdowncollapse_" + self.uniq_edit_id + "'class='edit_markdown_div jcollapse'><div class='edit_markdown_child_div'><div class='edit_markdown_upper_div'><div class='row'><div class='span pull-right'><a href='#markdowncollapse_" + self.uniq_edit_id + "'data-toggle='jcollapse'>X</a></div></div><div class='format_list_div'><h4>" + @translated_locale.format_text + "</h4><p>" + @translated_locale.headers + "</p><pre>#" + @translated_locale.h1_header + "<br>##" + @translated_locale.h2_header + "</pre><p>" + @translated_locale.text_styles + "</p><pre>*" + @translated_locale.for_italic + "*<br>**" + @translated_locale.for_bold + "**</pre></div><div class='format_list_div'><h4>" + @translated_locale.lists + "</h4><p>" + @translated_locale.unordered + "</p><pre>*" + @translated_locale.item_1 + "<br>*" + @translated_locale.item_2 + "</pre><p>" + @translated_locale.ordered + "</p><pre>1."+ @translated_locale.item_1 + "<br>2." + @translated_locale.item_2 + "</pre></div><div class='format_list_div edit_miscell'><h4>" + @translated_locale.miscellaneous + "</h4><p>" + @translated_locale.images + "</p><pre>" + @translated_locale.format + ":![Alt Text](url)<br>" + @translated_locale.example + ": ![rdf richard](http://rdfrs.com/assets/richard.png)</pre><p>" + @translated_locale.links + "</p><pre>" + @translated_locale.example + ": [Google](http://google.com)</pre><p class='pull-right'><a href='http://daringfireball.net/projects/markdown/basics'target='_blank'>" + @translated_locale.more_help_on_markdown_home_page + "</a></p></div></div></div></div>")
   htmlContent = $(this_obj).html()
   markdwonContent = toMarkdown(htmlContent)
   $textarea.val markdwonContent
@@ -185,10 +185,10 @@ Juvia.rdf_comment_box = (option) ->
   flag_span = document.createElement("span")
   flag_span.id = "flag-" + comment_id
   if flagged is "Flagged"
-    flag_span.appendChild document.createTextNode(" " + @.t.flagged)
+    flag_span.appendChild document.createTextNode(" " + @translated_locale.flagged)
     flag_comment_tag.className = "flagged"
   else
-    flag_span.appendChild document.createTextNode(" " + @.t.flag)
+    flag_span.appendChild document.createTextNode(" " + @translated_locale.flag)
   ababb_flag_p.className = "icon-flag"
   flag_comment_tag.appendChild ababb_flag_p
   flag_comment_tag.appendChild flag_span
@@ -209,10 +209,10 @@ Juvia.rdf_comment_box = (option) ->
     like_span = document.createElement("span")
     if liked is "liked"
       ababba.className = "icon-thumbs-up down-active"
-      like_span.appendChild document.createTextNode(" " + @.t.liked)
+      like_span.appendChild document.createTextNode(" " + @translated_locale.liked)
     else
       ababba.className = "icon-thumbs-up up-active"
-      like_span.appendChild document.createTextNode(" " + @.t.like)
+      like_span.appendChild document.createTextNode(" " + @translated_locale.like)
     vote_comment_tag.appendChild ababba
     vote_comment_tag.appendChild like_span
     ababb.appendChild vote_comment_tag
@@ -236,7 +236,7 @@ Juvia.rdf_comment_box = (option) ->
     reply_comment_tag.appendChild ababb_reply_p
     ababca = document.createElement("span")
     reply_comment_tag.appendChild ababca
-    ababca.appendChild document.createTextNode(" " + @.t.reply)
+    ababca.appendChild document.createTextNode(" " + @translated_locale.reply)
   if @user_email is comment_user_email 
 
     edit_comment_dom = document.createElement("div")
@@ -253,7 +253,7 @@ Juvia.rdf_comment_box = (option) ->
     btn_dom.setAttribute "data-wrapper", "divid" + comment_id
 
     text_span = document.createElement("span")
-    text_span.appendChild document.createTextNode("More")
+    text_span.appendChild document.createTextNode(" " + @translated_locale.more)
     caret_span = document.createElement("span")
     caret_span.className = "caret"
     btn_dom.appendChild text_span
@@ -270,7 +270,7 @@ Juvia.rdf_comment_box = (option) ->
       edit_icon = document.createElement("i")
       edit_icon.className = "icon-edit margin_right"
       a_edit.appendChild edit_icon 
-      a_edit.appendChild document.createTextNode(" Edit")
+      a_edit.appendChild document.createTextNode(" " + @translated_locale.edit)
       li_edit.appendChild a_edit
       ul_dom.appendChild li_edit
       li_divider = document.createElement("li")
@@ -283,7 +283,7 @@ Juvia.rdf_comment_box = (option) ->
     delete_icon = document.createElement("i")
     delete_icon.className = "icon-trash margin_right"
     a_delete.appendChild delete_icon
-    a_delete.appendChild document.createTextNode(" Delete")
+    a_delete.appendChild document.createTextNode(" " + @translated_locale.delete)
     li_delete.appendChild a_delete
     ul_dom.appendChild li_delete
     btn_group_dom.appendChild ul_dom

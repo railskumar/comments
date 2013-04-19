@@ -21,6 +21,7 @@
   Juvia.topic_url = '<%= @topic_url%>';
   Juvia.topic_title = '<%= escape_javascript(@topic_title) %>';
   Juvia.perma_link_comment_id = '<%= @perma_link_comment_id %>';
+  Juvia.translated_locale = Juvia.$.parseJSON('<%= escape_javascript(@json_locale.html_safe) %>');
 
 <%
   options = { 
@@ -30,6 +31,7 @@
     :css       => '.juvia-container [class^="icon-"],.juvia-container [class*=" icon-"] {background-image: url(" ' + Settings.juvia_comment.url + '/assets/glyphicons-halflings.png");}'
   }
 %>
+
 <%= juvia_handle_response(options) %>
 <%= juvia_reinstall_behavior %>
 
