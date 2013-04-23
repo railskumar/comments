@@ -301,7 +301,7 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-content',:visible => true)
             within(".juvia-preview-content") do
               find("ol li").text.should include("ordered list")
-            end                    
+            end
 
             fill_in 'content', :with => '* unordered list
             1. ordered list'
@@ -309,8 +309,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-content',:visible => true)
             within(".juvia-preview-content") do
               find("ol li").text.should include("ordered list")
-              find("ul li").text.should include("unordered list")              
-            end                    
+              find("ul li").text.should include("unordered list")
+            end
 
             fill_in 'content', :with => '1. ordered list
             * unordered list'
@@ -319,7 +319,7 @@ describe "Javascript API", "error handling" do
             within(".juvia-preview-content") do
               find("ul li").text.should include("unordered list")
               find("ol li").text.should include("ordered list")
-            end                    
+            end
           end
         end
 
@@ -338,25 +338,19 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-1") do
-              pending("find formatting tag in comment text") do
-                find("h1").text.should include("header text")
-              end
+              find("h1").text.should include("header text")
             end
             fill_in 'content', :with => '##header text'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
             within(".juvia-preview-content") do
-              pending("find formatting tag in comment text") do
-                find("h2").text.should include("header text")
-              end
+              find("h2").text.should include("header text")
             end
             click_button 'Submit'
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-2") do
-              pending("find formatting tag in comment text") do
-                find("h2").text.should include("header text")
-              end
+              find("h2").text.should include("header text")
             end
           end
 
@@ -376,10 +370,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-1") do
               within(".juvia-comment-pure-content") do
-                pending("find formatting tag in comment text") do
-                  find("img")[:src].should include("http://rdfrs.com/assets/richard.png")
-                  find("img")[:alt].should include("rdf richard")
-                end
+                find("img")[:src].should include("http://rdfrs.com/assets/richard.png")
+                find("img")[:alt].should include("rdf richard")
               end
             end
           end
@@ -400,10 +392,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-1") do
               within(".juvia-comment-pure-content") do
-                pending("find formatting tag in comment text") do
-                  find("a")[:href].should include("http://google.com")
-                  find("a").text.should include("Google")
-                end
+                find("a")[:href].should include("http://google.com")
+                find("a").text.should include("Google")
               end
             end
           end
@@ -423,9 +413,7 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-1") do
-              pending("find formatting tag in comment text") do 
-                find("em").text.should include("For italic")
-              end
+              find("em").text.should include("For italic")
             end
             fill_in 'content', :with => '**For bold**'
             page.should have_css('.juvia-preview-empty', :visible => false)
@@ -437,9 +425,7 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-2") do
-              pending("find formatting tag in comment text") do
-                find("strong").text.should include("For bold")
-              end
+              find("strong").text.should include("For bold")
             end
 
           end
@@ -492,10 +478,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-3") do
-              pending("find formatting tag in comment text") do
-                find("ul li").text.should include("unordered list")
-                find("ol li").text.should include("ordered list")
-              end
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
             end
 
 
@@ -511,10 +495,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
             within("#comment-box-4") do
-              pending("find formatting tag in comment text") do
-                find("ul li").text.should include("unordered list")
-                find("ol li").text.should include("ordered list")
-              end
+              find("ul li").text.should include("unordered list")
+              find("ol li").text.should include("ordered list")
             end
           end
 
