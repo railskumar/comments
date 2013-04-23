@@ -80,7 +80,7 @@ module ApplicationHelper
 	  :comment_number => comment.comment_number,
 	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
     :permalink => comment.permalink(options[:topic_url]),
-    :user_like_comment => user_likes?(comment) ? "false" : "false"
+    :user_like_comment => user_likes?(comment) ? "true" : "false"
     }
   end
   

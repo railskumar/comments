@@ -229,3 +229,6 @@ Juvia.deleteComment = (event, this_obj) ->
     user_email: @user_email
 
   false
+
+Juvia.showUserComments = (email) ->
+  window.location = "/users?juvia=true&email=" + email
