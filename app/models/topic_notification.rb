@@ -7,5 +7,6 @@ class TopicNotification < ActiveRecord::Base
   def self.lookup_or_create_topic_notification(author_id, topic_id)
     topic_notification = TopicNotification.get_topic_notification(author_id, topic_id).first
     topic_notification = TopicNotification.create!(topic_id:topic_id, author_id:author_id) if topic_notification.blank?
+    topic_notification
   end
 end
