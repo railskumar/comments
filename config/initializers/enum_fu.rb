@@ -1,2 +1,2 @@
-require 'enum_fu'
+require 'enum_fu/enum_fu'
 ActiveRecord::Base.send :include, EnumFu
