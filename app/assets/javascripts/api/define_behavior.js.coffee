@@ -42,9 +42,8 @@ Juvia.reinstallBehavior = ->
       className: "juvia-example-text"
     
     # Our submit handler is called before jquery.example has cleared the
-    #			 * example texts. We work around this by calling our actual
-    #			 * submit handler a short while later.
-    #			 
+    # example texts. We work around this by calling our actual
+    # submit handler a short while later.
     addCommentForm.bind "submit", (event) ->
       setTimeout (->
         self.submitComment event
@@ -206,3 +205,10 @@ Juvia.reinstallBehavior = ->
         self.deleteComment event, this
       else
         false
+
+  $(".juvia-subscribe-to-topic").each ->
+    $this = $(this)
+    unless $this.hasClass("juvia-installed-behavior")
+      $this.addClass "juvia-installed-behavior"
+      $this.bind "click", (event) ->
+        self.topicNotification event, this

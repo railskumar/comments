@@ -68,26 +68,26 @@ module ApplicationHelper
   
   def comment_hash(comment, username, user_email, options = {})
     return {:comment_counter => 1,
-	  :comment_id => comment.id,
-	  :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
-	  :user_name => comment.author_name,
-	  :comment_text => render_markdown(comment.content),
-	  :creation_date => comment.created_at.strftime("%d-%b-%Y %H:%M %p"), 
-	  :comment_votes => i18_votes(comment),
-	  :liked => (user_liked?(username, user_email, comment) ? "liked" : "like"),
-	  :flagged => (comment.flag_status),
-	  :user_email => comment.author_email,
-	  :comment_number => comment.comment_number,
-	  :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
-    :permalink => comment.permalink(options[:topic_url]),
-    :user_like_comment => user_likes?(comment) ? "true" : "false"
+            :comment_id => comment.id,
+            :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
+            :user_name => comment.author_name,
+            :comment_text => render_markdown(comment.content),
+            :creation_date => comment.created_at.strftime("%d-%b-%Y %H:%M %p"), 
+            :comment_votes => i18_votes(comment),
+            :liked => (user_liked?(username, user_email, comment) ? "liked" : "like"),
+            :flagged => (comment.flag_status),
+            :user_email => comment.author_email,
+            :comment_number => comment.comment_number,
+            :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
+            :permalink => comment.permalink(options[:topic_url]),
+            :user_like_comment => user_likes?(comment) ? "true" : "false"
     }
   end
   
   def comment_users_hash(vote)
     return {:comment_user_image => avatar_img(vote.author_email, (vote.author_email_md5 rescue '')),
-	  :comment_user_name => vote.author_name,
-	  :comment_user_email => vote.author_email
+            :comment_user_name => vote.author_name,
+            :comment_user_email => vote.author_email
     }
   end  
 
@@ -170,6 +170,16 @@ module ApplicationHelper
     else
       buffer
     end
+  end
+  
+  def topic_notify?(author_email, topic_id)
+    return nil if author_email.blank?
+    author = Author.get_user(author_email).first
+    if author.present?
+      topic_notification = TopicNotification.get_topic_notification(author.id, topic_id)
+      return true if topic_notification.present?
+    end
+    return false
   end
 
 end

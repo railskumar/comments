@@ -1,4 +1,5 @@
 class Author < ActiveRecord::Base
+  has_many :topic_notifications, :dependent => :destroy
   attr_accessible :author_email, :notify_me, :last_posted_at
   scope :get_user, lambda{ |email| where('author_email = ?', email) }
     
@@ -19,5 +20,17 @@ class Author < ActiveRecord::Base
     else
      return true
     end
+  end
+  
+  def self.lookup_or_create_author(author_email, notify_me)
+    author = Author.get_user(author_email).first
+    author = if author.present?
+      author.notify_me = notify_me
+      author
+    else
+      Author.new(notify_me:notify_me, author_email:params[:author_email])
+    end
+    author.save
+    author
   end
 end

@@ -74,6 +74,11 @@ FactoryGirl.define do
     notify_me true
     created_at Time.now
   end
+  
+  factory :topic_notification do
+    author_id '1'
+    topic_id '2'
+  end
 end
 
 module FactoryHelpers

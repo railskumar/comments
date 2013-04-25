@@ -50,6 +50,26 @@ describe "Javascript API", "error handling" do
               find(".alert").text.should include("Email notifications were successfully saved.")
           end
         end
+        
+        it "should on email notificaiton on topic" , :js => true do
+          create_new_topic
+          topic = Topic.last
+          author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
+          topic_notification = FactoryGirl.create(:topic_notification, :author_id => author.id, :topic_id => topic.id)
+          show_topic(topic.site.key, topic.key)
+          find("#subscriber_email").text.should include("Notified this topic")
+          find("#subscriber_email").click
+          within(".juvia_email_notification") do
+            find(".alert").text.should include("Email notifications were successfully saved.")
+          end
+        end
+        
+        it "should off email notificaiton on topic" , :js => true do
+          create_new_topic
+          topic = Topic.last
+          show_topic(topic.site.key, topic.key)
+          find("#subscriber_email").text.should include("Notification about this topic")
+        end
       end
     end
   end  
