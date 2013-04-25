@@ -38,6 +38,8 @@ Juvia.replyToComment = ($comment) ->
   parent_id = $comment.data("comment-id")
   $container = $comment.closest(".juvia-container")
   text = $(".juvia-comment-pure-content", $comment).text()
+  if text.length > 300
+    text = $.trim(text).substring(0,300).trim(this).trim(this) + "..."
   lines = text.split("\n")
   i = undefined
   i = 0
@@ -45,6 +47,7 @@ Juvia.replyToComment = ($comment) ->
     lines[i] = "> " + lines[i]
     i++
   $textarea = $("textarea", $container)
+  $textarea.val ""
   $('input[name="parent_id"]').val(parent_id);
   #var authorName = $('input[name="author_name"]', $container).val(); 
   authorName = $.trim($(".juvia-author-name", $comment).text())
@@ -229,3 +232,6 @@ Juvia.deleteComment = (event, this_obj) ->
     user_email: @user_email
 
   false
+
+Juvia.showUserComments = (email) ->
+  window.location = "/users?juvia=true&email=" + email

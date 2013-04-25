@@ -285,7 +285,7 @@ Juvia.showUsers = (users, status) ->
     if !$.isEmptyObject(users)
       $("#users_liker").modal "show"
       $.each users, (key, value) ->
-        users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a href='/users?juvia=true&email="+value.comment_user_email+"'><img width='64' height='38' src='" + value.comment_user_image + "' data-user-email='" + value.comment_user_email + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_user_name + "</div></div><div style='margin-bottom:10px;'></div>"
+        users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a onclick=Juvia.showUserComments(\"" + Juvia.compress(value.comment_user_email) + "\"); href='#'><img width='64' height='38' src='" + value.comment_user_image + "' data-user-email='" + Juvia.compress(value.comment_user_email) + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_user_name + "</div></div><div style='margin-bottom:10px;'></div>"
         users_liked_dom.html " " + users_liked_str
   else
     alert "Something went wrong!"
@@ -405,10 +405,9 @@ Juvia.submitComment = (event) ->
 
 
 # The browser does not save the content of the Juvia comments box when
-#     * the user reloads the page. In order to prevent data loss we implement
-#  * our own saving capabilities. The text box is saved into sessionStorage
-#  * with a key that depends on the site key and the topic key.
-#  
+# the user reloads the page. In order to prevent data loss we implement
+# our own saving capabilities. The text box is saved into sessionStorage
+# with a key that depends on the site key and the topic key. 
 Juvia.getTextBoxStorageKey = (container) ->
   "juvia_text/" + container.data("site-key") + "/" + container.data("topic-key")
 
@@ -439,15 +438,14 @@ Juvia.saveCommentBox = (container) ->
         console.warn e  if console
         
         # It looks like we're hitting the quota limit.
-        #          * Try to free up some space and try again.
-        #          *
-        #          * Even though the standard says that it's supposed to
-        #          * throw QuotaExceededError, browsers currently don't
-        #          * actually do that. Instead they throw some kind of
-        #          * internal exception type. So we don't bother checking
-        #          * for the exception type.
-        #          * http://stackoverflow.com/questions/3027142/calculating-usage-of-localstorage-space
-        #          
+        # Try to free up some space and try again.
+        # 
+        # Even though the standard says that it's supposed to
+        # throw QuotaExceededError, browsers currently don't
+        # actually do that. Instead they throw some kind of
+        # internal exception type. So we don't bother checking
+        # for the exception type.
+        # http://stackoverflow.com/questions/3027142/calculating-usage-of-localstorage-space
         @clearAllTextBoxStorage container
         try
           window.sessionStorage.setItem key, value

@@ -4,6 +4,7 @@ class Api::AuthorsController < ApplicationController
   
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
+  respond_to :html, :json
 
   def update_author
     prepare!([:author_email, :notify_me], [:js])
@@ -18,6 +19,10 @@ class Api::AuthorsController < ApplicationController
     end
     @author.save
     render
+  end
+
+  def decode_email
+    respond_with(decompress(params[:email]).to_s)
   end
   
   def update_topic_notification
@@ -34,4 +39,5 @@ class Api::AuthorsController < ApplicationController
     @topic_notification = TopicNotification.get_topic_notification(author.id, topic.id).first if topic.present?
     @topic_notification.destroy if @topic_notification.present?
   end
+
 end

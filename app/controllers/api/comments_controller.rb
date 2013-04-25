@@ -1,5 +1,3 @@
-require 'zlib'
-
 class Api::CommentsController < ApplicationController
   include ApplicationHelper
   layout nil
@@ -128,13 +126,6 @@ private
     else
       default
     end
-  end
-  
-  def decompress(str)
-    return str if Rails.env.test?
-    result = Zlib::Inflate.inflate(str.unpack('m').first)
-    result.force_encoding('utf-8') if result.respond_to?(:force_encoding)
-    result
   end
 
   def check_restrict_comment_length
