@@ -153,10 +153,11 @@ describe "Javascript API", "error handling" do
           page.should have_css('.juvia-preview-content',:visible => false)
         end
 
-        pending "comment sort by newest first" , :js => true do
+        it "comment sort by newest first" , :js => true do
           create_three_comment
-          
+          topic = Topic.last
           select('Sort by newest first', :from => 'juvia-sort-select')
+          show_topic(topic.site.key, topic.key)
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0]['id'].eql? "comment-box-3"
@@ -165,10 +166,11 @@ describe "Javascript API", "error handling" do
           end
         end
         
-        pending "comment sort by oldest first" , :js => true do
+        it "comment sort by oldest first" , :js => true do
           create_three_comment
-
-          select('Sort by oldest first', :from => 'juvia-sort-select')          
+          topic = Topic.last
+          select('Sort by oldest first', :from => 'juvia-sort-select')
+          show_topic(topic.site.key, topic.key)
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0]['id'].eql? "comment-box-1"
@@ -194,9 +196,10 @@ describe "Javascript API", "error handling" do
             post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,3)
           end
 
+          select('Sort by most popular', :from => 'juvia-sort-select')
+          
           show_topic(topic.site.key, topic.key)
           
-          select('Sort by most popular', :from => 'juvia-sort-select')          
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0]['id'].eql? "comment-box-2"
@@ -284,9 +287,6 @@ describe "Javascript API", "error handling" do
 
 
           it "list formating" , :js => true do
-            pending("Need to fix this")
-            this_should_not_get_executed
-
             create_new_topic
             topic = Topic.last
             show_topic(topic.site.key, topic.key)
@@ -308,8 +308,8 @@ describe "Javascript API", "error handling" do
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
             within(".juvia-preview-content") do
-              find("ul li").text.should include("unordered list")
               find("ol li").text.should include("ordered list")
+              find("ul li").text.should include("unordered list")              
             end                    
 
             fill_in 'content', :with => '1. ordered list
@@ -321,7 +321,6 @@ describe "Javascript API", "error handling" do
               find("ol li").text.should include("ordered list")
             end                    
           end
-
         end
 
         describe "create formated comment" do
@@ -653,8 +652,6 @@ describe "Javascript API", "error handling" do
             find("button.update_comment").click
           end
         end
-         
-
       end
 
     end

@@ -15,6 +15,8 @@ de:
   commenting_closed: Commenting closed.
   compose_new_comment: Neuen Kommentar erstellen
   confirm_message_flag: Sind Sie sicher, dass Sie diesen Kommentar melden möchten?
+  delete_confirm_msg: Sind Sie sicher, dass Sie diesen Kommentar löschen?
+  delete: Delete
   edit: Bearbeiten
   email_notification_off: Die Email-Benachrichtigung ist deaktiviert
   email_notification_on: Die Email-Benachrichtigung ist aktiviert
@@ -45,8 +47,10 @@ de:
   markdown_help: Hilfe bei der Formatierung
   miscellaneous: Diverses
   missing_parameter: Ein erforderlicher Parameter fehlt
+  more: More
   more_help_on_markdown_home_page: Mehr Hilfe auf der Markdown Homepage
   no_comments: Es wurden noch keine Kommentare abgegeben
+  ok: OK
   one_guest_liked_this: "Einem Besucher gefällt das."
   one_user_guests_liked_this: "Einem Benutzer und %{guests} Besuchern gefällt das."
   one_user_liked_this: "Einem Benutzer gefällt das."
