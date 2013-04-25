@@ -1,3 +1,4 @@
+require 'zlib'
 require 'yaml'
 class ApplicationController < ActionController::Base
   protect_from_forgery
@@ -99,6 +100,13 @@ class ApplicationController < ActionController::Base
       raise CanNotPostComment
     end
   end
+
+  def decompress(str)
+    result = Zlib::Inflate.inflate(str.unpack('m').first)
+    result.force_encoding('utf-8') if result.respond_to?(:force_encoding)
+    result
+  end
+
 private
   ### before filters
   

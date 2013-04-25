@@ -4,6 +4,7 @@ class Api::AuthorsController < ApplicationController
   
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
+  respond_to :html, :json
 
   def update_author
     prepare!([:author_email, :notify_me], [:js])
@@ -18,5 +19,9 @@ class Api::AuthorsController < ApplicationController
     end
     @author.save
     render
+  end
+
+  def decode_email
+    respond_with(decompress(params[:email]).to_s)
   end
 end
