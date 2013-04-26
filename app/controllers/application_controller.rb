@@ -1,11 +1,14 @@
 require 'zlib'
 require 'yaml'
+require "base64"
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
   before_filter :authenticate_user!
   before_filter :set_locale, :convert_yaml_to_json_locale
   check_authorization :if => :inside_admin_area?
+
+  helper_method :encode_str, :decode_str
 
   rescue_from CanCan::AccessDenied do |exception|
     render :template => 'shared/forbidden'
@@ -42,7 +45,15 @@ class ApplicationController < ActionController::Base
     locale_path = File.join(Rails.root, 'config', 'locales/', I18n.locale.to_s) + '.yml'
     @json_locale = YAML::load(IO.read(locale_path))[I18n.locale.to_s].to_json
   end
-  
+
+  def encode_str(str)
+    Base64.encode64(str).chop!
+  end
+
+  def decode_str(str)
+    Base64.decode64(str)
+  end
+
   def populate_variables
     @container      = params[:container]
     @site_key       = params[:site_key]
