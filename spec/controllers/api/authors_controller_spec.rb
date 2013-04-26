@@ -8,20 +8,13 @@ describe Api::AuthorsController do
     @topic = FactoryGirl.create(:topic,:site_id => @site.id)
     @author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => "1")
   end
-  
-  after(:all) do
-    @admin.destroy
-    @site.destroy
-    @topic.destroy
-    @author.destroy
-  end
     
   describe "GET update_topic_notification" do
     
     it "should create topic notification with all valid values" do
       create_required_objects
       expect {
-        get :update_topic_notification, get_params
+        get :create_topic_notification, get_params
       }.to change(TopicNotification, :count).by(1)
       response.should be_true
     end
@@ -29,7 +22,7 @@ describe Api::AuthorsController do
     it "should not create topic notification when params parameters are missing" do
       create_required_objects
       expect {
-        get :update_topic_notification, get_params(:author_email => "")
+        get :create_topic_notification, get_params(:author_email => "")
       }.to change(TopicNotification, :count).by(0)
     end
   end

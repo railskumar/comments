@@ -57,7 +57,7 @@ describe "Javascript API", "error handling" do
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
           topic_notification = FactoryGirl.create(:topic_notification, :author_id => author.id, :topic_id => topic.id)
           show_topic(topic.site.key, topic.key)
-          find("#subscriber_email").text.should include("Notified this topic")
+          find("#subscriber_email").text.should include(I18n.t(:topic_notification_on))
           find("#subscriber_email").click
           within(".juvia_email_notification") do
             find(".alert").text.should include("Email notifications were successfully saved.")
@@ -68,7 +68,7 @@ describe "Javascript API", "error handling" do
           create_new_topic
           topic = Topic.last
           show_topic(topic.site.key, topic.key)
-          find("#subscriber_email").text.should include("Notification about this topic")
+          find("#subscriber_email").text.should include(I18n.t(:topic_notification_off))
         end
       end
     end

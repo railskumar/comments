@@ -27,7 +27,7 @@ class Author < ActiveRecord::Base
     if author
       author
     else
-      Author.create!(author_email:params[:author_email])
+      Author.create!(author_email: author_email)
     end
   end
 end
