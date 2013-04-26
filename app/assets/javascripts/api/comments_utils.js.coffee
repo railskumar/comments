@@ -483,11 +483,10 @@ Juvia.topicNotification = (event, this_obj) ->
     topic_title: $container.data("topic-title")
     
   opt2 =
-    notify_me: 0
     author_email: $("input[name=\"author_email\"]", $container).val()
   if $this.hasClass("votes-up-active")
     $this.removeClass "votes-up-active"
     @loadJsScript "/api/authors/destroy_topic_notification", $.extend(opt1, opt2)
   else  
     $this.addClass "votes-up-active"
-    @loadJsScript "/api/authors/update_topic_notification", $.extend(opt1, opt2)
+    @loadJsScript "/api/authors/create_topic_notification", $.extend(opt1, opt2)

@@ -15,7 +15,7 @@
       <div class="span6">
         <votetopic class="juvia-subscribe-to-topic" id="subscriber_email">
           <i class="icon-envelope"></i>
-          <span><%= t(:topic_notification) %></span>
+          <span><%= t(:topic_notification_off) %></span>
         </votetopic>
       </div>
     </div>
@@ -36,6 +36,6 @@
     var $subscriber_email = Juvia.$('#subscriber_email')
     $subscriber_email.addClass('votes-up-active');
     var $subscriber_email_text = $subscriber_email.find("span");
-    $subscriber_email_text.html("<%= escape_javascript(t(:topic_notified)) %>");
+    $subscriber_email_text.html("<%= escape_javascript(t(:topic_notification_on)) %>");
   </script>
 <% end %>

@@ -22,15 +22,12 @@ class Author < ActiveRecord::Base
     end
   end
   
-  def self.lookup_or_create_author(author_email, notify_me)
+  def self.lookup_or_create_author(author_email)
     author = Author.get_user(author_email).first
-    author = if author.present?
-      author.notify_me = notify_me
+    if author
       author
     else
-      Author.new(notify_me:notify_me, author_email:params[:author_email])
+      Author.create!(author_email:params[:author_email])
     end
-    author.save
-    author
   end
 end
