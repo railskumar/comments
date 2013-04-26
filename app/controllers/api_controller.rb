@@ -9,18 +9,17 @@ class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
+  before_filter :decode_value, :only => [ :user_comments, :append_user_comments ]
  
   def user_comments
     prepare!([:site_key, :username, :user_email, :container],[:html, :js])
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], params[:user_email]).page(1).per(PER_PAGE)
+    list_comment
   end 
 
   def append_user_comments
     prepare!([:site_key, :username, :user_email, :container],[:html, :js])
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], params[:user_email])
-    .page(params[:page].to_i)
-    .per(PER_PAGE)
-  end 
+    list_comment
+  end
   
   def comments_count
     prepare!([:site_key],[:html, :js])
@@ -57,8 +56,17 @@ class ApiController < ApplicationController
   end
 
 private
+
+  def decode_value
+    @useremail = decode_str(params[:user_email])
+  end
+
   def log_exception(e)
     logger.error("#{e.class} (#{e}):\n  " <<
       e.backtrace.join("\n  "))
+  end
+  
+  def list_comment
+    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail).page(params[:page].to_i || 1).per(PER_PAGE)
   end
 end

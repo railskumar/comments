@@ -7,7 +7,7 @@
         :comments => @comments, 
         :total_pages => @comments.total_pages,
         :user_name => @comments[0].blank? ?  "" : @comments[0].author_name, 
-        :user_email => @comments[0].blank? ?  "" : @comments[0].author_email
+        :user_email => @comments[0].blank? ?  "" : encode_str(@comments[0].author_email)
       })
     }
   options[:css] = Juvia::Application.assets.find_asset('api.css').body
