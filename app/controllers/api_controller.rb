@@ -13,15 +13,13 @@ class ApiController < ApplicationController
  
   def user_comments
     prepare!([:site_key, :username, :user_email, :container],[:html, :js])
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail).page(1).per(PER_PAGE)
+    list_comment
   end 
 
   def append_user_comments
     prepare!([:site_key, :username, :user_email, :container],[:html, :js])
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail)
-    .page(params[:page].to_i)
-    .per(PER_PAGE)
-  end 
+    list_comment
+  end
   
   def comments_count
     prepare!([:site_key],[:html, :js])
@@ -66,5 +64,9 @@ private
   def log_exception(e)
     logger.error("#{e.class} (#{e}):\n  " <<
       e.backtrace.join("\n  "))
+  end
+  
+  def list_comment
+    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail).page(params[:page].to_i || 1).per(PER_PAGE)
   end
 end
