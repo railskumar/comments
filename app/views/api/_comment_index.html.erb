@@ -11,7 +11,7 @@
           <dt>
             <b><%= t(:topic) %>:</b>
             <% if comment.topic and comment.topic.url %>
-              <%= link_to sanitize truncate(comment.topic.url, :length => 60), comment.topic.url+"#comment-box-#{comment.comment_number}" %>
+              <%= link_to sanitize(truncate(comment.topic.url, :length => 60)), sanitize(comment.topic.url+"#comment-box-#{comment.comment_number}") %>
             <% else %>
               None
             <% end %>
