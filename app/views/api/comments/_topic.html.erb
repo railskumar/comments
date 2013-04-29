@@ -8,6 +8,7 @@
     <% if @user_logged_in %> 
       <%= render :partial => 'like_unlike'%>
       <% if @topic.comments_open %>
+        <%= render :partial => 'topic_notification'%>
         <h3><%= t(:add_comment_title) %></h3>
         <%= render :partial => 'user_form' %>
         <%= render :partial => 'markdown_help' %>

@@ -1,0 +1,18 @@
+<% 
+notification_message, css_class = t(:topic_notification_off), ""
+if topic_notify?(@user_email, @topic.id) 
+  notification_message = t(:topic_notification_on)
+  css_class = "votes-up-active"
+end
+%>
+
+<div class="juvia-topic-vote">
+  <div class="row-fluid">
+    <div class="span6">
+      <votetopic class="juvia-subscribe-to-topic <%= css_class %>" id="subscriber_email">
+        <i class="icon-envelope"></i>
+        <span><%= notification_message %></span>
+      </votetopic>
+    </div>
+  </div>
+</div>

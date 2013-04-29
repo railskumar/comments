@@ -10,16 +10,6 @@
       <span id="liked_pages" class= "<%= (user_likes?(@topic)) ? 'user_like' : 'guest_like' %>" ><%= i18_votes(@topic) %></span>
     </div>
   </div>
-  <% if @user_logged_in %>
-    <div class="row-fluid">
-      <div class="span6">
-        <votetopic class="juvia-subscribe-to-topic" id="subscriber_email">
-          <i class="icon-envelope"></i>
-          <span><%= t(:topic_notification_off) %></span>
-        </votetopic>
-      </div>
-    </div>
-  <% end %>
 </div>
 
 <% if @topic.liked?(@username, @user_email) %>
@@ -29,13 +19,5 @@
     $like.addClass('votes-up-active');
     var $like_text = $like.find("span");
     $like_text.html("<%= escape_javascript(t(:topic_liked)) %>");
-  </script>
-<% end %>
-<% if @user_logged_in && topic_notify?(@user_email, @topic.id) %>
-  <script type="text/javascript">
-    var $subscriber_email = Juvia.$('#subscriber_email')
-    $subscriber_email.addClass('votes-up-active');
-    var $subscriber_email_text = $subscriber_email.find("span");
-    $subscriber_email_text.html("<%= escape_javascript(t(:topic_notification_on)) %>");
   </script>
 <% end %>
