@@ -15,9 +15,9 @@
   options[:css] = Juvia::Application.assets.find_asset('api.css').body
 %>
 <%= juvia_handle_response(options) %>
-  if($('#append_user_comments')){
-        $('#append_user_comments').attr('data-page', '<%= params[:page].to_i + 1%>');
-  }
+if($('#append_user_comments')){
+   $('#append_user_comments').attr('data-page', '<%= params[:page].to_i + 1%>');
+}
 
 
 
