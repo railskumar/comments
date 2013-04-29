@@ -78,8 +78,8 @@ es:
   topic: Tópico
   topic_like: Me gusta este tópico
   topic_liked: Me gustó este tópico
-  topic_notification_off: Topic Notification is OFF
-  topic_notification_on: Topic Notification is ON
+  topic_notification_off: Topic Email Notification OFF
+  topic_notification_on: Topic Email Notification ON
   total_comment_title: comentarios
   unliked: Ya no me gustó
   unordered: Con viñetas

@@ -78,8 +78,8 @@ en:
   topic: Topic
   topic_like: Like this topic
   topic_liked: Liked this topic
-  topic_notification_off: Topic Notification is OFF
-  topic_notification_on: Topic Notification is ON
+  topic_notification_off: Topic Email Notification OFF
+  topic_notification_on: Topic Email Notification ON
   total_comment_title: comments
   unliked: Unliked
   unordered: Unordered
