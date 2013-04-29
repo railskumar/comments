@@ -14,6 +14,6 @@ class Mailer < ActionMailer::Base
   def send_comment_notification_to_subscriber(comment,author_detail)
     @site    = comment.site
     @comment = comment
-    mail(:to => author_detail.author_email, :subject => "Comment on your notified topic in [#{comment.topic.title.split[0,5].join(" ").to_s}...]")
+    mail(:to => author_detail.author_email, :subject => "New comment on #{comment.topic.title.split[0,5].join(" ").to_s}...")
   end
 end

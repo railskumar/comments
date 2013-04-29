@@ -78,8 +78,8 @@ de:
   topic: Thema
   topic_like: "Thema positiv bewerten"
   topic_liked: "Thema wurde positiv bewertet"
-  topic_notification_off: Topic Notification is OFF
-  topic_notification_on: Topic Notification is ON
+  topic_notification_off: Topic Email Notification OFF
+  topic_notification_on: Topic Email Notification ON
   total_comment_title: Kommentar
   unordered: Ungeordnet
   users_guests_liked_this: "%{users} Benutzerern und %{guests} Besuchern gefällt das."
