@@ -234,4 +234,4 @@ Juvia.deleteComment = (event, this_obj) ->
   false
 
 Juvia.showUserComments = (email) ->
-  window.location = "/users?juvia=true&email=" + email
+  window.location = "/users?juvia=true&email=" + encodeURIComponent(email)

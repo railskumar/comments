@@ -176,7 +176,7 @@ Juvia.reinstallBehavior = ->
     $this = $(this)
     $this.addClass "juvia-installed-behavior"
     $this.bind "click", ->
-      window.location = "/users?juvia=true&email=" + $this.data("user-email")
+      window.location = "/users?juvia=true&email=" + encodeURIComponent($this.data("user-email"))
 
 
   $(".collapse_link_class:not(.juvia-installed-behavior)").each ->
