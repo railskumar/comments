@@ -135,7 +135,7 @@ class Comment < ActiveRecord::Base
   end
 
   def permalink(url)
-    url.blank? ? "#" : url + "#comment-box-#{self.comment_number}"
+    url.blank? ? "#" : url.gsub(/(\#)+$/,'') + "#comment-box-#{self.comment_number}"
   end
 
   def create_author
