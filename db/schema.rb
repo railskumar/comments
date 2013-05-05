@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130402141712) do
+ActiveRecord::Schema.define(:version => 20130412101409) do
 
   create_table "authors", :force => true do |t|
     t.string   "author_email"
@@ -86,6 +86,21 @@ ActiveRecord::Schema.define(:version => 20130402141712) do
     t.foreign_key ["topic_id"], "topics", ["id"], :on_update => :cascade, :on_delete => :cascade, :name => "comments_topic_id_fkey"
   end
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.index ["priority", "run_at"], :name => "delayed_jobs_priority", :order => {"priority" => :asc, "run_at" => :asc}
+  end
+
   create_table "flags", :force => true do |t|
     t.integer  "comment_id"
     t.string   "author_name"
@@ -110,13 +125,24 @@ ActiveRecord::Schema.define(:version => 20130402141712) do
     t.foreign_key ["user_id"], "users", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "site_moderators_user_id_fkey"
   end
 
+  create_table "topic_notifications", :force => true do |t|
+    t.integer  "topic_id"
+    t.integer  "author_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.index ["author_id"], :name => "fk__topic_notifications_author_id", :order => {"author_id" => :asc}
+    t.index ["topic_id"], :name => "fk__topic_notifications_topic_id", :order => {"topic_id" => :asc}
+    t.foreign_key ["author_id"], "authors", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "topic_notifications_author_id_fkey"
+    t.foreign_key ["topic_id"], "topics", ["id"], :on_update => :no_action, :on_delete => :no_action, :name => "topic_notifications_topic_id_fkey"
+  end
+
   create_table "votes", :force => true do |t|
     t.integer  "votable_id"
     t.string   "votable_type",      :default => "Topic"
     t.string   "author_name"
     t.string   "author_email"
     t.string   "author_ip"
-    t.string   "author_user_agent"
+    t.text     "author_user_agent"
     t.text     "referer"
     t.integer  "like"
     t.integer  "unlike"
