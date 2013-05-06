@@ -29,14 +29,18 @@
     </div>
     <div class="actions button-container">
       <% if comment.moderation_status != :ok %>
+        <% button_text = "Approve" %>
         <% if comment.moderation_status == :unchecked %>
           <p><em>This comment is unchecked.</em></p>
         <% elsif comment.moderation_status == :spam %>
           <p><em>This appears to be spam.</em></p>
+        <% elsif comment.moderation_status == :deleted %>
+          <p><em>This comment has been deleted.</em></p>
+          <% button_text = "Undo Delete" %>
         <% else %>
           <% raise "Unknown moderation status #{comment.moderation_status.inspect}" %>
         <% end %>
-        <%= positive_primary_approve_button_link_to 'Approve', approve_admin_site_comment_path(comment, :site_id => comment.site), :method => :put %>
+        <%= positive_primary_approve_button_link_to button_text, approve_admin_site_comment_path(comment, :site_id => comment.site), :method => :put %>
       <% end %>
       <%= edit_button_link_to 'Edit', edit_admin_site_comment_path(comment, :site_id => comment.site.id, :return_to => request.fullpath) %>
       <%= button_group do %>

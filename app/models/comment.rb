@@ -15,7 +15,7 @@ class Comment < ActiveRecord::Base
   has_many :votes, :as => :votable, :dependent => :destroy
   has_many :flags, :dependent => :destroy
   
-  acts_as_enum :moderation_status, [:ok, :unchecked, :spam]
+  acts_as_enum :moderation_status, [:ok, :unchecked, :spam, :deleted]
   
   scope :visible, where(:moderation_status => moderation_status(:ok))
   scope :requiring_moderation, where("moderation_status != ?", moderation_status(:ok))
@@ -149,6 +149,10 @@ class Comment < ActiveRecord::Base
 
   def notify_moderators
     Mailer.comment_posted(parent_comment,self).deliver
+  end
+
+  def moderate_as_deleted
+    update_attribute(:moderation_status, :deleted)
   end
 
 private

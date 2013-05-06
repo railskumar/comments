@@ -59,7 +59,7 @@ class Admin::CommentsController < ApplicationController
       if params[:spam] && @comment.site.moderation_method == :akismet
         @comment.report_spam
       end
-      @comment.destroy
+      @comment.moderate_as_deleted
     end
     redirect_back(admin_site_comments_path)
   end
@@ -95,7 +95,7 @@ class Admin::CommentsController < ApplicationController
     @site = Site.find(params[:site_id])
     comments = @site.comments.where(:author_email => params[:author_email]) unless @site.blank?
     comments.each do |comment|
-      comment.destroy
+      comment.moderate_as_deleted
     end
     redirect_to admin_site_comments_path
   end
