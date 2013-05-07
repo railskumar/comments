@@ -72,6 +72,10 @@
     });
     </script>
 
+For decoding email address:
+
+    Example:
+      RestClient.get "http://localhost:3001/api/authors/decode_email.json", {params: {email: URI.encode(email)}}
 
 # Introduction
 
