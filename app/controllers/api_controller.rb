@@ -54,7 +54,28 @@ class ApiController < ApplicationController
       render :partial => 'api/site_not_found'
     end
   end
-
+  
+  def latest_comments
+    prepare!([:site_key],[:json])
+    comments = Comment.recent_comments
+    comment_list = comments.map{|comment|
+      { content: render_markdown(comment.content),
+        referer: comment.referer,
+        comment_number: comment.comment_number,
+        title: comment.topic.title,
+        count: comment.topic.comments.size,
+        author: comment.author_name.capitalize
+      }
+    }
+    set_comment_posted(false)
+    render json: comment_list.to_json
+  end
+  
+  def new_comment_status
+    prepare!([],[:json])
+    render json: {status: new_comment_posted?}.to_json
+  end
+  
 private
 
   def decode_value

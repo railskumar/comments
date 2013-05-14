@@ -7,6 +7,7 @@ class Comment < ActiveRecord::Base
   end
   attr_accessible :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id
   COMMENT_EDIT_DURATION = 1.hour
+  LIMIT = 10
   
   belongs_to :parent_comment, :class_name => 'Comment', :foreign_key => 'parent_id'
   has_many :child_comments, :class_name => 'Comment', :foreign_key => 'parent_id', :dependent => :nullify
@@ -27,10 +28,12 @@ class Comment < ActiveRecord::Base
   before_create :set_moderation_status
   after_create :update_topic_timestamp
   after_create :create_author, :update_author, :notify_comment_subscribers
-  after_create :redis_update
+  after_create :redis_update, :new_comment_posted
   after_destroy :redis_update
 
-  scope :by_user, lambda{ |username, email| where('author_name =? AND author_email = ?', username, email).order('created_at DESC') }
+  scope :latest, order("created_at DESC")
+  scope :by_user, lambda{ |username, email| where('author_name =? AND author_email = ?', username, email).latest }
+  scope:recent_comments, latest.limit(LIMIT)
 
   include Like
 
@@ -220,6 +223,10 @@ private
   
   def redis_update
     $redis.set("#{self.topic.site.key}_#{self.topic.key.to_s}", self.topic.comments.size)
+  end
+  
+  def new_comment_posted
+    $new_comment_posted = true
   end
   
   def topic_notification

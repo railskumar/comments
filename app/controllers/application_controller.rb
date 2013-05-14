@@ -117,6 +117,14 @@ class ApplicationController < ActionController::Base
     result.force_encoding('utf-8') if result.respond_to?(:force_encoding)
     result
   end
+  
+  def new_comment_posted?
+    $new_comment_posted
+  end
+  
+  def set_comment_posted(status)
+    $new_comment_posted = status
+  end
 
 private
   ### before filters
