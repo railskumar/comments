@@ -226,7 +226,7 @@ private
   end
   
   def new_comment_posted
-    $new_comment_posted = true
+    $redis.set(:last_comment, self.id.to_s)
   end
   
   def topic_notification

@@ -71,7 +71,6 @@ module Juvia
     
     # Whitelist mass assignments
     config.active_record.whitelist_attributes = true
-    $new_comment_posted = true
   end
   
 end

@@ -118,12 +118,8 @@ class ApplicationController < ActionController::Base
     result
   end
   
-  def new_comment_posted?
-    $new_comment_posted
-  end
-  
-  def set_comment_posted(status)
-    $new_comment_posted = status
+  def new_comment_posted?(last_comment)
+    $redis.get(:last_comment) != last_comment
   end
 
 private

@@ -64,16 +64,18 @@ class ApiController < ApplicationController
         comment_number: comment.comment_number,
         title: comment.topic.title,
         count: comment.topic.comments.size,
-        author: comment.author_name.capitalize
+        author: comment.author_name.capitalize,
+        image: comment.author_email_md5,
+        timestamp: get_timestamp(comment.created_at),
+        comment_uid: comment.id.to_s
       }
     }
-    set_comment_posted(false)
     render json: comment_list.to_json
   end
   
   def new_comment_status
-    prepare!([],[:json])
-    render json: {status: new_comment_posted?}.to_json
+    prepare!([:last_comment_id],[:json])
+    render json: {status: new_comment_posted?(params[:last_comment_id])}.to_json
   end
   
 private
@@ -90,4 +92,5 @@ private
   def list_comment
     @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail).page(params[:page].to_i || 1).per(PER_PAGE)
   end
+
 end

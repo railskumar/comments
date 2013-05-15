@@ -1,6 +1,8 @@
 module ApplicationHelper
   extend self
 
+  include ActionView::Helpers::DateHelper
+  
   PER_PAGE = 60
 
   def locale_list
@@ -180,6 +182,10 @@ module ApplicationHelper
       return true if topic_notification.present?
     end
     return false
+  end
+  
+  def get_timestamp(time)
+    "#{time_ago_in_words(time)} ago"
   end
 
 end
