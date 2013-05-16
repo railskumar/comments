@@ -65,6 +65,7 @@ class ApiController < ApplicationController
         title: comment.topic.title,
         count: comment.topic.comments.size,
         author: comment.author_name.capitalize,
+        author_email: encode_str(comment.author_email),
         image: comment.author_email_md5,
         timestamp: get_timestamp(comment.created_at),
         comment_uid: comment.id.to_s
