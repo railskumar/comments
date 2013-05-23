@@ -22,3 +22,8 @@ staging:
   base_url: http://rdfnet-comments-staging.herokuapp.com
   from: no-reply@richarddawkins.net
   email_method: smtp
+
+testing:
+  base_url: http://rdfnet-comments-testing.herokuapp.com
+  from: no-reply@richarddawkins.net
+  email_method: smtp
