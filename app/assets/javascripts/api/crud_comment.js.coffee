@@ -141,7 +141,7 @@ Juvia.rdf_comment_box = (option) ->
   ababa.appendChild abba_row
   abba_div5 = document.createElement("div")
   
-  abba_div5.className = "span5"
+  abba_div5.className = "span5 minimum-width"
   abba_row.appendChild abba_div5
   ababaa_p = document.createElement("p")
   abba_div5.appendChild ababaa_p
@@ -150,7 +150,7 @@ Juvia.rdf_comment_box = (option) ->
   ababaa_p.appendChild ababaaa_span
   abba_div7 = document.createElement("div")
   
-  abba_div7.className = "span7"
+  abba_div7.className = "span7 minimum-width"
   abba_row.appendChild abba_div7
   ababbaa_p = document.createElement("p")
   abba_div7.appendChild ababbaa_p
@@ -165,9 +165,9 @@ Juvia.rdf_comment_box = (option) ->
   ababbaa_p.appendChild ababaab_span
   bottom_second_colm = document.createElement("div")
   if @user_logged_in and editable() or @user_logged_in
-    bottom_second_colm.className = "span5"
+    bottom_second_colm.className = "span5 minimum-width"
   else
-    bottom_second_colm.className = "span4"
+    bottom_second_colm.className = "span4 minimum-width"
   abab.appendChild bottom_second_colm
   function_links = document.createElement("div")
   function_links.className = "row-fluid"
