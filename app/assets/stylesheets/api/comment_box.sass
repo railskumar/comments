@@ -102,6 +102,9 @@
     margin: -3px 0 0
     span
       cursor: pointer
+    
+  .minimum-width
+    min-width: 110px
 
 .juvia-avatar img:hover
   cursor: pointer
@@ -170,3 +173,14 @@ editcomment, replycomment
   .permalink-anchored-to
     width: 100%
     cursor: text !important
+
+@media screen and (max-width: 480px)
+  .juvia-container
+    .row-fluid
+      .span1
+        width: 14.383%
+      .span11
+        width: 85.489%
+      [class*="span"]
+        margin-left: 0
+      

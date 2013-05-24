@@ -15,7 +15,6 @@
         cursor: auto
       
 .markdown_child_div
-  border: 1px solid
   height: 248px
 
 .edit_markdown_child_div
@@ -26,6 +25,9 @@
   overflow: hidden
   margin-bottom: 10px
   width: 89%
+
+.markdown_div.in
+  border: 1px solid
 
 .edit_markdown_div
   overflow: hidden
@@ -160,7 +162,7 @@ pre
   -webkit-box-shadow: 3px 3px 5px #888888
 
 .juvia-textarea-field textarea
-  width: 50em
+  width: 98%
   height: 8em
 
 .juvia-form-actions .juvia-action
@@ -236,3 +238,10 @@ votetopic
 
 .subscribe
   color: green
+
+@media screen and (max-width: 940px)
+  #markdowncollapse.in
+    height: auto
+    #markdown_upper_div
+      .miscell
+        width: 98% !important
