@@ -87,9 +87,9 @@ module ApplicationHelper
   end
   
   def comment_users_hash(vote)
-    return {:comment_user_image => avatar_img(vote.author_email, (vote.author_email_md5 rescue '')),
-            :comment_user_name => vote.author_name,
-            :comment_user_email => vote.author_email
+    return {:comment_user_image => avatar_img(vote.author.author_email, (vote.author.author_email_md5 rescue '')),
+            :comment_user_name => vote.author.author_name,
+            :comment_user_email => vote.author.author_email
     }
   end  
 

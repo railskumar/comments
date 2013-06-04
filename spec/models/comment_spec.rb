@@ -4,7 +4,8 @@ describe "Comment" do
 
   before(:each) do
   	@topic = FactoryGirl.create(:topic, :site => hatsuneshima)
-    @comment = FactoryGirl.create(:comment, :author_email => 'author@example.com', :author_name => 'author', :content => 'first post', :topic => @topic)
+    @author = FactoryGirl.create(:author)
+    @comment = FactoryGirl.create(:comment, :author => @author, :author_email => 'author@example.com', :author_name => 'author', :content => 'first post', :topic => @topic)
     @comment_user = FactoryGirl.create(:author, :author_email => 'author1@example.com', :notify_me => true)
   end
 
