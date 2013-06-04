@@ -1,8 +1,14 @@
 class Author < ActiveRecord::Base
-  has_many :topic_notifications, :dependent => :destroy
+  
   attr_accessible :author_email, :notify_me, :last_posted_at
   scope :get_user, lambda{ |email| where('author_email = ?', email) }
     
+  has_many :topic_notifications, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
+  has_many :flags
+  has_many :votes
+  
+  
   def Author.notifier?(author_email)
     author = Author.where(author_email:author_email).first
     return author.present? ? author.notify_me : false

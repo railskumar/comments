@@ -16,11 +16,11 @@ module Like
   end
 
   def guest_votes
-    votes.where("author_name IS NULL").where("author_email IS NULL")
+    votes.where("author_id IS NULL")
   end
 
   def user_votes
-    votes.where("author_name IS NOT NULL").where("author_email IS NOT NULL")
+    votes.where("author_id IS NOT NULL")
   end
 
   def user_likes

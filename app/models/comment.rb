@@ -15,6 +15,7 @@ class Comment < ActiveRecord::Base
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable, :dependent => :destroy
   has_many :flags, :dependent => :destroy
+  belongs_to :author
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam, :deleted]
   
@@ -60,8 +61,8 @@ class Comment < ActiveRecord::Base
 
   def flagged
     return_str = ""
-    flag_comments = flags.select{|flag| flag.author_email.present?}
-    guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+    flag_comments = flags.select{|flag| flag.author.present?}
+    guest_votes = (flags.select{|flag| flag.author.blank?}.first.guest_count.to_i rescue 0)
     total_flags = flag_comments.size + guest_votes
     return_str = total_flags > 0 ? "Flagged" : "Flag"
     return return_str
@@ -103,9 +104,9 @@ class Comment < ActiveRecord::Base
   end
 
   def report_comment_flag(params, request)
-    if params[:author_name].blank? or params[:author_email].blank?
+    if params[:author_id].blank?
       # Report a flag to comment for guest user.
-      flag_comments = self.flags.where(:author_name => nil).where(:author_email => nil)
+      flag_comments = self.flags.where(:author_id => nil)
       if flag_comments.present?
         flag_comments.first.add_flag
       else
@@ -117,9 +118,10 @@ class Comment < ActiveRecord::Base
       end
     else
       # Report a flag to comment if user logged in.
-      flag_comments = self.flags.where(author_email:params[:author_email]).where(author_name:params[:author_name])
+      flag_comments = self.flags.where(author_id:params[:author_id])
       unless flag_comments.present?
         self.flags.create!(
+          :author_id => params[:author_id],
           :author_name => params[:author_name],
           :author_email => params[:author_email],
           :author_ip => request.env['REMOTE_ADDR'],
