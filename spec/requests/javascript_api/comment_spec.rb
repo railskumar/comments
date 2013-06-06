@@ -17,15 +17,14 @@ describe "Javascript API", "error handling" do
       )
     end  
 
-    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment_id)
+    def post_comment_vote(path,author,vote,site,topic,comment_id)
       post_comment_hash = Hash.new
       post_comment_hash.merge!(:site_key => site.key)
       post_comment_hash.merge!(:topic_key => topic.key)
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment_id)
       post_comment_hash.merge!(:vote => vote)
-      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
-      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
+      post_comment_hash.merge!(:author_id => author.id) unless author.blank?
       post path,post_comment_hash
     end
 
@@ -52,6 +51,10 @@ describe "Javascript API", "error handling" do
       show_topic(topic.site.key, topic.key)
     end
     
+    def create_author(options={})
+      author = FactoryGirl.create(:author, :author_name => options[:author_name], :author_email => options[:author_email])
+    end
+    
     def create_one_comment
       create_new_topic
       topic = Topic.last
@@ -61,7 +64,12 @@ describe "Javascript API", "error handling" do
     end
  
     describe "js format" do
-      describe "comment" do      
+      describe "comment" do
+        before(:each) do
+          @author1 = create_author({:author_name => 'author_name1', :author_email => 'author_name1@email.com'})
+          @author2 = create_author({:author_name => 'author_name2', :author_email => 'author_name2@email.com'})
+          @author3 = create_author({:author_name => 'author_name3', :author_email => 'author_name3@email.com'})
+        end
         it "initial preview" , :js => true do
           create_new_topic
           topic = Topic.last
@@ -184,16 +192,13 @@ describe "Javascript API", "error handling" do
           topic = Topic.last
           show_topic(topic.site.key, topic.key)  
           within("#comment-box-2") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,2)
-            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,2)
-            post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,topic.site,topic,2)
+            3.times { |n| post_comment_vote('/api/post/vote.js',eval("@author#{n+1}"),1,topic.site,topic,2) }
           end
           within("#comment-box-1") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,1)
-            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,1)
+            2.times { |n| post_comment_vote('/api/post/vote.js',eval("@author#{n+1}"),1,topic.site,topic,1) }
           end
           within("#comment-box-3") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,3)
+            post_comment_vote('/api/post/vote.js',@author1,1,topic.site,topic,3)
           end
 
           select('Sort by most popular', :from => 'juvia-sort-select')

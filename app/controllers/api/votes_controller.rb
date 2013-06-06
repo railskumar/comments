@@ -39,7 +39,7 @@ class Api::VotesController < ApplicationController
   def topics_vote
     prepare!([:site_key, :topic_key, :topic_url, :vote], [:html, :js, :json])
     @topic = Topic.lookup_or_create(@site_key, @topic_key,params[:topic_title],params[:topic_url])
-    if params[:author_name].blank? or params[:author_email].blank?
+    if params[:author_id].blank?
       votes = @topic.guest_votes
       if votes.present?
         votes.first.add_like_unlike_vote(params[:vote])
@@ -51,11 +51,12 @@ class Api::VotesController < ApplicationController
         vote.save
       end
     else
-      votes = @topic.votes.where(author_email:params[:author_email]).where(author_name:params[:author_name])
+      votes = @topic.votes.where(author_id:params[:author_id])
       if votes.present?
         votes.each{|vote| vote.destroy}
       else
         vote = @topic.votes.build(
+            :author_id => params[:author_id],
             :author_name => params[:author_name],
             :author_email => params[:author_email],
             :author_ip => request.env['REMOTE_ADDR'],
