@@ -26,7 +26,7 @@ describe "Javascript API", "error handling" do
         :topic_url => topic.url, 
         :topic_title => topic.title,
         :comment_key => comment.id,
-        :author_id => author.id
+        :author_key => author.hash_key
     end
     
     def create_author(options={})
