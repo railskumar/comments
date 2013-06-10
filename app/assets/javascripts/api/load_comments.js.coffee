@@ -20,13 +20,11 @@ Juvia.reqLoadComment = ->
     topic_url: self.topic_url
     topic_title: self.topic_title
     sorting_order: self.sorting_order
-    username: self.username
-    user_email: self.user_email
+    author_key: self.author_key
     restrict_comment_length: self.restrict_comment_length
     use_my_user: self.use_my_user
     user_logged_in: self.user_logged_in
     perma_link_comment_id: self.perma_link_comment_id
-
   s = document.createElement("script")
   s.async = true
   s.type = "text/javascript"

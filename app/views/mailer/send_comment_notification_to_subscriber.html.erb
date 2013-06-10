@@ -4,7 +4,7 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <%= @comment.author_name || 'Anonymous' %> commented on "<%= @comment.topic.title.to_s %>": <br/> <br/>
+    <%= @comment.author.present? ? @comment.author.author_name : 'Anonymous' %> commented on "<%= @comment.topic.title.to_s %>": <br/> <br/>
 
     <%= BlueCloth.new(@comment.content, :escape_html => false, :strict_mode => true).to_html.html_safe %> <br/> <br/>
 

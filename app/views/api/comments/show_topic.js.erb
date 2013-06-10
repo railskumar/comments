@@ -8,8 +8,7 @@
 
 <% if @user_logged_in %> 
   Juvia.user_logged_in = true;
-  Juvia.username = '<%= escape_javascript(@username) %>';
-  Juvia.user_email = '<%= escape_javascript(@user_email) %>';
+  Juvia.author_key = '<%= @current_author.hash_key %>';
 <% end %>
 
 <% if @restrict_comment_length %> 

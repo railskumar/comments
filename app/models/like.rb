@@ -40,23 +40,23 @@ module Like
     guest_likes - guest_unlikes
   end
 
-  def liked?(username, user_email)
-    if (u_vote = user_vote(username, user_email))
+  def liked?(user)
+    if (u_vote = user_vote(user))
       return u_vote.like == 1
     end
     return false
   end
 
-  def unliked?(username, user_email)
-    if (u_vote = user_vote(username, user_email))
+  def unliked?(user)
+    if (u_vote = user_vote(user))
       return u_vote.unlike == 1
     end
     return false
   end
 
-  def user_vote(username, user_email)
-    return nil if user_email.blank?
-    u_votes = votes.where(author_name:username).where(author_email:user_email)
+  def user_vote(author)
+    return nil if author.blank?
+    u_votes = votes.where(author_id:author.id)
     return u_votes.first if u_votes.present?
     return nil
   end

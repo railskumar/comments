@@ -93,10 +93,8 @@ Juvia.rdf_comment_box = (option) ->
   liked = option.liked
   flagged = option.flagged
   comment_permalink = option.permalink
-  comment_user_email = option.user_email
-  author_email = " "
-  unless comment_user_email is null
-    author_email = @compress(comment_user_email)
+  comment_author_key = option.user_key
+  
   editable = ->
     return true  if option.can_edit is "true"
     false
@@ -108,7 +106,7 @@ Juvia.rdf_comment_box = (option) ->
   a.setAttribute "data-comment-id", comment_id
   
   # Start Header creation 
-  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + author_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span2'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
+  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle' data-author-key='" + comment_author_key + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span2'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
   
   # end Comment Header Bar
   ab = document.createElement("div")
@@ -176,7 +174,7 @@ Juvia.rdf_comment_box = (option) ->
   ababb_flag = document.createElement("div")
   if editable() and @user_logged_in
     ababb_flag.className = "span4"
-  else if @user_logged_in and @user_email != comment_user_email
+  else if @user_logged_in and @author_key != comment_author_key
     ababb_flag.className = "span4"
   else if @user_logged_in
     ababb_flag.className = "span4"
@@ -202,7 +200,7 @@ Juvia.rdf_comment_box = (option) ->
     ababb.className = "span4"
   else
     ababb.className = "span6"
-  unless @user_email is comment_user_email    
+  unless @author_key is comment_author_key    
     function_links.appendChild ababb  
     vote_comment_tag = document.createElement("votecomment")
     vote_comment_tag.className = "juvia-vote-to-comment"
@@ -223,7 +221,7 @@ Juvia.rdf_comment_box = (option) ->
     ababc = document.createElement("div")
     if editable() and @user_logged_in
       ababc.className = "span4"
-    else if @user_logged_in and @user_email != comment_user_email
+    else if @user_logged_in and @author_key != comment_author_key
       ababc.className = "span4"
     else if @user_logged_in
       ababc.className = "span4"
@@ -240,7 +238,7 @@ Juvia.rdf_comment_box = (option) ->
     ababca = document.createElement("span")
     reply_comment_tag.appendChild ababca
     ababca.appendChild document.createTextNode(" " + @translated_locale.reply)
-  if @user_email is comment_user_email 
+  if @author_key is comment_author_key
 
     edit_comment_dom = document.createElement("div")
     edit_comment_dom.className = "span4"

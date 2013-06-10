@@ -285,7 +285,7 @@ Juvia.showUsers = (users, status) ->
     if !$.isEmptyObject(users)
       $("#users_liker").modal "show"
       $.each users, (key, value) ->
-        users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a onclick=Juvia.showUserComments(\"" + Juvia.compress(value.comment_user_email) + "\"); href='#'><img width='64' height='38' src='" + value.comment_user_image + "' data-user-email='" + Juvia.compress(value.comment_user_email) + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_user_name + "</div></div><div style='margin-bottom:10px;'></div>"
+        users_liked_str = users_liked_str + "<div class='row-fluid'><div class='span1 juvia-avatar'><a onclick=Juvia.showUserComments(\"" + value.comment_author_key + "\"); href='#'><img width='64' height='38' src='" + value.comment_author_image + "' data-user-key='" + value.comment_author_key + "' class='img-circle juvia-installed-behavior'></a></div><div class='span11'>" + value.comment_author_name + "</div></div><div style='margin-bottom:10px;'></div>"
         users_liked_dom.html " " + users_liked_str
   else
     alert "Something went wrong!"
@@ -398,8 +398,7 @@ Juvia.submitComment = (event) ->
     topic_title: $container.data("topic-title")
     topic_url: $container.data("topic-url")
     restrict_comment_length: @restrict_comment_length
-    author_name: $("input[name=\"author_name\"]", form).val()
-    author_email: $("input[name=\"author_email\"]", form).val()
+    author_key: $("input[name=\"author_key\"]", form).val()
     parent_id: $("input[name=\"parent_id\"]", form).val()
     content: @compress($("textarea[name=\"content\"]", form).val())
 
@@ -483,7 +482,7 @@ Juvia.topicNotification = (event, this_obj) ->
     topic_title: $container.data("topic-title")
     
   opt2 =
-    author_email: $("input[name=\"author_email\"]", $container).val()
+    author_key: $("input[name=\"author_key\"]", $container).val()
   if $this.hasClass("subscribe")
     $this.removeClass "subscribe"
     @loadJsScript "/api/authors/destroy_topic_notification", $.extend(opt1, opt2)

@@ -68,36 +68,36 @@ module ApplicationHelper
     return i18_str
   end
   
-  def comment_hash(comment, username, user_email, options = {})
+  def comment_hash(comment, current_author, options = {})
     return {:comment_counter => 1,
             :comment_id => comment.id,
-            :user_image => avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
-            :user_name => comment.author_name,
+            :user_image => avatar_img(comment.author.author_email, (comment.author.author_email_md5 rescue '')),
+            :user_name => comment.author.author_name,
             :comment_text => render_markdown(comment.content),
             :creation_date => comment.created_at.strftime("%d-%b-%Y %H:%M %p"), 
             :comment_votes => i18_votes(comment),
-            :liked => (user_liked?(username, user_email, comment) ? "liked" : "like"),
+            :liked => (user_liked?(current_author, comment) ? "liked" : "like"),
             :flagged => (comment.flag_status),
-            :user_email => comment.author_email,
+            :user_key => comment.author.hash_key,
             :comment_number => comment.comment_number,
-            :can_edit => comment.can_edit?(username, user_email) ? "true" : "false",
+            :can_edit => comment.can_edit?(current_author) ? "true" : "false",
             :permalink => comment.permalink(options[:topic_url]),
             :user_like_comment => user_likes?(comment) ? "true" : "false"
     }
   end
   
   def comment_users_hash(vote)
-    return {:comment_user_image => avatar_img(vote.author.author_email, (vote.author.author_email_md5 rescue '')),
-            :comment_user_name => vote.author.author_name,
-            :comment_user_email => vote.author.author_email
+    return {:comment_author_image => avatar_img(vote.author.author_email, (vote.author.author_email_md5 rescue '')),
+            :comment_author_name => vote.author.author_name,
+            :comment_author_key => vote.author.hash_key
     }
   end  
 
-  def user_liked?(username, user_email, comment)
-    return false if user_email.blank?
+  def user_liked?(current_author, comment)
+    return false unless current_author.present?
     votes = comment.votes
     votes.each do |vote|
-      return true if (vote.author_name == username) and (vote.author_email == user_email)
+      return true if (vote.author == current_author)
     end
     return false
   end
@@ -174,13 +174,10 @@ module ApplicationHelper
     end
   end
   
-  def topic_notify?(author_email, topic_id)
-    return nil if author_email.blank?
-    author = Author.get_user(author_email).first
-    if author.present?
-      topic_notification = TopicNotification.get_topic_notification(author.id, topic_id)
-      return true if topic_notification.present?
-    end
+  def topic_notify?(current_author, topic_id)
+    return nil unless current_author.present?
+    topic_notification = TopicNotification.get_topic_notification(current_author.id, topic_id)
+    return true if topic_notification.present?
     return false
   end
   
