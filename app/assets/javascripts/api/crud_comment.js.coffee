@@ -108,7 +108,7 @@ Juvia.rdf_comment_box = (option) ->
   a.setAttribute "data-comment-id", comment_id
   
   # Start Header creation 
-  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + author_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span2'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span3'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
+  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle'data-user-email='" + author_email + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10 author-span'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2 permalink-span'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span3'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span2'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
   
   # end Comment Header Bar
   ab = document.createElement("div")
@@ -170,8 +170,7 @@ Juvia.rdf_comment_box = (option) ->
     bottom_second_colm.className = "span4 minimum-width"
   abab.appendChild bottom_second_colm
   function_links = document.createElement("div")
-  function_links.className = "row-fluid"
-  $(function_links).css "text-align", "right"
+  function_links.className = "row-fluid text-alignment"
   bottom_second_colm.appendChild function_links
   ababb_flag = document.createElement("div")
   if editable() and @user_logged_in
@@ -243,7 +242,7 @@ Juvia.rdf_comment_box = (option) ->
   if @user_email is comment_user_email 
 
     edit_comment_dom = document.createElement("div")
-    edit_comment_dom.className = "span4"
+    edit_comment_dom.className = "span4 right"
     function_links.appendChild edit_comment_dom
 
     btn_group_dom = document.createElement("div")

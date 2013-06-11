@@ -43,43 +43,47 @@
   height: 20px
   line-height: 14px
 
-.juvia-comment .juvia-avatar
-  img
-    border-radius: 6px 6px 6px 6px
-    width: 40px
+.juvia-comment
+  .juvia-avatar
+    img
+      border-radius: 6px 6px 6px 6px
+      width: 40px
 
-.juvia-comment .juvia-author
-  font-weight: bold
+  .juvia-author
+    font-weight: bold
 
-.juvia-comment .juvia-creation-date
-  position: absolute
-  right: 12px
-  top: 10px
-  font-size: 70%
+  .juvia-creation-date
+    position: absolute
+    right: 12px
+    top: 10px
+    font-size: 70%
 
-.juvia-comment .juvia-metadata
-  margin-left: 52px
+  .juvia-metadata
+    margin-left: 52px
 
-.juvia-comment .juvia-data
-  margin-left: 75px
+  .juvia-data
+    margin-left: 9%
+    
+  h1
+    font-size: 125%
+  h2
+    font-size: 110%
+    
+  h3, h4, h5, h6
+    font-size: 100%
+    
+  @media screen and (max-width: 580px)
+    .juvia-data
+      margin-left: 13%
 
-.juvia-comment h1,
-.juvia-preview-content h1
-  font-size: 125%
-
-.juvia-comment h2,
-.juvia-preview-content h2
-  font-size: 110%
-
-.juvia-comment h3,
-.juvia-preview-content h3,
-.juvia-comment h4,
-.juvia-preview-content h4,
-.juvia-comment h5,
-.juvia-preview-content h5,
-.juvia-comment h6,
-.juvia-preview-content h6
-  font-size: 100%
+.juvia-preview-content
+  h1
+    font-size: 125%
+  h2
+    font-size: 110%
+    
+  h3, h4, h5, h6
+    font-size: 100%
 
 .juvia-comment-function
   padding-top: 15px
@@ -102,9 +106,13 @@
     margin: -3px 0 0
     span
       cursor: pointer
-
-  .minimum-width
-    min-width: 110px
+  .text-alignment
+    text-align: right
+  @media screen and (max-width: 800px)
+    .minimum-width
+      min-width: 185px
+    .text-alignment
+      text-align: left
 
 .juvia-avatar img:hover
   cursor: pointer
@@ -174,13 +182,27 @@ editcomment, replycomment
     width: 100%
     cursor: text !important
 
-@media screen and (max-width: 480px)
+@media screen and (max-width: 580px)
   .juvia-container
     .row-fluid
       .span1
-        width: 14.383%
+        width: 12.383%
       .span11
         width: 85.489%
       [class*="span"]
         margin-left: 0
+      .author-span
+        width: 70%
+      .permalink-span
+        width: 28%
+
+  .juvia-add-comment-form
+    .notification-span
+      .span8
+        width: 40%
+      .span4
+        width: 55%
+  .juvia-topic-vote
+    width: 99%
+
 
