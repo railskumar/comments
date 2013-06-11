@@ -58,6 +58,7 @@ class ApiController < ApplicationController
   def latest_comments
     prepare!([:site_key],[:json])
     comments = Comment.recent_comments
+    default_url = "http://comments.richarddawkins.net/assets/default.jpg"
     comment_list = comments.map{|comment|
       { content: render_markdown(comment.content),
         referer: comment.referer,
@@ -66,7 +67,7 @@ class ApiController < ApplicationController
         count: comment.topic.comments.size,
         author: comment.author_name.capitalize,
         author_email: encode_str(comment.author_email),
-        image: comment.author_email_md5,
+        image: avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
         timestamp: get_timestamp(comment.created_at),
         comment_uid: comment.id.to_s
       }

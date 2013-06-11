@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale, :convert_yaml_to_json_locale
   check_authorization :if => :inside_admin_area?
 
-  helper_method :encode_str, :decode_str
+  helper_method :encode_str, :decode_str, :avatar_img
 
   rescue_from CanCan::AccessDenied do |exception|
     render :template => 'shared/forbidden'
@@ -52,6 +52,15 @@ class ApplicationController < ActionController::Base
 
   def decode_str(str)
     Base64.decode64(str)
+  end
+
+  def avatar_img(author_email, author_email_md5)
+    default_url = "http://comments.richarddawkins.net/assets/default.jpg"
+    if author_email
+      return "http://gravatar.com/avatar/#{author_email_md5}.png?s=200&d=#{CGI.escape(default_url)}"
+    else
+      return default_url
+    end
   end
 
   def populate_variables
