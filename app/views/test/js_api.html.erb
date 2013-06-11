@@ -17,6 +17,7 @@
     var topic_url   = "location.href";
     var topic_title = document.title || topic_url;
     var use_my_user = 'true';
+    var author_key = '<%=params[:author_key]%>';
     var logged_in_message = 'please logged in to make comment';
     <% if params[:guest_view] == "1" %>
       var username = '';
@@ -45,6 +46,7 @@
       '&logged_in_message=' + encodeURIComponent(logged_in_message) +
       '&username=' + encodeURIComponent(username) +
       '&user_email=' + encodeURIComponent(user_email) +
+      '&author_key=' + encodeURIComponent(author_key) +
       '&user_image=' + encodeURIComponent(user_image);
     (document.getElementsByTagName('head')[0] ||
      document.getElementsByTagName('body')[0]).appendChild(s);

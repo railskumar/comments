@@ -28,7 +28,7 @@ describe "Javascript API", "error handling" do
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment.id)
       post_comment_hash.merge!(:vote => vote)
-      post_comment_hash.merge!(:author_id => author.id) unless author.blank?
+      post_comment_hash.merge!(:author_key => author.hash_key) unless author.blank?
       post path,post_comment_hash
     end
     
@@ -39,7 +39,7 @@ describe "Javascript API", "error handling" do
       post_comment_hash.merge!(:topic_url => topic.url) if missing_arg != :topic_url
       post_comment_hash.merge!(:comment_key => comment.id) if missing_arg != :comment_key
       post_comment_hash.merge!(:vote => vote) if missing_arg != :vote
-      post_comment_hash.merge!(:author_id => author.id) unless author.blank?
+      post_comment_hash.merge!(:author_key => author.hash_key) unless author.blank?
       post path,post_comment_hash
     end
     

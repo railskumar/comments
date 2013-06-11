@@ -64,25 +64,25 @@ describe "Javascript API", "error handling" do
         :site_key => 'hatsuneshima', 
         :topic_key => 'topic', 
         :topic_url => 'http://www.google.com',
-        :author_id => author1.id,
+        :author_key => author1.hash_key,
         :topic_title => 'my topic', :vote => 1
       response.body.should include("One user and 2 guests liked this.")
       post '/api/topic/vote.js', 
         :site_key => 'hatsuneshima', 
         :topic_key => 'topic', 
         :topic_url => 'http://www.google.com',
-        :author_id => author2.id,
+        :author_key => author2.hash_key,
         :topic_title => 'my topic', :vote => 1
       response.body.should include("2 users and 2 guests liked this.")
       post '/api/topic/vote.js', 
         :site_key => 'hatsuneshima', 
         :topic_key => 'topic', 
         :topic_url => 'http://www.google.com',
-        :author_id => author3.id,
+        :author_key => author3.hash_key,
         :topic_title => 'my topic', :vote => 1
       response.body.should include("3 users and 2 guests liked this.")
       topic = Topic.last
-      show_topic(topic.site.key, topic.key)
+      show_topic(topic.site.key, topic.key,{:author_key=>author1.hash_key})
       find("#liked_pages").click
       within("#users_liker") do
         page.should have_css('#users_like_header', :text => 'People who liked this')
@@ -222,7 +222,8 @@ describe "Javascript API", "error handling" do
     it "user vote like/unlike for topic", :js => true do
       create_new_topic
       topic = Topic.last
-      show_topic(topic.site.key, topic.key)
+      author = create_author({:author_name => 'author_name', :author_email => 'author_name@mailinator.com'})
+      show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
       find("#vote_for_like").click
       page.should have_css('#liked_pages',:visible => true, :text => 'One user liked this.')
       find("#vote_for_like").click

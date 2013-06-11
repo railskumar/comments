@@ -24,7 +24,7 @@ module SpecSupport
   
   def show_topic(site_key, topic_key, options = {})
     if options[:guest_view].blank?
-      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}")
+      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&author_key=#{options[:author_key]}")
     else
       visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&guest_view=#{options[:guest_view]}")
     end

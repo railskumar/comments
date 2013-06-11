@@ -24,7 +24,7 @@ describe "Javascript API", "error handling" do
       post_vote_hash.merge!(:topic_key => topic.key)
       post_vote_hash.merge!(:topic_url => topic.url)
       post_vote_hash.merge!(:vote => vote)
-      post_vote_hash.merge!(:author_id => author.id) unless author.blank?
+      post_vote_hash.merge!(:author_key => author.hash_key) unless author.blank?
       post path,post_vote_hash
     end
     
@@ -34,7 +34,7 @@ describe "Javascript API", "error handling" do
       post_vote_hash.merge!(:topic_key => topic.key) if missing_arg != :topic_key
       post_vote_hash.merge!(:topic_url => topic.url) if missing_arg != :topic_url
       post_vote_hash.merge!(:vote => vote) if missing_arg != :vote
-      post_vote_hash.merge!(:author_id => author.id) unless author.blank?
+      post_vote_hash.merge!(:author_key => author.hash_key) unless author.blank?
       post path,post_vote_hash
     end
 
