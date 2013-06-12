@@ -5,7 +5,7 @@ require 'cgi'
 class Comment < ActiveRecord::Base
   class AkismetError < StandardError
   end
-  attr_accessible :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id
+  attr_accessible :author_id, :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id
   COMMENT_EDIT_DURATION = 1.hour
   LIMIT = 10
   
@@ -15,6 +15,7 @@ class Comment < ActiveRecord::Base
   belongs_to :topic, :inverse_of => :comments
   has_many :votes, :as => :votable, :dependent => :destroy
   has_many :flags, :dependent => :destroy
+  belongs_to :author
   
   acts_as_enum :moderation_status, [:ok, :unchecked, :spam, :deleted]
   
@@ -27,12 +28,12 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :create_author, :update_author, :notify_comment_subscribers
+  after_create :notify_moderators, :update_author, :notify_comment_subscribers
   after_create :redis_update, :new_comment_posted
   after_destroy :redis_update
 
   scope :latest, order("created_at DESC")
-  scope :by_user, lambda{ |username, email| where('author_name =? AND author_email = ?', username, email).latest }
+  scope :by_user, lambda{ |author| where('author_id =? ', author.id).latest }
   scope:recent_comments, latest.limit(LIMIT)
 
   include Like
@@ -42,8 +43,8 @@ class Comment < ActiveRecord::Base
   end
 
   def author_email_md5
-    if author_email
-      Digest::MD5.hexdigest(author_email.downcase)
+    if author.author_email
+      Digest::MD5.hexdigest(author.author_email.downcase)
     else
       nil
     end
@@ -51,8 +52,8 @@ class Comment < ActiveRecord::Base
 
    def total_flags_str
      return_str = ""
-     flag_comments = flags.select{|flag| flag.author_email.present?}
-     guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+     flag_comments = flags.select{|flag| flag.author.present?}
+     guest_votes = (flags.select{|flag| flag.author.blank?}.first.guest_count.to_i rescue 0)
      total_flags = flag_comments.size + guest_votes
      return_str = total_flags > 0 ? total_flags > 1 ? total_flags.to_s + " users flagged. " : total_flags.to_s + " user flagged. " : ""
      return return_str
@@ -60,8 +61,8 @@ class Comment < ActiveRecord::Base
 
   def flagged
     return_str = ""
-    flag_comments = flags.select{|flag| flag.author_email.present?}
-    guest_votes = (flags.select{|flag| flag.author_email.blank?}.first.guest_count.to_i rescue 0)
+    flag_comments = flags.select{|flag| flag.author.present?}
+    guest_votes = (flags.select{|flag| flag.author.blank?}.first.guest_count.to_i rescue 0)
     total_flags = flag_comments.size + guest_votes
     return_str = total_flags > 0 ? "Flagged" : "Flag"
     return return_str
@@ -97,15 +98,15 @@ class Comment < ActiveRecord::Base
     call_akismet('submit-spam', akismet_params)
   end
   
-  def can_edit?(username, user_email)
-    return false if (!self.author_email.blank? and self.author_email != user_email)
+  def can_edit?(current_author)
+    return false if (!self.author.present? and self.author != current_author)
     created_at > Time.zone.now - COMMENT_EDIT_DURATION
   end
 
   def report_comment_flag(params, request)
-    if params[:author_name].blank? or params[:author_email].blank?
+    if params[:author_key].blank?
       # Report a flag to comment for guest user.
-      flag_comments = self.flags.where(:author_name => nil).where(:author_email => nil)
+      flag_comments = self.flags.where(:author_id => nil)
       if flag_comments.present?
         flag_comments.first.add_flag
       else
@@ -117,14 +118,18 @@ class Comment < ActiveRecord::Base
       end
     else
       # Report a flag to comment if user logged in.
-      flag_comments = self.flags.where(author_email:params[:author_email]).where(author_name:params[:author_name])
-      unless flag_comments.present?
-        self.flags.create!(
-          :author_name => params[:author_name],
-          :author_email => params[:author_email],
-          :author_ip => request.env['REMOTE_ADDR'],
-          :author_user_agent => request.env['HTTP_USER_AGENT'],
-          :referer => request.env['HTTP_REFERER'])
+      author = Author.find_author(params[:author_key]).first
+      if author.present?
+        flag_comments = self.flags.where(author_id:author.id)
+        unless flag_comments.present?
+          self.flags.create!(
+            :author_id => author.id,
+            :author_name => params[:author_name],
+            :author_email => params[:author_email],
+            :author_ip => request.env['REMOTE_ADDR'],
+            :author_user_agent => request.env['HTTP_USER_AGENT'],
+            :referer => request.env['HTTP_REFERER'])
+        end
       end
     end
   end
@@ -133,17 +138,8 @@ class Comment < ActiveRecord::Base
     self.votes.user_liked.votes_by_type(vote_type)
   end
   
-  def author
-    Author.where(author_email: author_email).first
-  end
-
   def permalink(url)
     url.blank? ? "#" : url.gsub(/(\#)+$/,'') + "#comment-box-#{self.comment_number}"
-  end
-
-  def create_author
-    Author.create!(:author_email => author_email) unless author.present?
-    notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
   end
   
   def update_author
@@ -151,7 +147,9 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_moderators
-    Mailer.comment_posted(parent_comment,self).deliver
+    if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
+      Mailer.comment_posted(parent_comment,self).deliver 
+    end
   end
 
   def moderate_as_deleted
@@ -165,8 +163,7 @@ private
   }
   
   def nullify_blank_fields
-    self.author_name  = nil if author_name.blank?
-    self.author_email = nil if author_email.blank?
+    self.author_id = nil if author.blank?
     self.author_user_agent = nil if author_user_agent.blank?
     self.referer = nil if referer.blank?
   end
@@ -181,8 +178,8 @@ private
       :comment_content => content,
       :comment_type => 'comment'
     }
-    params[:comment_author] = author_name if author_name.present?
-    params[:comment_author_email] = author_email if author_email.present?
+    params[:comment_author] = author.author_name if author.present?
+    params[:comment_author_email] = author.author_email if author.present?
     params
   end
   

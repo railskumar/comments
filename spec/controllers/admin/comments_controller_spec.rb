@@ -25,7 +25,11 @@ describe Admin::CommentsController do
     end
 
     def create_comment(topic_id, options={})
-      @comment = FactoryGirl.create(:comment,:topic_id => topic_id, :content => options[:content], :author_email => options[:author_email])
+      @comment = FactoryGirl.create(:comment,:topic_id => topic_id, :content => options[:content], :author_id => options[:author_id], :author_email => options[:author_email])
+    end
+    
+    def create_author(options={})
+      @author = FactoryGirl.create(:author, :author_name => options[:author_name], :author_email => options[:author_email])
     end
 
     before :each do
@@ -75,11 +79,13 @@ describe Admin::CommentsController do
     it "should destroy comments of a user" do
       topic1 = create_topic(@site, {:key => 'topic1'})
       topic2 = create_topic(@site, {:key => 'topic2'})
-      topic1_comment1 = create_comment(topic1.id, {:content => "test comment", :author_email => "xyz@gmail.com" })
-      topic1_comment2 = create_comment(topic1.id, {:content => "test comment", :author_email => "abc@gmail.com" })
-      topic2_comment1 = create_comment(topic2.id, {:content => "test comment", :author_email => "xyz@gmail.com" })
-      topic2_comment2 = create_comment(topic2.id, {:content => "test comment", :author_email => "abc@gmail.com" })
-      delete :destroy_comments_by_author, {:site_id => @site.id, :author_email => 'xyz@gmail.com'}
+      author1 = create_author({:author_name => 'example1', :author_email => 'example1@example.com'})
+      author2 = create_author({:author_name => 'example2', :author_email => 'example2@example.com'})
+      topic1_comment1 = create_comment(topic1.id, {:content => "test comment", :author_id => author1.id })
+      topic1_comment2 = create_comment(topic1.id, {:content => "test comment", :author_id => author2.id })
+      topic2_comment1 = create_comment(topic2.id, {:content => "test comment", :author_id => author1.id })
+      topic2_comment2 = create_comment(topic2.id, {:content => "test comment", :author_id => author2.id })
+      delete :destroy_comments_by_author, {:site_id => @site.id, :author_id => author1.id}
       @site.comments.visible.should_not include(topic1_comment1,topic2_comment1)
       @site.comments.visible.should include(topic1_comment2,topic2_comment2)
       response.should redirect_to(admin_site_comments_path)

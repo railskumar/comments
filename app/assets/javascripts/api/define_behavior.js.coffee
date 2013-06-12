@@ -36,9 +36,7 @@ Juvia.reinstallBehavior = ->
     $this.addClass "juvia-installed-behavior"
     addCommentForm = $(".juvia-add-comment-form", this)
 
-    $("input[name=author_name]", addCommentForm).example "Your name (optional)",
-      className: "juvia-example-text"
-    $("input[name=author_email]", addCommentForm).example "Your email (optional)",
+    $("input[name=author_key]", addCommentForm).example "Your key (optional)",
       className: "juvia-example-text"
     
     # Our submit handler is called before jquery.example has cleared the
@@ -176,7 +174,7 @@ Juvia.reinstallBehavior = ->
     $this = $(this)
     $this.addClass "juvia-installed-behavior"
     $this.bind "click", ->
-      window.location = "/users?juvia=true&email=" + encodeURIComponent($this.data("user-email"))
+      window.location = "/users?juvia=true&key=" + $this.data("author-key")
 
 
   $(".collapse_link_class:not(.juvia-installed-behavior)").each ->

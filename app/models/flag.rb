@@ -1,6 +1,7 @@
 class Flag < ActiveRecord::Base
-  attr_accessible :comment_id, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :guest_count
+  attr_accessible :comment_id, :author_id, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :guest_count
   belongs_to :comment
+  belongs_to :author
    
   after_destroy :update_flag_status
   after_save :update_flag_status

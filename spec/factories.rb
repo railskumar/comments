@@ -51,6 +51,7 @@ FactoryGirl.define do
   
   factory :comment do
     content 'a comment'
+    author_id '1'
     author_ip '127.0.0.1'
     author_user_agent 'Firefox'
     referer 'http://www.google.com/'
@@ -58,18 +59,21 @@ FactoryGirl.define do
   end
   
   factory :vote do
+    author_id '1'
     author_ip '127.0.0.1'
     author_user_agent 'Firefox'
     referer 'http://www.google.com/'
   end
 
   factory :flag do
+    author_id '1'
     author_ip '127.0.0.1'
     author_user_agent 'Firefox'
     referer 'http://www.google.com/'
   end
 
   factory :author do
+    author_name 'example'
     author_email 'example@example.com'
     notify_me true
     created_at Time.now

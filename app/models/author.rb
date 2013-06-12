@@ -1,10 +1,17 @@
 class Author < ActiveRecord::Base
-  has_many :topic_notifications, :dependent => :destroy
-  attr_accessible :author_email, :notify_me, :last_posted_at
-  scope :get_user, lambda{ |email| where('author_email = ?', email) }
+  
+  attr_accessible :author_email, :notify_me, :last_posted_at, :author_name, :hash_key
+  scope :find_author, lambda{ |key| where('hash_key = ?', key) }
     
-  def Author.notifier?(author_email)
-    author = Author.where(author_email:author_email).first
+  has_many :topic_notifications, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
+  has_many :flags
+  has_many :votes
+  
+  after_create :set_hash_key
+  
+  def Author.notifier?(author_key)
+    author = Author.find_author(author_key).first
     return author.present? ? author.notify_me : false
   end
 
@@ -13,8 +20,8 @@ class Author < ActiveRecord::Base
     self.save
   end
 
-  def Author.can_post?(author_email)
-    author = Author.get_user(author_email).first
+  def Author.can_post?(key)
+    author = Author.find_author(key).first
     if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes > Time.zone.now - author.last_posted_at)
      return false
     else
@@ -22,12 +29,24 @@ class Author < ActiveRecord::Base
     end
   end
   
-  def self.lookup_or_create_author(author_email)
-    author = Author.get_user(author_email).first
+  def self.lookup_or_create_author(email, username)
+    author = Author.where(author_email:email).first
     if author
       author
     else
-      Author.create!(author_email: author_email)
+      Author.create!(author_email: email, author_name: username)
     end
+  end
+  
+  def set_hash_key
+    key = generate_key
+    self.hash_key = key
+    self.save
+  end
+  
+  def generate_key
+    seed = "--#{rand(100000)}--#{Time.now}--"
+    key = Digest::SHA1.hexdigest(seed)[0,8]
+    return key
   end
 end

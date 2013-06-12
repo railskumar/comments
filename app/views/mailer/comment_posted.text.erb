@@ -1,4 +1,4 @@
-<%= @child_comment.author_name || 'Anonymous' %> replied to your comment on "<%= @child_comment.topic.title.to_s %>": <br/> <br/>
+<%= @child_comment.author.present? ? @child_comment.author.author_name : 'Anonymous' %> replied to your comment on "<%= @child_comment.topic.title.to_s %>": <br/> <br/>
 
 <%= @child_comment.content %>
 

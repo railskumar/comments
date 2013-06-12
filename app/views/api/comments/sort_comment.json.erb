@@ -1,7 +1,7 @@
 <% comments = {} %>
 <% @comments.each_with_index do |comment,index| %>
     <%
-      options = comment_hash(comment, @username, @user_email)
+      options = comment_hash(comment, @current_author)
       comments.merge!({index => options})
     %>
 <% end %>

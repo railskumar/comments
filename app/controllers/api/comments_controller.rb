@@ -14,7 +14,7 @@ class Api::CommentsController < ApplicationController
     topic_url_arr = params[:topic_url].split('#')
     @perma_link_comment_id = topic_url_arr[1].blank? ? nil : topic_url_arr[1].split('-')[2]
     if @topic
-      @notify_on = Author.notifier?(@user_email) if @require_external_user and @user_logged_in
+      @notify_on = Author.notifier?(@current_author.hash_key) if @require_external_user and @user_logged_in
       render 
     else
       render :partial => 'api/site_not_found'
@@ -38,8 +38,8 @@ class Api::CommentsController < ApplicationController
       render :partial => 'content_may_not_be_blank'
       return
     end
-    comment_post_ability!(params[:author_email])
-    
+    comment_post_ability!(params[:author_key])
+    @author = Author.find_author(params[:author_key]).first
     Topic.transaction do
       @topic = Topic.lookup_or_create(
         @site_key,
@@ -50,6 +50,7 @@ class Api::CommentsController < ApplicationController
         parent_id = (Comment.where(id:params[:parent_id]).first.present?) ? params[:parent_id] : nil
         @comment = @topic.comments.create!(
           :comment_number => Comment.last_comment_number(@topic.comments) + 1,
+          :author_id => @author.present? ? @author.id: nil,
           :author_name => params[:author_name],
           :author_email => params[:author_email],
           :author_ip => request.env['REMOTE_ADDR'],
@@ -83,9 +84,9 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-    prepare!([:site_key, :comment_key, :user_email], [:js, :json])
+    prepare!([:site_key, :comment_key, :author_key], [:js, :json])
     @comment = Comment.find(params[:comment_key])
-    if !@comment.blank? and (@comment.author_email == params[:user_email]) 
+    if !@comment.blank? and (@comment.author.hash_key == params[:author_key])
       @comment.destroy
       render
     else
@@ -95,8 +96,6 @@ class Api::CommentsController < ApplicationController
   end
 
   def sort_comment
-    @username = params[:author_name]
-    @user_email = params[:author_email]
     prepare!([:site_key, :topic_key, :topic_url, :topic_title, :sort], [:html, :js, :json])
     @topic = Topic.lookup(@site_key, @topic_key)
     if @topic

@@ -32,8 +32,8 @@
   <%  if (total_pages  > 1) %>
     <input type="button" id="append_user_comments" class="btn btn-large lod-more-btn-block" 
         value="<%= t(:show_more) %> ..." data-page = "1" onclick="Juvia.showMoreUserComments(this);" 
-        data-user-name="<%= user_name %>"
-        data-user-email="<%= user_email %>"
+        data-author-name="<%= author_name %>"
+        data-author-key="<%= author_key %>"
         data-site-key = "<%= site_key %>"
         data-loading-text="<%= t(:loading) %>..."/>
   <% end %>

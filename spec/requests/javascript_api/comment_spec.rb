@@ -17,22 +17,22 @@ describe "Javascript API", "error handling" do
       )
     end  
 
-    def post_comment_vote(path,author_name,author_email,vote,site,topic,comment_id)
+    def post_comment_vote(path,author,vote,site,topic,comment_id)
       post_comment_hash = Hash.new
       post_comment_hash.merge!(:site_key => site.key)
       post_comment_hash.merge!(:topic_key => topic.key)
       post_comment_hash.merge!(:topic_url => topic.url)
       post_comment_hash.merge!(:comment_key => comment_id)
       post_comment_hash.merge!(:vote => vote)
-      post_comment_hash.merge!(:author_name => author_name) unless author_name.blank?
-      post_comment_hash.merge!(:author_email => author_email) unless author_email.blank?
+      post_comment_hash.merge!(:author_key => author.hash_key) unless author.blank?
       post path,post_comment_hash
     end
 
     def create_three_comment
       create_new_topic
       topic = Topic.last
-      show_topic(topic.site.key, topic.key)
+      author = FactoryGirl.create(:author)
+      show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
       fill_in 'content', :with => 'hello world 1'
       click_button 'Submit'
       within("#comment-box-1") do
@@ -49,23 +49,33 @@ describe "Javascript API", "error handling" do
       fill_in 'content', :with => content_field.value + 'hello world 3'          
       click_button 'Submit'
 
-      show_topic(topic.site.key, topic.key)
+      show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
+    end
+    
+    def create_author(options={})
+      author = FactoryGirl.create(:author, :author_name => options[:author_name], :author_email => options[:author_email])
     end
     
     def create_one_comment
       create_new_topic
       topic = Topic.last
-      show_topic(topic.site.key, topic.key)
+      @author = FactoryGirl.create(:author)
+      show_topic(topic.site.key, topic.key,{:author_key=>@author.hash_key})
       fill_in 'content', :with => 'hello world 1'
       click_button 'Submit'
     end
  
     describe "js format" do
-      describe "comment" do      
+      describe "comment" do
+        before(:each) do
+          @author1 = create_author({:author_name => 'author_name1', :author_email => 'author_name1@email.com'})
+          @author2 = create_author({:author_name => 'author_name2', :author_email => 'author_name2@email.com'})
+          @author3 = create_author({:author_name => 'author_name3', :author_email => 'author_name3@email.com'})
+        end
         it "initial preview" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => ''
           page.should have_css('.juvia-preview-empty', :visible => true)
           page.should have_css('.juvia-preview-content',:visible => false)
@@ -74,7 +84,7 @@ describe "Javascript API", "error handling" do
         it "preview comment" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'hello world 1'
           page.should have_css('.juvia-preview-empty', :visible => false)
           page.should have_css('.juvia-preview-content',:visible => true, :text => 'hello world 1')
@@ -83,7 +93,7 @@ describe "Javascript API", "error handling" do
         it "create comment" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'aaaa'
           click_button 'Submit'
           page.should have_css('.juvia-preview-empty', :visible => true)
@@ -95,7 +105,7 @@ describe "Javascript API", "error handling" do
         it "after create comment preview not displayed" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'hello world 1'
           click_button 'Submit'
           page.should have_css('.juvia-preview-empty', :visible => true)
@@ -105,7 +115,7 @@ describe "Javascript API", "error handling" do
         it "reply preview" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'hello world 1'
           click_button 'Submit'
           within("#comment-box-1") do
@@ -122,7 +132,7 @@ describe "Javascript API", "error handling" do
         it "create reply" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'hello world 1'
           click_button 'Submit'
           within("#comment-box-1") do
@@ -140,7 +150,7 @@ describe "Javascript API", "error handling" do
         it "after create reply preview not displayed" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           fill_in 'content', :with => 'hello world 1'
           click_button 'Submit'
           within("#comment-box-1") do
@@ -157,7 +167,7 @@ describe "Javascript API", "error handling" do
           create_three_comment
           topic = Topic.last
           select('Sort by newest first', :from => 'juvia-sort-select')
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0]['id'].eql? "comment-box-3"
@@ -170,7 +180,7 @@ describe "Javascript API", "error handling" do
           create_three_comment
           topic = Topic.last
           select('Sort by oldest first', :from => 'juvia-sort-select')
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
             comment_order[0]['id'].eql? "comment-box-1"
@@ -182,23 +192,20 @@ describe "Javascript API", "error handling" do
         it "comment sort by popular now" , :js => true do
           create_three_comment
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)  
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           within("#comment-box-2") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,2)
-            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,2)
-            post_comment_vote('/api/post/vote.js','author_name3','author_name3@email.com',1,topic.site,topic,2)
+            3.times { |n| post_comment_vote('/api/post/vote.js',eval("@author#{n+1}"),1,topic.site,topic,2) }
           end
           within("#comment-box-1") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,1)
-            post_comment_vote('/api/post/vote.js','author_name2','author_name2@email.com',1,topic.site,topic,1)
+            2.times { |n| post_comment_vote('/api/post/vote.js',eval("@author#{n+1}"),1,topic.site,topic,1) }
           end
           within("#comment-box-3") do
-            post_comment_vote('/api/post/vote.js','author_name1','author_name1@email.com',1,topic.site,topic,3)
+            post_comment_vote('/api/post/vote.js',@author1,1,topic.site,topic,3)
           end
 
           select('Sort by most popular', :from => 'juvia-sort-select')
           
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
           
           within("#juvia-comments-box") do
             comment_order = all('.juvia-comment')
@@ -225,7 +232,7 @@ describe "Javascript API", "error handling" do
           it "header formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '#header text'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -243,7 +250,7 @@ describe "Javascript API", "error handling" do
           it "images formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '![rdf richard](http://rdfrs.com/assets/richard.png)'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -256,7 +263,7 @@ describe "Javascript API", "error handling" do
           it "link formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '[Google](http://google.com)'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -270,7 +277,7 @@ describe "Javascript API", "error handling" do
           it "text style formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '*For italic*'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -289,7 +296,7 @@ describe "Javascript API", "error handling" do
           it "list formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '* unordered list'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -327,7 +334,7 @@ describe "Javascript API", "error handling" do
           it "header formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '#header text'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -357,7 +364,7 @@ describe "Javascript API", "error handling" do
           it "images formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '![rdf richard](http://rdfrs.com/assets/richard.png)'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -379,7 +386,7 @@ describe "Javascript API", "error handling" do
           it "link formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '[Google](http://google.com)'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -402,13 +409,13 @@ describe "Javascript API", "error handling" do
           it "text style formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '*For italic*'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
             within(".juvia-preview-content") do
               find("em").text.should include("For italic")
-            end          
+            end
             click_button 'Submit'
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
@@ -434,7 +441,7 @@ describe "Javascript API", "error handling" do
           it "list formating" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => '* unordered list'
             page.should have_css('.juvia-preview-empty', :visible => false)
             page.should have_css('.juvia-preview-content',:visible => true)
@@ -473,7 +480,7 @@ describe "Javascript API", "error handling" do
             within(".juvia-preview-content") do
               find("ul li").text.should include("unordered list")
               find("ol li").text.should include("ordered list")
-            end                    
+            end
             click_button 'Submit'
             page.should have_css('.juvia-preview-empty', :visible => true)
             page.should have_css('.juvia-preview-content',:visible => false)
@@ -506,7 +513,7 @@ describe "Javascript API", "error handling" do
           it "should display comment box attached to permalink on top of the all comments" , :js => true do
             create_three_comment
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             within("#juvia-comments-box") do
               comment_order = all('.juvia-comment')
               comment_order[0]['id'].eql? "comment-box-3"
@@ -518,7 +525,7 @@ describe "Javascript API", "error handling" do
           it "should create permalink for comment" , :js => true do
             create_one_comment
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             find("#permalink-" + topic.comments.first.comment_number.to_s).click
             find("#comment_permalink_label").text.should include("Link to this comment")
             find("#comment-permalink input").value.should eq(topic.url.to_s+"#"+"comment-box-"+topic.comments.first.comment_number.to_s)
@@ -533,7 +540,7 @@ describe "Javascript API", "error handling" do
           it "should not display comment box." , :js => true do
             topic = FactoryGirl.create(:topic,:site_id => @site.id, :comments_open => false)
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             page.has_no_field?("#comment_textarea")
             page.has_text?("Commenting closed")
           end
@@ -541,7 +548,7 @@ describe "Javascript API", "error handling" do
           it "should display comment box." , :js => true do
             topic = FactoryGirl.create(:topic,:site_id => @site.id)
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             page.has_field?("#comment_textarea")
             page.has_no_text?("Commenting closed")
           end
@@ -551,14 +558,14 @@ describe "Javascript API", "error handling" do
           it "should not show by default" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             page.should have_css('#juvia-cancel-button', :visible => false)
           end
 
           it "should show when we will start to write comment" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => 'hello world'
             page.should have_css('#juvia-cancel-button', :visible => true)
           end
@@ -566,16 +573,16 @@ describe "Javascript API", "error handling" do
           pending "should show after refresh" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => 'hello world'
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             page.should have_css('#juvia-cancel-button', :visible => true)
           end
 
           it "should remove text from textarea when click on cancel" , :js => true do
             create_new_topic
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author1.hash_key})
             fill_in 'content', :with => 'hello world'
             page.find_by_id('comment_textarea').value.should == "hello world"
             page.should have_css('.juvia-preview-empty', :visible => false)
@@ -596,7 +603,7 @@ describe "Javascript API", "error handling" do
           before :each do
             create_one_comment
             topic = Topic.last
-            show_topic(topic.site.key, topic.key)
+            show_topic(topic.site.key, topic.key,{:author_key=>@author.hash_key})
             @comment = topic.comments.first
           end
           it "should show more option", :js => true do
