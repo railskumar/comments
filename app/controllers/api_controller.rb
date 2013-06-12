@@ -57,7 +57,7 @@ class ApiController < ApplicationController
   
   def latest_comments
     prepare!([:site_key],[:json])
-    comments = Comment.recent_comments
+    comments = Site.get_site(params[:site_key]).first.comments.recent_comments.page(params[:page].to_i || 1).per(10)
     default_url = "http://comments.richarddawkins.net/assets/default.jpg"
     comment_list = comments.map{|comment|
       { content: render_markdown(comment.content),
@@ -69,9 +69,11 @@ class ApiController < ApplicationController
         author_email: encode_str(comment.author_email),
         image: avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
         timestamp: get_timestamp(comment.created_at),
-        comment_uid: comment.id.to_s
+        comment_uid: comment.id.to_s,
+        page: params[:page]
       }
     }
+    
     render json: comment_list.to_json
   end
   

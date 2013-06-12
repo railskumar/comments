@@ -33,7 +33,7 @@ class Comment < ActiveRecord::Base
 
   scope :latest, order("created_at DESC")
   scope :by_user, lambda{ |username, email| where('author_name =? AND author_email = ?', username, email).latest }
-  scope:recent_comments, latest.limit(LIMIT)
+  scope:recent_comments, visible.latest
 
   include Like
 
