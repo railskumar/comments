@@ -28,7 +28,7 @@ class Comment < ActiveRecord::Base
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
   after_create :update_topic_timestamp
-  after_create :notify_moderators, :update_author, :notify_comment_subscribers #, :create_author
+  after_create :notify_moderators, :update_author, :notify_comment_subscribers
   after_create :redis_update, :new_comment_posted
   after_destroy :redis_update
 
@@ -138,18 +138,9 @@ class Comment < ActiveRecord::Base
     self.votes.user_liked.votes_by_type(vote_type)
   end
   
-  #def author
-  #  Author.where(author_email: author_email).first
-  #end
-
   def permalink(url)
     url.blank? ? "#" : url.gsub(/(\#)+$/,'') + "#comment-box-#{self.comment_number}"
   end
-
-  #def create_author
-    #Author.create!(:author_email => author_email) unless author.present?
-    #notify_moderators if parent_comment.present? and parent_comment.author.present? and parent_comment.author.notify_me
-  #end
   
   def update_author
     author.update_author_last_posted_at if author.present?
@@ -172,7 +163,6 @@ private
   }
   
   def nullify_blank_fields
-    #self.author_name  = nil if author_name.blank?
     self.author_id = nil if author.blank?
     self.author_user_agent = nil if author_user_agent.blank?
     self.referer = nil if referer.blank?
