@@ -93,7 +93,7 @@ class Admin::CommentsController < ApplicationController
   def destroy_comments_by_author
     authorize! :destroy, Comment
     @site = Site.find(params[:site_id])
-    comments = @site.comments.where(:author_email => params[:author_email]) unless @site.blank?
+    comments = @site.comments.where(:author_id => params[:author_id]) unless @site.blank?
     comments.each do |comment|
       comment.moderate_as_deleted
     end

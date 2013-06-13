@@ -1,12 +1,12 @@
 <div class="juvia-comment" id="juvia-comment-<%= comment.id %>" >
 	<div class="juvia-metadata">
-		<% if comment.author_email %>
+		<% if comment.author.author_email %>
 			<div class="juvia-avatar">
-				<img src="//www.gravatar.com/avatar/<%= comment.author_email_md5 %>?s=64"
+				<img src="//www.gravatar.com/avatar/<%= comment.author.author_email_md5 %>?s=64"
 				width="64"
 				height="38"
 				class="img-circle"
-				alt="<%= comment.author_name || '<%= t(:anonymous) %>' %>">
+				alt="<%= comment.author.author_name || '<%= t(:anonymous) %>' %>">
 			</div>
 		<% else %>
 			<div class="juvia-avatar">
@@ -14,11 +14,11 @@
 				width="64"
 				height="38"
 				class="img-circle"
-				alt="<%= comment.author_name || '<%= t(:anonymous) %>' %>">
+				alt="<%= comment.author.author_name || '<%= t(:anonymous) %>' %>">
 			</div>
 		<% end %>
 		<div class="juvia-author juvia-author-without-email">
-			<%= comment.author_name || '<%= t(:anonymous) %>' %>
+			<%= comment.author.author_name || '<%= t(:anonymous) %>' %>
 			<span class="floatright comment_index"></span>
 		</div>
 		<div class="juvia-creation-date">
@@ -54,7 +54,7 @@
 		</div>
 	</div>
 </div>
-<% if comment.liked?(@username, @user_email) %>
+<% if comment.liked?(@current_author) %>
 <!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
   <script type="text/javascript">
     $like = $('#comment-vote-icon-<%= comment.id.to_s %>')

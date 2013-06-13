@@ -5,16 +5,21 @@ describe "Topic" do
   before(:each) do
   	@topic = FactoryGirl.create(:topic, :site => hatsuneshima)
   	@topic2 = FactoryGirl.create(:topic, :site => site2)
-    @comment1 = FactoryGirl.create(:comment, :content => 'first post', :topic => @topic, :created_at => Time.now - 10.day)
-    @comment2 = FactoryGirl.create(:comment, :content => 'post', :topic => @topic, :created_at => Time.now - 9.day)
-    @comment3 = FactoryGirl.create(:comment, :content => 'post', :topic => @topic, :created_at => Time.now - 8.day)
-    @comment4 = FactoryGirl.create(:comment, :content => 'post', :topic => @topic, :created_at => Time.now - 7.day)
-    @comment5 = FactoryGirl.create(:comment, :content => 'post', :topic => @topic, :created_at => Time.now - 6.day)
+    @author = FactoryGirl.create(:author)
+    @comment1 = FactoryGirl.create(:comment, :content => 'first post', :author => @author, :topic => @topic, :created_at => Time.now - 10.day)
+    @comment2 = FactoryGirl.create(:comment, :content => 'post', :author => @author, :topic => @topic, :created_at => Time.now - 9.day)
+    @comment3 = FactoryGirl.create(:comment, :content => 'post', :author => @author, :topic => @topic, :created_at => Time.now - 8.day)
+    @comment4 = FactoryGirl.create(:comment, :content => 'post', :author => @author, :topic => @topic, :created_at => Time.now - 7.day)
+    @comment5 = FactoryGirl.create(:comment, :content => 'post', :author => @author, :topic => @topic, :created_at => Time.now - 6.day)
     @vote = FactoryGirl.create(:vote, :like => 1, :votable_id => @comment4.id, :votable_type => "Comment" )
     @site_key  = hatsuneshima.key
     @site_key2  = site2.key
     @topic_key = @topic.key
     @topic_key2 = @topic2.key
+  end
+  
+  def create_author(options={})
+      @author = FactoryGirl.create(:author, :author_name => options[:author_name], :author_email => options[:author_email])
   end
 
   def vote_attributes
@@ -51,13 +56,11 @@ describe "Topic" do
 
   it 'get users who likes the topic' do
     topic = Topic.lookup(@site_key, @topic_key)
-    user1_vote = topic.votes.create vote_attributes.merge({:like => 1, 
-  		:author_name=>"author_name1",
-  		:author_email=>"author_name1@email.com"})
-    user2_vote = topic.votes.create vote_attributes.merge({:like => 1, 
-  		:author_name=>"author_name2",
-  		:author_email=>"author_name2@email.com"})
-    guest_user_vote = topic.votes.create vote_attributes.merge({:like => 1})
+    author1 = create_author({:author_name => 'example1', :author_email => 'example1@example.com'})
+    author2 = create_author({:author_name => 'example2', :author_email => 'example2@example.com'})
+    user1_vote = topic.votes.create vote_attributes.merge({:like => 1, :author_id => author1.id})
+    user2_vote = topic.votes.create vote_attributes.merge({:like => 1, :author_id => author2.id})
+    guest_user_vote = topic.votes.create vote_attributes.merge({:like => 1, :author_id => nil})
     topic.get_users_topic_like("Topic").count.should eql(2)
     topic.get_users_topic_like("bad_vote_type").count.should eql(0)
     topic.get_users_topic_like("Topic")[0].author_email == user1_vote.author_email

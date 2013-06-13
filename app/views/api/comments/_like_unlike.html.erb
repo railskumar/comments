@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<% if @topic.liked?(@username, @user_email) %>
+<% if @topic.liked?(@current_author) %>
 <!-- // TO DO NEED TO WRITE A FUNCTION THAT WILL WORK IN BOTH PLACES, BELOW AND BASE.JS.ERB -->
   <script type="text/javascript">
     var $like = Juvia.$('#vote_for_like')

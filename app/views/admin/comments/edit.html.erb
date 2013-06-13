@@ -1,4 +1,4 @@
-<h1>Editing comment by <%= @comment.author_name || 'Anonymous' %></h1>
+<h1>Editing comment by <%= @comment.author.author_name || 'Anonymous' %></h1>
 
 <%= form_for([:admin, @comment.site, @comment], :html => { :class => 'comment' }) do |f| %>
   <% if @comment.errors.any? %>

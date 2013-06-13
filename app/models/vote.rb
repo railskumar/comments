@@ -1,14 +1,15 @@
 require 'digest/md5'
 
 class Vote < ActiveRecord::Base
-  attr_accessible :votable_id, :votable_type, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :like, :unlike
+  attr_accessible :votable_id, :votable_type, :author_id, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :like, :unlike
   belongs_to :votable, :polymorphic => true
+  belongs_to :author
   validate :presense_reference, :presense_vote
 
   after_destroy :update_vote_counts
   after_save :update_vote_counts
 
-  scope :user_liked, where("author_email IS NOT NULL")
+  scope :user_liked, where("author_id IS NOT NULL")
   scope :votes_by_type, lambda{ |vote_type| where('votable_type = ?', vote_type) }
 
   def author_email_md5

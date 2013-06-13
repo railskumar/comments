@@ -9,15 +9,14 @@ class ApiController < ApplicationController
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
-  before_filter :decode_value, :only => [ :user_comments, :append_user_comments ]
  
   def user_comments
-    prepare!([:site_key, :username, :user_email, :container],[:html, :js])
+    prepare!([:site_key, :author_key, :container],[:html, :js])
     list_comment
   end 
 
   def append_user_comments
-    prepare!([:site_key, :username, :user_email, :container],[:html, :js])
+    prepare!([:site_key, :author_key, :container],[:html, :js])
     list_comment
   end
   
@@ -65,9 +64,9 @@ class ApiController < ApplicationController
         comment_number: comment.comment_number,
         title: comment.topic.title,
         count: comment.topic.comments.size,
-        author: comment.author_name.capitalize,
-        author_email: encode_str(comment.author_email),
-        image: avatar_img(comment.author_email, (comment.author_email_md5 rescue '')),
+        author: comment.author.author_name.capitalize,
+        author_key: comment.author.hash_key,
+        image: avatar_img(comment.author.author_email, (comment.author.author_email_md5 rescue '')),
         timestamp: get_timestamp(comment.created_at),
         comment_uid: comment.id.to_s,
         page: params[:page]
@@ -84,17 +83,14 @@ class ApiController < ApplicationController
   
 private
 
-  def decode_value
-    @useremail = decode_str(params[:user_email])
-  end
-
   def log_exception(e)
     logger.error("#{e.class} (#{e}):\n  " <<
       e.backtrace.join("\n  "))
   end
   
   def list_comment
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(params[:username], @useremail).page(params[:page].to_i || 1).per(PER_PAGE)
+    @author = Author.find_author(params[:author_key]).first
+    @comments = Site.get_site(params[:site_key])[0].comments.by_user(@author).page(params[:page].to_i || 1).per(PER_PAGE)
   end
 
 end

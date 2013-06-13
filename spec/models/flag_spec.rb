@@ -3,7 +3,8 @@ require 'spec_helper'
 describe "Flag" do
   before(:each) do
   	@topic = FactoryGirl.create(:topic, :site => hatsuneshima)
-    @comment = FactoryGirl.create(:comment, :content => 'first post', :topic => @topic)
+    @author = FactoryGirl.create(:author)
+    @comment = FactoryGirl.create(:comment, :content => 'first post', :author => @author, :topic => @topic)
     @site_key  = hatsuneshima.key
     @topic_key = @topic.key
     Flag.delete_all

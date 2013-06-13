@@ -71,8 +71,7 @@ class ApplicationController < ActionController::Base
     if @require_external_user = ( params[:use_my_user] == "true" )
       if @user_logged_in = ( params[:user_logged_in] == "true" )
         @restrict_comment_length = ( params[:restrict_comment_length] == "true" )
-        @username = params[:username]
-        @user_email = params[:user_email]
+        @current_author = Author.find_author(params[:author_key]).first
         @user_image = params[:user_image]
       else
         @logged_in_message = params[:logged_in_message] || "Please Login to make comment"
@@ -115,8 +114,8 @@ class ApplicationController < ActionController::Base
     raise UnacceptableFormat if performed?
   end
 
-  def comment_post_ability!(email)
-    unless Author.can_post?(params[:author_email])
+  def comment_post_ability!(author_key)
+    unless Author.can_post?(author_key)
       raise CanNotPostComment
     end
   end

@@ -27,8 +27,8 @@ Juvia.showMoreUserComments = (this_obj) ->
   $this.hide()
   @loadJsScript "/api/append_user_comments",
     site_key: $this.attr("data-site-key")
-    username: $this.attr("data-user-name")
-    user_email: $this.attr("data-user-email")
+    username: $this.attr("data-author-name")
+    author_key: $this.attr('data-author-key')
     container: "#show_user_comments"
     page: page_num
 
@@ -49,7 +49,6 @@ Juvia.replyToComment = ($comment) ->
   $textarea = $("textarea", $container)
   $textarea.val ""
   $('input[name="parent_id"]').val(parent_id);
-  #var authorName = $('input[name="author_name"]', $container).val(); 
   authorName = $.trim($(".juvia-author-name", $comment).text())
   newContent = "*" + @translated_locale.in_reply_to + " [#" + $comment.data("comment-number") + "](#" + $comment.attr("id") + "') " + @translated_locale.by + " " + authorName + ":*\n" + lines.join("\n")
   unless $textarea.val() is ""
@@ -75,8 +74,7 @@ Juvia.sortComments = (event, this_obj) ->
     topic_key: $container.data("topic-key")
     topic_title: $container.data("topic-title")
     topic_url: $container.data("topic-url")
-    author_name: $("input[name=\"author_name\"]", $container).val()
-    author_email: $("input[name=\"author_email\"]", $container).val()
+    author_key: $("input[name=\"author_key\"]", $container).val()
     sort: this_obj.value
 
   $("#juvia-comments-box").html ""
@@ -101,8 +99,7 @@ Juvia.voteComment = (event, this_obj) ->
     $vote_icon.addClass "up-active"
     $vote_text.html " " + @translated_locale.like
     up_down = 0
-  a_name = $("input[name=\"author_name\"]", $container).val()
-  a_email = $("input[name=\"author_email\"]", $container).val()
+  a_key = $("input[name=\"author_key\"]", $container).val()
   opt1 =
     site_key: $container.data("site-key")
     topic_key: $container.data("topic-key")
@@ -111,10 +108,9 @@ Juvia.voteComment = (event, this_obj) ->
     vote: up_down
 
   opt2 = {}
-  unless typeof a_email is "undefined"
+  unless typeof a_key is "undefined"
     opt2 =
-      author_name: a_name
-      author_email: a_email
+      author_key: a_key
   @loadJsScript "/api/post/vote", $.extend(opt1, opt2)
 
 
@@ -135,8 +131,7 @@ Juvia.voteTopic = (event, this_obj) ->
     up_down = 1
     $this.addClass "votes-up-active"
     $vote_text.html " " + @translated_locale.topic_liked
-  a_name = $("input[name=\"author_name\"]", $container).val()
-  a_email = $("input[name=\"author_email\"]", $container).val()
+  a_key = $("input[name=\"author_key\"]", $container).val()
   opt1 =
     site_key: $container.data("site-key")
     topic_key: $container.data("topic-key")
@@ -145,10 +140,9 @@ Juvia.voteTopic = (event, this_obj) ->
     vote: up_down
 
   opt2 = {}
-  unless typeof a_email is "undefined"
+  unless typeof a_key is "undefined"
     opt2 =
-      author_name: a_name
-      author_email: a_email
+      author_key: a_key
   @loadJsScript "/api/topic/vote", $.extend(opt1, opt2)
 
 
@@ -163,8 +157,7 @@ Juvia.reportComment = (event, this_obj) ->
     topic_title: $container.data("topic-title")
     topic_url: $container.data("topic-url")
     comment_key: $this.data("comment-id")
-    author_name: $("input[name=\"author_name\"]", $container).val()
-    author_email: $("input[name=\"author_email\"]", $container).val()
+    author_key: $("input[name=\"author_key\"]", $container).val()
 
   false
 
@@ -198,14 +191,14 @@ Juvia.authorSetting = (event) ->
   $ = @$
   form = event.target
   $container = $(form).closest(".juvia-container")
-  a_email = $("input[name=\"author_email\"]", $container).val()
+  a_key = $("input[name=\"author_key\"]", $container).val()
   
   if $("#juvia-author-setting").hasClass("turn_on")
     a_notification_setting = 0
   else
     a_notification_setting = 1
   opt1 =
-    author_email: a_email
+    author_key: a_key
     notify_me: a_notification_setting
     site_key: $container.data("site-key")
   
@@ -229,9 +222,9 @@ Juvia.deleteComment = (event, this_obj) ->
   @loadScript "/api/comments/destroy",
     site_key: $container.data("site-key")
     comment_key: $this.data("comment-id")
-    user_email: @user_email
+    author_key: @author_key
 
   false
 
-Juvia.showUserComments = (email) ->
-  window.location = "/users?juvia=true&email=" + encodeURIComponent(email)
+Juvia.showUserComments = (key) ->
+  window.location = "/users?juvia=true&key=" + key

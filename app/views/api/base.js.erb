@@ -372,8 +372,8 @@ if (!Juvia) {
 	       $this.hide();
 	       this.loadJsScript('/api/append_user_comments', {
 			site_key    : $this.attr('data-site-key'),
-			username   : $this.attr('data-user-name'),
-			user_email : $this.attr('data-user-email'),
+			username   : $this.attr('data-author-name'),
+			author_key : $this.attr('data-author-key'),
 			container    : '#show_user_comments',
 		        page  	    :  page_num
 		});

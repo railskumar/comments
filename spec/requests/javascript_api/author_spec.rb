@@ -18,12 +18,13 @@ describe "Javascript API", "error handling" do
     end
     
     describe "js format" do
-      describe "author" do      
+      describe "author" do
         it "should on email notification " , :js => true do
           Author.delete_all
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => false)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
           find("#juvia-setting").click
           find("#juvia-author-setting").text.should include("Email Notification is OFF")
           find("#author_email_setting").click
@@ -38,7 +39,7 @@ describe "Javascript API", "error handling" do
           create_new_topic
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
           find("#juvia-setting").click
           find("#juvia-author-setting").text.should include("Email Notification is ON")
           find("#author_email_setting").click
@@ -56,7 +57,7 @@ describe "Javascript API", "error handling" do
           topic = Topic.last
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
           topic_notification = FactoryGirl.create(:topic_notification, :author_id => author.id, :topic_id => topic.id)
-          show_topic(topic.site.key, topic.key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
           find("#subscriber_email").text.should include(I18n.t(:topic_notification_on))
           find("#subscriber_email").click
           within(".juvia_email_notification") do
@@ -67,7 +68,8 @@ describe "Javascript API", "error handling" do
         it "should off email notificaiton on topic" , :js => true do
           create_new_topic
           topic = Topic.last
-          show_topic(topic.site.key, topic.key)
+          author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
           find("#subscriber_email").text.should include(I18n.t(:topic_notification_off))
         end
       end

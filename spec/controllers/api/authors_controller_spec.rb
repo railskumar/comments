@@ -22,7 +22,7 @@ describe Api::AuthorsController do
     it "should not create topic notification when params parameters are missing" do
       create_required_objects
       expect {
-        get :create_topic_notification, get_params(:author_email => "")
+        get :create_topic_notification, get_params(:author_key => "")
       }.to change(TopicNotification, :count).by(0)
     end
   end
@@ -46,14 +46,14 @@ describe Api::AuthorsController do
     
     it "should not delete topic notification when params parameters are missing" do
       expect {
-        get :destroy_topic_notification, get_params(:author_email => "")
+        get :destroy_topic_notification, get_params(:author_key => "")
       }.to change(TopicNotification, :count).by(0)
     end
   end
   
   def get_params(options = {})
     {
-      :author_email => @author.author_email,
+      :author_key => @author.hash_key,
       :notify_me => "0", 
       :site_key => @site.key, 
       :topic_key => @topic.key, 
