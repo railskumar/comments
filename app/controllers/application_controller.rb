@@ -62,7 +62,11 @@ class ApplicationController < ActionController::Base
     if @require_external_user = ( params[:use_my_user] == "true" )
       if @user_logged_in = ( params[:user_logged_in] == "true" )
         @restrict_comment_length = ( params[:restrict_comment_length] == "true" )
-        @current_author = Author.find_author(params[:author_key]).first
+        @current_author = if params[:author_key].blank?
+          Author.find_by_author_email(decode_str(params[:user_token]))
+        else
+          Author.find_author(params[:author_key]).first
+        end
         @user_image = params[:user_image]
       else
         @logged_in_message = params[:logged_in_message] || "Please Login to make comment"

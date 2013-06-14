@@ -11,12 +11,12 @@ class ApiController < ApplicationController
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
  
   def user_comments
-    prepare!([:site_key, :author_key, :container],[:html, :js])
+    prepare!([:site_key, :container],[:html, :js])
     list_comment
   end 
 
   def append_user_comments
-    prepare!([:site_key, :author_key, :container],[:html, :js])
+    prepare!([:site_key, :container],[:html, :js])
     list_comment
   end
   
@@ -86,7 +86,11 @@ private
   end
   
   def list_comment
-    @author = Author.find_author(params[:author_key]).first
+    @author = if params[:author_key].blank?
+      Author.find_by_author_email(decode_str(params[:user_token]))
+    else
+      Author.find_author(params[:author_key]).first
+    end
     @comments = Site.get_site(params[:site_key])[0].comments.by_user(@author).page(params[:page].to_i || 1).per(PER_PAGE)
   end
 
