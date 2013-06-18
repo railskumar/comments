@@ -63,7 +63,8 @@ class ApplicationController < ActionController::Base
       if @user_logged_in = ( params[:user_logged_in] == "true" )
         @restrict_comment_length = ( params[:restrict_comment_length] == "true" )
         @current_author = if params[:author_key].blank?
-          Author.find_by_author_email(decode_str(params[:user_token]))
+          email = decode_str(params[:user_token]) unless params[:user_token].blank?
+          Author.lookup_or_create_author(email, params[:username])
         else
           Author.find_author(params[:author_key]).first
         end
