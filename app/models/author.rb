@@ -5,8 +5,8 @@ class Author < ActiveRecord::Base
     
   has_many :topic_notifications, :dependent => :destroy
   has_many :comments, :dependent => :destroy
-  has_many :flags
-  has_many :votes
+  has_many :flags, :dependent => :destroy
+  has_many :votes, :dependent => :destroy
   
   after_create :set_hash_key
   
