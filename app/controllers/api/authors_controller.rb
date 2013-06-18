@@ -20,13 +20,6 @@ class Api::AuthorsController < ApplicationController
     end
   end
   
-  def get_author_key
-    if Site.get_site(params[:site_key]).first.present?
-      author = Author.lookup_or_create_author(decode_str(params[:email]),{email:decode_str(params[:email]), username:decode_str(params[:username])})
-      return respond_with(author.hash_key) if author.present?
-    end
-  end
-  
   def create_topic_notification
     prepare!([:author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
     @author = Author.find_author(params[:author_key]).first
