@@ -34,7 +34,7 @@ class Comment < ActiveRecord::Base
 
   scope :latest, order("created_at DESC")
   scope :by_user, lambda{ |author| where('author_id =? ', author.id).latest }
-  scope:recent_comments, latest.limit(LIMIT)
+  scope:recent_comments, visible.latest
 
   include Like
 

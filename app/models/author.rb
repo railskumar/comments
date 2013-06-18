@@ -49,4 +49,12 @@ class Author < ActiveRecord::Base
     key = Digest::SHA1.hexdigest(seed)[0,8]
     return key
   end
+
+  def author_email_md5
+    if author_email
+      Digest::MD5.hexdigest(author_email.downcase)
+    else
+      nil
+    end
+  end
 end
