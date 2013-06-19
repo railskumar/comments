@@ -16,8 +16,9 @@ class Api::AuthorsController < ApplicationController
   def return_encoded_email
     if Site.get_site(params[:site_key]).first.present?
       author = Author.find_author(params[:key]).first
-      return respond_with(encode_str(author.author_email)) if author.present?
+      return respond_with({:email => encode_str(author.author_email)}) if author.present?
     end
+    render :json => {:error => 'Something went wrong.'}
   end
   
   def create_topic_notification
