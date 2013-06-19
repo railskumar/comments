@@ -7,7 +7,7 @@
       :html      => render(:partial => 'comment_index.html', :locals => { 
         :comments => @comments, 
         :site_key => params[:site_key],
-        :total_pages => @comments.total_pages,
+        :total_pages => @comments.present? ? @comments.total_pages : 1,
         :author_name => @author.present? ? @author.author_name : "",
         :author_key => @author.present? ? @author.hash_key : ""
       })

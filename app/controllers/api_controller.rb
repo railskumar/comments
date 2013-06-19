@@ -89,11 +89,12 @@ private
   
   def list_comment
     @author = if params[:author_key].blank?
-      Author.find_by_author_email(decode_str(params[:user_token]))
+      email = decode_str(params[:user_token]) unless params[:user_token].blank?
+      Author.lookup_or_create_author(email, params[:username])
     else
       Author.find_author(params[:author_key]).first
     end
-    @comments = Site.get_site(params[:site_key])[0].comments.by_user(@author).page(params[:page].to_i || 1).per(PER_PAGE)
+    @comments = Site.get_site(params[:site_key])[0].comments.by_user(@author).page(params[:page].to_i || 1).per(PER_PAGE) if @author.present?
   end
 
 end
