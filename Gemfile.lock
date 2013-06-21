@@ -291,6 +291,7 @@ DEPENDENCIES
   rails
   rails_config
   redis
+  rest-client
   rspec-rails (~> 2.4)
   sass-rails
   schema_plus

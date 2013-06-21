@@ -45,7 +45,12 @@
     <%= f.label :akismet_key %><br />
     <%= f.text_field :akismet_key %>
   </div>
-
+  
+  <div class="para">
+    <%= f.label :notify_comment_count_url %><br />
+    <%= f.text_field :notify_comment_count_url %>
+  </div>
+  
   <div class="para">
     <%= f.label :locale, 'Select locale' %><br />
     <%= f.select :locale, options_for_select(locale_list, @site.locale) %>
