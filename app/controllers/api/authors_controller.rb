@@ -20,7 +20,15 @@ class Api::AuthorsController < ApplicationController
     end
     render :json => {:error => 'Something went wrong.'}
   end
-  
+
+  def return_author_key
+    if Site.get_site(params[:site_key]).first.present?
+      author = Author.lookup_or_create_author(params[:email], params[:username])
+      return respond_with({:key => author.hash_key}) if author.present?
+    end
+    render :json => {:error => 'Record not found.'}
+  end
+
   def create_topic_notification
     prepare!([:author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
     @author = Author.find_author(params[:author_key]).first

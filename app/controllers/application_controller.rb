@@ -71,12 +71,7 @@ class ApplicationController < ActionController::Base
     if @require_external_user = ( params[:use_my_user] == "true" )
       if @user_logged_in = ( params[:user_logged_in] == "true" )
         @restrict_comment_length = ( params[:restrict_comment_length] == "true" )
-        @current_author = if params[:author_key].blank?
-          email = decode_str(params[:user_token]) unless params[:user_token].blank?
-          Author.lookup_or_create_author(email, params[:username])
-        else
-          Author.find_author(params[:author_key]).first
-        end
+        @current_author = Author.find_author(params[:author_key]).first unless params[:author_key].blank?
         @user_image = params[:user_image]
       else
         @logged_in_message = params[:logged_in_message] || "Please Login to make comment"
@@ -95,7 +90,6 @@ class ApplicationController < ActionController::Base
 
   def prepare!(required_params, accepted_formats)
     raise ArgumentError if accepted_formats.empty?
-
     required_params.each do |param_name|
       if params[param_name].blank?
         @param_name = param_name
