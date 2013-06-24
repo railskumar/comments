@@ -30,7 +30,7 @@ class Comment < ActiveRecord::Base
   after_create :update_topic_timestamp, :notify_comments_count
   after_create :notify_moderators, :update_author, :notify_comment_subscribers
   after_create :redis_update, :new_comment_posted
-  after_destroy :redis_update
+  after_destroy :redis_update, :notify_comments_count
 
   scope :latest, order("created_at DESC")
   scope :by_user, lambda{ |author| where('author_id =? ', author.id).latest }
