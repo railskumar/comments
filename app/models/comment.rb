@@ -27,10 +27,10 @@ class Comment < ActiveRecord::Base
   
   before_validation :nullify_blank_fields
   before_create :set_moderation_status
-  after_create :update_topic_timestamp, :notify_comments_count
+  after_create :update_topic_timestamp, :notify_comment_count
   after_create :notify_moderators, :update_author, :notify_comment_subscribers
   after_create :redis_update, :new_comment_posted
-  after_destroy :redis_update, :notify_comments_count
+  after_destroy :redis_update, :notify_comment_count
 
   scope :latest, order("created_at DESC")
   scope :by_user, lambda{ |author| where('author_id =? ', author.id).latest }
@@ -239,15 +239,10 @@ private
     end
   end
 
-  def notify_comments_count
-    url = site.notify_comment_count_url
-    unless url.blank?
-      begin
-        params = {:topic_key => topic.key, :last_posted_at => topic.last_posted_at, :comment_count => topic.comments.visible.count}
-        RestClient.post(url, params)
-      rescue => e
-        logger.error e.message
-      end
+  def notify_comment_count
+    unless site.notify_comment_count_url.blank?
+      params = {:topic_key => topic.key, :last_posted_at => topic.last_posted_at, :comment_count => topic.comments.visible.count}
+      RestClient.post(site.notify_comment_count_url, params)
     end
   end
   
