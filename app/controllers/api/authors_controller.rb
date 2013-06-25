@@ -12,7 +12,19 @@ class Api::AuthorsController < ApplicationController
     @author.update_attribute(:notify_me,params[:notify_me]) if @author.present?
     render
   end
-  
+
+  # modify author if rdf user changed email or username.
+  def modify_author
+    if Site.get_site(params[:site_key]).first.present?
+      author = Author.find_author(params[:key]).first
+      if author.present?
+        author.update_column(:author_email, params[:email])
+        author.update_column(:author_name, params[:username])
+      end
+    end
+    render :nothing => true
+  end
+
   def return_encoded_email
     if Site.get_site(params[:site_key]).first.present?
       author = Author.find_author(params[:key]).first
