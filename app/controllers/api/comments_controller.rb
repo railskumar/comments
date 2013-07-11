@@ -117,6 +117,21 @@ class Api::CommentsController < ApplicationController
     @topic_votes = Topic.lookup(@site_key, @topic_key).get_users_topic_like("Topic")
   end
 
+  def get_topic_comments
+    prepare!([:site_key, :topic_key],[:json, :html])
+    topic = Topic.lookup(@site_key, @topic_key)
+    comments = topic.topic_comments.newest.limit(4) unless topic.blank?
+    comment_list = comments.map{|comment|
+      { content: comment.content[0..60],
+        referer: comment.referer,
+        author: comment.author.author_name.capitalize,
+        author_key: comment.author.hash_key,
+        timestamp: get_timestamp(comment.created_at)
+      }
+    }
+    render json: comment_list.to_json
+  end
+
 private
   def get_boolean_param(name, default = false)
     if params[name].present?
