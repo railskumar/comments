@@ -36,6 +36,7 @@ Juvia.updateComment = (this_obj) ->
     restrict_comment_length: @restrict_comment_length
     comment_id: comment_id
     content: @compress($comment_input.val())
+    author_key: $("input[name=\"author_key\"]", form).val()
 
 
 Juvia.resumeEdit = ($main_edit) ->
@@ -120,6 +121,7 @@ Juvia.rdf_comment_box = (option) ->
   abaa = document.createElement("div")
   if editable()
     abaa.className = "juvia-comment-pure-content juvia-comment-editable-content"
+    abaa.setAttribute "data-key", comment_author_key
   else
     abaa.className = "juvia-comment-pure-content"
   

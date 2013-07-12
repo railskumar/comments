@@ -72,6 +72,7 @@ class Api::CommentsController < ApplicationController
     end
     @site = Site.find_by_key(@site_key)
     @comment = Comment.find(params[:comment_id])
+    raise CanNotEditComment if @comment.author.hash_key != params[:author_key]
     if @comment.update_attributes(
       :author_ip => request.env['REMOTE_ADDR'],
       :author_user_agent => request.env['HTTP_USER_AGENT'],

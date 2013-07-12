@@ -13,6 +13,7 @@ es:
   close_btn: Cerrar
   comments: Comentarios
   commenting_closed: Commenting closed.
+  comment_edit_message: "You can not edit comment."
   compose_new_comment: Redacte un nuevo comentario
   confirm_message_flag: ¿Está seguro de querer notificar este comentario?
   delete_confirm_msg: ¿Está seguro de querer eliminar este comentario?

@@ -20,6 +20,8 @@ class ApplicationController < ActionController::Base
   end
   class CanNotPostComment < StandardError
   end
+  class CanNotEditComment < StandardError
+  end
 
   rescue_from MissingParameter do |exception|
     render :partial => 'api/missing_parameter'
@@ -29,6 +31,10 @@ class ApplicationController < ActionController::Base
   end
   rescue_from CanNotPostComment do |exception|
     flash[:err_msg] = "#{t(:post_comment_delay_message, :post_delay => Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes.to_i.to_s)}"
+    render :partial => 'can_not_post_comment'
+  end
+  rescue_from CanNotEditComment do |exception|
+    flash[:err_msg] = "#{t(:comment_edit_message)}"
     render :partial => 'can_not_post_comment'
   end
 
