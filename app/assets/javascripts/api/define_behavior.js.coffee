@@ -17,8 +17,8 @@ Juvia.reinstallBehavior = ->
         self.authorSetting event
 
   $(".juvia-comment-editable-content:not(juvia-installed-behavior)").each ->
-    if self.user_logged_in and self.author_key is $(".juvia-comment-pure-content").data("key")
-      $this = $(this)
+    $this = $(this)
+    if self.user_logged_in and self.author_key is $this.data("key")
       $this.addClass "juvia-installed-behavior"
       $this.bind "dblclick", ->
         self.editComment this
