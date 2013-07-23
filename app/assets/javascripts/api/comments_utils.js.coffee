@@ -401,6 +401,7 @@ Juvia.submitComment = (event) ->
     author_key: $("input[name=\"author_key\"]", form).val()
     parent_id: $("input[name=\"parent_id\"]", form).val()
     content: @compress($("textarea[name=\"content\"]", form).val())
+    auth_token: @auth_token
 
 
 # The browser does not save the content of the Juvia comments box when
@@ -483,6 +484,7 @@ Juvia.topicNotification = (event, this_obj) ->
     
   opt2 =
     author_key: $("input[name=\"author_key\"]", $container).val()
+    auth_token: @auth_token
   if $this.hasClass("subscribe")
     $this.removeClass "subscribe"
     @loadJsScript "/api/authors/destroy_topic_notification", $.extend(opt1, opt2)

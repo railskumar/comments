@@ -1,3 +1,5 @@
+require 'openssl'
+require 'base64'
 class Site < ActiveRecord::Base
   belongs_to :user, :inverse_of => :sites
   has_many :topics, :inverse_of => :site, :dependent => :destroy
@@ -21,6 +23,7 @@ class Site < ActiveRecord::Base
                   :notify_comment_count_url, :as => :admin
   
   default_value_for(:key) { SecureRandom.hex(20).to_i(16).to_s(36) }
+  after_create :create_secret_key
 
   scope :get_site, lambda { |site_key| where('key =?', site_key) }
 
@@ -62,6 +65,21 @@ class Site < ActiveRecord::Base
       }
     end
     result
+  end
+
+  def create_secret_key
+    update_attribute(:secret_key, generate_secret_key)
+  end
+
+  # Generates a Base64 encoded, randomized secret key
+  def generate_secret_key
+    random_bytes = OpenSSL::Random.random_bytes(512)
+    b64_encode(Digest::SHA2.new(512).digest(random_bytes))
+  end
+
+  # Remove the ending new line character added by default
+  def b64_encode(string)
+    Base64.encode64(string).strip
   end
 
 private

@@ -46,6 +46,8 @@ function hideEmbeddingCode() {
     </div>
     <div class="row" style="margin-top: 1em">
       <div class="col_12 omega">
+        <strong>Secret key</strong><br>
+        <input type="text" readonly value="<%= @site.secret_key %>" onclick="this.select()"><br>
         <strong>Site key</strong><br>
         <input type="text" readonly value="<%= @site.key %>" onclick="this.select()">
         <%= button_link_to 'Show embedding code',

@@ -17,6 +17,7 @@ if (!Juvia) {
     root_url: '',
     juvia_jquery: '',
     perma_link_comment_id: '',
-    translated_locale: ''
+    translated_locale: '',
+    auth_token: ''
 	};
 }

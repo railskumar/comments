@@ -4,10 +4,11 @@ class Api::AuthorsController < ApplicationController
   
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
-  respond_to :html, :json
+  before_filter :authentic, :only=>[:update_author, :create_topic_notification, :destroy_topic_notification]
+  respond_to :html, :json  
 
   def update_author
-    prepare!([:author_key, :notify_me], [:js])
+    prepare!([:auth_token, :site_key, :author_key, :notify_me, :auth_token], [:js])   
     @author = Author.find_author(params[:author_key]).first
     @author.update_attribute(:notify_me,params[:notify_me]) if @author.present?
     render
@@ -42,7 +43,7 @@ class Api::AuthorsController < ApplicationController
   end
 
   def create_topic_notification
-    prepare!([:author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
+    prepare!([:auth_token, :author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
     @author = Author.find_author(params[:author_key]).first
     @topic = Topic.lookup_or_create(params[:site_key], params[:topic_key], params[:topic_title], params[:topic_url])
     @topic_notification = TopicNotification.lookup_or_create_topic_notification(@author.id, @topic.id) if @topic.present?
@@ -51,7 +52,7 @@ class Api::AuthorsController < ApplicationController
   end
   
   def destroy_topic_notification
-    prepare!([:author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
+    prepare!([:auth_token, :author_key,:site_key,:topic_key,:topic_title,:topic_url], [:js])
     author = Author.find_author(params[:author_key]).first
     topic = Topic.lookup_or_create(params[:site_key], params[:topic_key], params[:topic_title], params[:topic_url])
     @topic_notification = topic.topic_notifications.where(author_id: author).first if topic.present?

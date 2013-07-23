@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
   end
   class CanNotEditComment < StandardError
   end
+  class UnauthoriseAccess < StandardError
+  end
 
   rescue_from MissingParameter do |exception|
     render :partial => 'api/missing_parameter'
@@ -36,6 +38,9 @@ class ApplicationController < ActionController::Base
   rescue_from CanNotEditComment do |exception|
     flash[:err_msg] = "#{t(:comment_edit_message)}"
     render :partial => 'can_not_post_comment'
+  end
+  rescue_from UnauthoriseAccess do |exception|
+    render :partial => 'api/unauthorise_access'
   end
 
   def set_locale
@@ -133,6 +138,36 @@ class ApplicationController < ActionController::Base
   
   def new_comment_posted?(last_comment)
     $redis.get(:last_comment) != last_comment
+  end
+
+  def authentic
+    site = Site.get_site(params[:site_key]).first
+    raise UnauthoriseAccess if !site.present? or params[:author_key].blank? or params[:auth_token].blank?
+    client_secret_key = decrypt_secret_key(params[:auth_token])
+    client_author_key = decrypt_author_key(params[:auth_token])
+    raise UnauthoriseAccess if (client_secret_key != site.secret_key) || (client_author_key != params[:author_key])
+  end
+
+  def decrypt_secret_key(auth_token)
+    secret_key = ""
+    counter = 1
+    auth_token.split("").each_with_index do |k,index|
+      start = index*6
+      if index > 8
+        start = start - counter
+        counter = counter + 1
+      end
+      secret_key<<auth_token[start..start+4] unless auth_token[start..start+4].blank?
+    end
+    return secret_key
+  end
+  
+  def decrypt_author_key(auth_token)
+    author_key = ""
+    auth_token.split("").each_with_index do |k,index|
+      author_key << auth_token[5*(index+1)+index] if index < 8 and !auth_token[5*(index+1)+index].blank?
+    end
+    return author_key
   end
 
 private

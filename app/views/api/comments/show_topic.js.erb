@@ -9,6 +9,7 @@
 <% if @user_logged_in %> 
   Juvia.user_logged_in = true;
   Juvia.author_key = '<%= @current_author.hash_key %>';
+  Juvia.auth_token = '<%= @auth_token %>';
 <% end %>
 
 <% if @restrict_comment_length %> 

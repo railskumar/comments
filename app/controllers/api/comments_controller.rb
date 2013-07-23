@@ -5,9 +5,10 @@ class Api::CommentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :authenticate_user!
   before_filter :handle_cors, :populate_variables
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
+  before_filter :authentic, :only => [ :add_comment, :update_comment, :destroy ]
 
   def show_topic
-    @topic_title, @topic_url = params[:topic_title], params[:topic_url]
+    @topic_title, @topic_url, @auth_token = params[:topic_title], params[:topic_url], params[:auth_token]
     @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
     prepare!([:site_key, :topic_key, :container, :topic_title, :topic_url], [:html, :js])
     @topic = Topic.lookup(@site_key, @topic_key)
@@ -65,14 +66,14 @@ class Api::CommentsController < ApplicationController
   end
 
   def update_comment
-    prepare!([:site_key, :content, :comment_id], [:js, :json])
+    prepare!([:site_key, :content, :comment_id, :auth_token], [:js, :json])
     if @content.blank?
       render :partial => 'content_may_not_be_blank'
       return
     end
     @site = Site.find_by_key(@site_key)
     @comment = Comment.find(params[:comment_id])
-    raise CanNotEditComment if @comment.author.hash_key != params[:author_key]
+    raise CanNotEditComment if @comment.author.hash_key != params[:author_key]   
     if @comment.update_attributes(
       :author_ip => request.env['REMOTE_ADDR'],
       :author_user_agent => request.env['HTTP_USER_AGENT'],
@@ -93,7 +94,6 @@ class Api::CommentsController < ApplicationController
     else
       render :partial => 'api/site_not_found'
     end
-
   end
 
   def sort_comment

@@ -37,6 +37,7 @@ Juvia.updateComment = (this_obj) ->
     comment_id: comment_id
     content: @compress($comment_input.val())
     author_key: $("input[name=\"author_key\"]", form).val()
+    auth_token: @auth_token
 
 
 Juvia.resumeEdit = ($main_edit) ->

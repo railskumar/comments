@@ -201,6 +201,7 @@ Juvia.authorSetting = (event) ->
     author_key: a_key
     notify_me: a_notification_setting
     site_key: $container.data("site-key")
+    auth_token: @auth_token
   
   opt2 = {}
   
@@ -223,6 +224,7 @@ Juvia.deleteComment = (event, this_obj) ->
     site_key: $container.data("site-key")
     comment_key: $this.data("comment-id")
     author_key: @author_key
+    auth_token: @auth_token
 
   false
 
