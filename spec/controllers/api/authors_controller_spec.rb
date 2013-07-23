@@ -54,6 +54,7 @@ describe Api::AuthorsController do
   def get_params(options = {})
     {
       :author_key => @author.hash_key,
+      :auth_token => encrypt_token(@site.secret_key, @author.hash_key),
       :notify_me => "0", 
       :site_key => @site.key, 
       :topic_key => @topic.key, 

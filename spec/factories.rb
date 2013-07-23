@@ -21,6 +21,7 @@ FactoryGirl.define do
   factory :hatsuneshima, :class => Site do
     name 'Hatsuneshima'
     key 'hatsuneshima'
+    secret_key 'mI5VobgtXBnd3DLEM6we03L1JeLgBcT5ZDg1Hcg709jh7'
   end
   
   factory :site1, :class => Site do

@@ -18,6 +18,7 @@
     var topic_title = document.title || topic_url;
     var use_my_user = 'true';
     var author_key = '<%=params[:author_key]%>';
+    var auth_token = '<%=params[:auth_token]%>';
     var logged_in_message = 'please logged in to make comment';
     <% if params[:guest_view] == "1" %>
       var username = '';
@@ -47,6 +48,7 @@
       '&username=' + encodeURIComponent(username) +
       '&user_email=' + encodeURIComponent(user_email) +
       '&author_key=' + encodeURIComponent(author_key) +
+      '&auth_token=' + encodeURIComponent(auth_token) +
       '&user_image=' + encodeURIComponent(user_image);
     (document.getElementsByTagName('head')[0] ||
      document.getElementsByTagName('body')[0]).appendChild(s);

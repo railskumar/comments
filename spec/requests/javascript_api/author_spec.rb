@@ -5,7 +5,9 @@ describe "Javascript API", "error handling" do
     
     def create_new_topic
       admin = FactoryGirl.create(:admin)
+      Site.skip_callback(:create, :after, :create_secret_key)
       site  = FactoryGirl.create(:hatsuneshima, :user_id => admin.id)
+      Site.set_callback(:create, :after, :create_secret_key)
       topic = FactoryGirl.create(:topic,:site_id => site.id)
     end
     
@@ -24,7 +26,8 @@ describe "Javascript API", "error handling" do
           create_new_topic
           topic = Topic.last
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => false)
-          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
+          auth_token = encrypt_token(topic.site.secret_key, author.hash_key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key, :auth_token => auth_token})
           find("#juvia-setting").click
           find("#juvia-author-setting").text.should include("Email Notification is OFF")
           find("#author_email_setting").click
@@ -39,7 +42,8 @@ describe "Javascript API", "error handling" do
           create_new_topic
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
           topic = Topic.last
-          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
+          auth_token = encrypt_token(topic.site.secret_key, author.hash_key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key, :auth_token => auth_token})
           find("#juvia-setting").click
           find("#juvia-author-setting").text.should include("Email Notification is ON")
           find("#author_email_setting").click
@@ -57,7 +61,8 @@ describe "Javascript API", "error handling" do
           topic = Topic.last
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
           topic_notification = FactoryGirl.create(:topic_notification, :author_id => author.id, :topic_id => topic.id)
-          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
+          auth_token = encrypt_token(topic.site.secret_key, author.hash_key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key, :auth_token => auth_token})
           find("#subscriber_email").text.should include(I18n.t(:topic_notification_on))
           find("#subscriber_email").click
           within(".juvia_email_notification") do
@@ -69,7 +74,8 @@ describe "Javascript API", "error handling" do
           create_new_topic
           topic = Topic.last
           author = FactoryGirl.create(:author, :author_email => 'user@mail.com', :notify_me => true)
-          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key})
+          auth_token = encrypt_token(topic.site.secret_key, author.hash_key)
+          show_topic(topic.site.key, topic.key,{:author_key=>author.hash_key, :auth_token => auth_token})
           find("#subscriber_email").text.should include(I18n.t(:topic_notification_off))
         end
       end

@@ -24,7 +24,7 @@ module SpecSupport
   
   def show_topic(site_key, topic_key, options = {})
     if options[:guest_view].blank?
-      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&author_key=#{options[:author_key]}")
+      visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&author_key=#{options[:author_key]}&auth_token=#{options[:auth_token]}")
     else
       visit("/test/js_api?site_key=#{site_key}&topic_key=#{topic_key}&guest_view=#{options[:guest_view]}")
     end
@@ -41,5 +41,16 @@ module SpecSupport
       end
     end
     fail "Something that should eventually happen never happened"
+  end
+  
+  def encrypt_token(secret_key, author_hash_key)
+    author_key_ary = author_hash_key.chars.each_slice(1).map(&:join)
+    secret_key_ary = secret_key.chars.each_slice(5).map(&:join)
+    token = []
+    secret_key_ary.each_with_index do |key, index|
+      token.push(key)
+      token.push(author_key_ary[index]) unless author_key_ary[index].blank?
+    end
+    return token.join("")
   end
 end
