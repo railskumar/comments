@@ -82,6 +82,7 @@ es:
   topic_notification_off: Topic Email Notification OFF
   topic_notification_on: Topic Email Notification ON
   total_comment_title: comentarios
+  unauthorise_access: Unauthorise access
   unliked: Ya no me gustó
   unordered: Con viñetas
   users_guests_liked_this: "A %{users} usuarios y %{guests} invitados les gustó esto."

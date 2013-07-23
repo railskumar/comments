@@ -82,7 +82,8 @@ de:
   topic_notification_off: Topic Email Notification OFF
   topic_notification_on: Topic Email Notification ON
   total_comment_title: Kommentar
-  unordered: Ungeordnet
+  unauthorise_access: Unauthorise access
+  unordered: Ungeordnet  
   users_guests_liked_this: "%{users} Benutzerern und %{guests} Besuchern gefällt das."
   users_liked_this: "%{users} Benutzerern gefällt das."
   users_one_guest_liked_this: "%{users} Benutzerern und einem Besucher gefällt das."

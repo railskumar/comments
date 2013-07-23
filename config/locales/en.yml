@@ -82,6 +82,7 @@ en:
   topic_notification_off: Topic Email Notification OFF
   topic_notification_on: Topic Email Notification ON
   total_comment_title: comments
+  unauthorise_access: Unauthorise access
   unliked: Unliked
   unordered: Unordered
   users_guests_liked_this: "%{users} users and %{guests} guests liked this."
