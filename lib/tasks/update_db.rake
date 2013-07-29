@@ -21,4 +21,13 @@ namespace :update_db do
       user.save
     end
   end
+  
+  desc "Generate secret key for site."
+  task :generate_secret_key_for_site => :environment do
+    Site.where("secret_key IS NULL").each do |site|
+      puts "updating site secret key: #{site.generate_secret_key}"
+      site.secret_key = site.generate_secret_key
+      site.save
+    end
+  end
 end
