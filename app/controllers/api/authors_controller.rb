@@ -21,6 +21,7 @@ class Api::AuthorsController < ApplicationController
       if author.present?
         author.update_column(:author_email, params[:email])
         author.update_column(:author_name, params[:username])
+        author.update_column(:disabled, params[:disabled])
       end
     end
     render :nothing => true

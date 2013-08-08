@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     render :partial => 'can_not_post_comment'
   end
   rescue_from UnauthoriseAccess do |exception|
-    render :partial => 'api/unauthorise_access'
+    render :partial => 'api/unauthorise_access', :formats => [:json, :js]
   end
 
   def set_locale
@@ -146,6 +146,8 @@ class ApplicationController < ActionController::Base
     client_secret_key = decrypt_secret_key(params[:auth_token])
     client_author_key = decrypt_author_key(params[:auth_token])
     raise UnauthoriseAccess if (client_secret_key != site.secret_key) || (client_author_key != params[:author_key])
+    author = Author.find_author(params[:author_key]).first
+    raise UnauthoriseAccess if author.present? and author.disabled
   end
 
   def decrypt_secret_key(auth_token)
