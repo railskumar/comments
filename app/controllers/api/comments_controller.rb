@@ -8,14 +8,16 @@ class Api::CommentsController < ApplicationController
   before_filter :authentic, :only => [ :add_comment, :update_comment, :destroy ]
 
   def show_topic
-    @topic_title, @topic_url, @auth_token = params[:topic_title], params[:topic_url], params[:auth_token]
+    @topic_title, @topic_url, @auth_token, @user_type = params[:topic_title], params[:topic_url], params[:auth_token], params[:user_type]
     @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
+    @is_commentable = (params[:is_commentable] == "true" )
+    @container = params[:container]
     prepare!([:site_key, :topic_key, :container, :topic_title, :topic_url], [:html, :js])
     @topic = Topic.lookup(@site_key, @topic_key)
     topic_url_arr = params[:topic_url].split('#')
     @perma_link_comment_id = topic_url_arr[1].blank? ? nil : topic_url_arr[1].split('-')[2]
     if @topic
-      @notify_on = Author.notifier?(@current_author.hash_key) if @require_external_user and @user_logged_in
+      #@notify_on = Author.notifier?(@current_author.hash_key) if @require_external_user and @user_logged_in
       render 
     else
       render :partial => 'api/site_not_found'
@@ -23,23 +25,26 @@ class Api::CommentsController < ApplicationController
   end
 
   def load_comments
-    prepare!([:site_key, :topic_key, :topic_title, :topic_url, :sorting_order], [:html, :js])
+    prepare!([:site_key, :topic_key, :topic_title, :topic_url, :sorting_order, :container], [:html, :js])
     @topic_title, @topic_url = params[:topic_title], params[:topic_url]
     list_comments(params[:perma_link_comment_id])
   end
 
   def show_comments
     prepare!([:site_key, :topic_key, :topic_url, :sorting_order, :page],[:html, :js])
+    @container = params[:container]
     list_comments
   end
 
   def add_comment
     prepare!([:site_key, :topic_key, :topic_title, :topic_url, :content], [:html, :js, :json])
+    @user_type = params[:type]
     if @content.blank?
       render :partial => 'content_may_not_be_blank'
       return
     end
     comment_post_ability!(params[:author_key])
+
     @author = Author.find_author(params[:author_key]).first
     Topic.transaction do
       @topic = Topic.lookup_or_create(
@@ -58,6 +63,7 @@ class Api::CommentsController < ApplicationController
           :author_user_agent => request.env['HTTP_USER_AGENT'],
           :referer => request.env['HTTP_REFERER'],
           :content => @content,
+          :type => params[:type],
           :parent_id => parent_id)
       else
         render :partial => 'api/site_not_found'
@@ -156,13 +162,22 @@ private
     @topic = Topic.lookup(@site_key, @topic_key)
     @perma_link_comment = perma_link_comment_id.blank? ? nil : @topic.comments.where(comment_number:perma_link_comment_id).first
     if @topic
-      @comments = order_by_params(params[:sorting_order]).page(params[:page] || 1).per(PER_PAGE)
+      @comments = lookup_by_type(params[:user_type]).page(params[:page] || 1).per(PER_PAGE)
       render
     else
       render :partial => 'api/site_not_found'
     end
   end
   
+  def lookup_by_type type
+    case type
+      when "Supporter"
+        comments = @topic.topic_comments.supporters
+      else
+        comments = @topic.topic_comments.opposers
+    end
+  end
+
   def order_by_params sort_order
     case sort_order
       when "oldest"

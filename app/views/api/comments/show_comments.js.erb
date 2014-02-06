@@ -2,7 +2,7 @@
   <% comments.each_with_index do |comment, index| %>
     <% 
       options = comment_hash(comment, @current_author, {:topic_url => @topic.url })
-      options.merge!({'action' => 'LoadComment'})
+      options.merge!({'action' => 'LoadComment', 'container' => @container})
     %>
     <%= juvia_handle_load_comment(options) %>
   <% end %> 

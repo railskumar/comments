@@ -268,13 +268,14 @@ Juvia.handleLoadUserComment = (options) ->
 
 
 Juvia.handleLoadComment = (options) ->
+
   if options.perma_link_comment_box == 'true'
     dom_ele = @rdf_comment_box(options)
-    @appendComment dom_ele
+    @appendComment(dom_ele, options.container)
   else
     unless options.comment_number.toString() is @perma_link_comment_id
       dom_ele = @rdf_comment_box(options)
-      @appendComment dom_ele
+      @appendComment(dom_ele, options.container)
 
 Juvia.showUsers = (users, status) ->
   users_liked_str = ""
@@ -306,7 +307,7 @@ Juvia.handleAddComment = (options) ->
   if comments.hasClass("juvia-no-comments")
     comments.removeClass "juvia-no-comments"
     comments.html ""
-  @prependComment comment
+  @prependComment comment, container
   $(".juvia-preview-empty", container).show()
   $(".juvia-preview-content", container).hide()
   container.find("form")[0].reset()
@@ -400,6 +401,7 @@ Juvia.submitComment = (event) ->
     restrict_comment_length: @restrict_comment_length
     author_key: $("input[name=\"author_key\"]", form).val()
     parent_id: $("input[name=\"parent_id\"]", form).val()
+    type: $("input[name=\"comment_type\"]", form).val()
     content: @compress($("textarea[name=\"content\"]", form).val())
     auth_token: @auth_token
 

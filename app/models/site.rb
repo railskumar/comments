@@ -25,7 +25,7 @@ class Site < ActiveRecord::Base
   default_value_for(:key) { SecureRandom.hex(20).to_i(16).to_s(36) }
   after_create :create_secret_key
 
-  scope :get_site, lambda { |site_key| where('key =?', site_key) }
+  scope :get_site, lambda { |site_key| where(:key => site_key) }
 
   def public_topics_info
     result = []

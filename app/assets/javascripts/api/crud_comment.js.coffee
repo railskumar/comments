@@ -69,17 +69,18 @@ Juvia.handleUpdateComment = (options) ->
 
 Juvia.findContainer = (options) ->
   $ = @$
-  $ ".juvia-container[data-site-key=\"" + options.site_key + "\"][data-topic-key=\"" + options.topic_key + "\"]"
+  $ ".juvia-container[data-user-type=\"" + options.user_type + "\"][data-site-key=\"" + options.site_key + "\"][data-topic-key=\"" + options.topic_key + "\"]"
 
 
-Juvia.appendComment = (dom_element) ->
+Juvia.appendComment = (dom_element, container) ->
   $ = @$
-  $("#juvia-comments-box").append dom_element
+  $comment_container = $(container).find("#juvia-comments-box")
+  $comment_container.append dom_element
 
 
-Juvia.prependComment = (dom_element) ->
+Juvia.prependComment = (dom_element, container) ->
   $ = @$
-  $(dom_element).prependTo $("#juvia-comments-box")
+  $(dom_element).prependTo $("#juvia-comments-box", container)
 
 
 Juvia.rdf_comment_box = (option) ->
@@ -109,7 +110,7 @@ Juvia.rdf_comment_box = (option) ->
   
   # Start Header creation 
 
-  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle' data-author-key='" + comment_author_key + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span10 author-span'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span2 permalink-span'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span3'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span2'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
+  $(a).html "<div class='row-fluid'><div class='span1'><div class='row-fluid'><div class='span10 juvia-avatar'><img width='64'height='38'class='img-circle' data-author-key='" + comment_author_key + "'src='" + user_image + "'></div></div></div><div class='span11 rdf-comment-header'><div class='row-fluid'><div class='span9 author-span'><span class='header-user-name juvia-author-name'>" + user_name + "</span></div><div class='span3 permalink-span'><div class='row-fluid'><div class='span3'></div><div class='span3 permalink' id = 'permalink-" + comment_number + "' onclick=Juvia.permalinkToComment(\"" + comment_permalink + "\");><i class='icon-tag'></i></div><div class='span3'><span class='pull-right'>" + comment_number + "</span></div><div class='span1'></div><div class='span2'><span data-divid='divid" + comment_id + "'class='collapse_link_class'href='#divid" + comment_id + "'data-toggle='jcollapse'><i class='icon-minus'id='comment_sign_divid" + comment_id + "'></i></span></div></div></div></div></div></div>"
   
   # end Comment Header Bar
   ab = document.createElement("div")

@@ -23,6 +23,8 @@ Juvia.reqLoadComment = ->
     author_key: self.author_key
     restrict_comment_length: self.restrict_comment_length
     use_my_user: self.use_my_user
+    user_type: self.user_type
+    container: self.container
     user_logged_in: self.user_logged_in
     perma_link_comment_id: self.perma_link_comment_id
   s = document.createElement("script")

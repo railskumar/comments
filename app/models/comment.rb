@@ -5,7 +5,7 @@ require 'cgi'
 class Comment < ActiveRecord::Base
   class AkismetError < StandardError
   end
-  attr_accessible :author_id, :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id
+  attr_accessible :author_id, :topic_id, :moderation_status, :author_name, :author_email, :author_ip, :author_user_agent, :referer, :content, :comment_number, :vote_counts, :flag_status, :votes_value, :parent_id, :type
   COMMENT_EDIT_DURATION = 1.hour
   LIMIT = 10
   

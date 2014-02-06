@@ -1,8 +1,10 @@
 <form
 method="post"
 action="javascript:void(0)"
-class="juvia-add-comment-form">
+class="juvia-add-comment-form" style="display: <%= @is_commentable ? 'block' : 'none'%>">
     <input type="hidden" name="author_key" value="<%=@current_author.hash_key%>" >
+    <input type="hidden" name="comment_type" value="<%=@user_type%>" >
     <input type="hidden" name="parent_id" value="" >
+    
 	<%= render :partial => 'input_form' %>
 </form>

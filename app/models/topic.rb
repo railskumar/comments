@@ -15,8 +15,17 @@ class Topic < ActiveRecord::Base
     end
 
     def most_popular
-      order("votes_value DESC NULLS LAST")
+      order("ISNULL(votes_value) ASC, votes_value DESC")
     end
+
+    def supporters
+      where(:type => "Supporter").order("created_at DESC")
+    end
+
+    def opposers
+      where(:type => "Opposer").order("created_at DESC")
+    end
+   
   end
 
   validates_presence_of :key

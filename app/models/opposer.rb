@@ -1,0 +1,2 @@
+class Opposer < Comment
+end

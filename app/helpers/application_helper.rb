@@ -3,7 +3,7 @@ module ApplicationHelper
 
   include ActionView::Helpers::DateHelper
   
-  PER_PAGE = 60
+  PER_PAGE = 20
 
   def locale_list
     [['English','en'],['Spanish','es'],['German','de']]

@@ -9,18 +9,19 @@ if(Juvia.total_pages > 1){
     options = comment_hash(@perma_link_comment, @current_author, {:topic_url => @topic.url })
     options.merge!({'action' => 'LoadComment', 'perma_link_comment_id' => @perma_link_comment.comment_number, 'perma_link_comment_box' => 'true'})
   %>
-  <%= juvia_handle_load_comment(options) %>
+  <%#= juvia_handle_load_comment(options) %>
 <% end %>
 
 <% if (comments = @comments).size > 0 %>
   <% comments.each_with_index do |comment, index| %>
     <% 
       options = comment_hash(comment, @current_author, {:topic_url => @topic.url})
-      options.merge!({'action' => 'LoadComment', 'perma_link_comment_id' => @perma_link_comment.blank? ? "" : @perma_link_comment.comment_number, 'perma_link_comment_box' => 'false'})
+      options.merge!({'action' => 'LoadComment', 'container' => @container, 'perma_link_comment_id' => @perma_link_comment.blank? ? "" : @perma_link_comment.comment_number, 'perma_link_comment_box' => 'false'})
     %>
     <%= juvia_handle_load_comment(options) %>
   <% end %>
 <% end %>
+
 <%= juvia_reinstall_behavior %>
 
 <% if @perma_link_comment.present? %>

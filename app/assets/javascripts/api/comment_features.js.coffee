@@ -8,11 +8,14 @@ Juvia.showMoreComments = (this_obj) ->
   $this = $(this_obj)
   $this.hide()
   form = $("#juvia-sort-select")
-  $container = $(form).closest(".juvia-container")
+  
+  $container = $(this_obj).data("container")
+  $juviacontainer = $($container).find(".juvia-container")
   @loadJsScript "/api/comments/show_comments",
-    site_key: $container.data("site-key")
-    topic_key: $container.data("topic-key")
-    topic_url: $container.data("topic-url")
+    site_key: $juviacontainer.data("site-key")
+    topic_key: $juviacontainer.data("topic-key")
+    topic_url: $juviacontainer.data("topic-url")
+    container: $container
     page: page_num
     sorting_order: current_sorting_order
 

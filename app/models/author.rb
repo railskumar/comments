@@ -22,11 +22,12 @@ class Author < ActiveRecord::Base
 
   def Author.can_post?(key)
     author = Author.find_author(key).first
-    if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes > Time.zone.now - author.last_posted_at)
-     return false
-    else
-     return true
-    end
+    return author.present?
+    #if author.present? and (Settings.juvia_comment.COMMENT_POST_DURATION.to_f.minutes > Time.zone.now - author.last_posted_at)
+    # return false
+    #else
+    # return true
+    #end
   end
   
   def self.lookup_or_create_author(email, username)
