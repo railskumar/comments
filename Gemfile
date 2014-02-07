@@ -5,7 +5,7 @@ gem 'rails'
 # heroku gems and services
 ruby "1.9.3"
 gem 'mysql2'
-
+gem 'dalli'
 gem 'schema_plus'
 gem 'default_value_for'
 gem 'bluecloth'
