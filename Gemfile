@@ -4,10 +4,7 @@ gem 'rails'
 
 # heroku gems and services
 ruby "1.9.3"
-gem 'pg'
-gem 'dalli'
-gem 'heroku'
-gem 'unicorn'
+gem 'mysql2'
 
 gem 'schema_plus'
 gem 'default_value_for'
@@ -18,22 +15,19 @@ gem 'kaminari'
 gem 'css3buttons'
 gem 'cancan'
 gem 'inherited_resources'
-gem 'exceptional'
-gem 'newrelic_rpm'
 gem 'redis'
 gem 'bcrypt-ruby'
 gem 'rails_config'
 gem 'nokogiri', :require => 'open-uri'
-gem 'delayed_job_active_record'
 gem "rest-client"
-
+gem 'capistrano'
+gem 'rvm-capistrano', '>= 1.1.0'
 group :development do
   gem 'guard-livereload'
 end
 
 group :development, :test do
   gem 'debugger'
-  gem 'mysql2'
   gem 'rspec-rails', '~> 2.4'
   gem 'capybara', :require => false
   gem 'capybara-webkit', :require => false
