@@ -22,6 +22,7 @@ gem 'nokogiri', :require => 'open-uri'
 gem "rest-client"
 gem 'capistrano'
 gem 'rvm-capistrano', '>= 1.1.0'
+gem "therubyracer"
 group :development do
   gem 'guard-livereload'
 end

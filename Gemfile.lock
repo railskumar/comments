@@ -129,6 +129,7 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.1.2)
       addressable (~> 2.3)
+    libv8 (3.16.14.3)
     listen (0.7.2)
     lumberjack (1.0.2)
     mail (2.5.3)
@@ -181,6 +182,7 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.2)
+    ref (1.0.5)
     responders (0.9.3)
       railties (~> 3.1)
     rest-client (1.6.7)
@@ -229,6 +231,9 @@ GEM
       sequel (~> 3.20.0)
       sinatra (~> 1.0.0)
     terminal-table (1.4.5)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -286,5 +291,6 @@ DEPENDENCIES
   spork (= 0.9.0.rc9)
   sqlite3
   taps
+  therubyracer
   thin
   uglifier

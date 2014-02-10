@@ -48,7 +48,7 @@
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>
-        <%= remove_button_link_to 'Delete', [:admin, comment.site, comment],
+        <%= remove_button_link_to 'Delete', [:admin, comment.site, comment.becomes(Comment)],
           :method => :delete,
           :confirm => 'Are you sure?',
           :return_to => request.fullpath %>
