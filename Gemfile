@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails'
-
+gem 'rack-ssl'
 # heroku gems and services
 ruby "1.9.3"
 gem 'mysql2'
