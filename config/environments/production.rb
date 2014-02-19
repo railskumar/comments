@@ -1,8 +1,8 @@
-require 'rack/ssl'
+#require 'rack/ssl'
 Juvia::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-  config.middleware.use Rack::SSL
-  config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
+  #config.middleware.use Rack::SSL
+  #config.middleware.insert_before ActionDispatch::Cookies, Rack::SSL
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -37,7 +37,7 @@ Juvia::Application.configure do
   config.cache_store = :dalli_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  config.action_controller.asset_host = "d2gticy66n56kj.cloudfront.net"
+  #config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( columnal.css api.js api.css)

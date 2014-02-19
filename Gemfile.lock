@@ -280,7 +280,6 @@ DEPENDENCIES
   launchy
   mysql2
   nokogiri
-  rack-ssl
   rails
   rails_config
   redis
