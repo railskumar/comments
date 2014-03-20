@@ -17,7 +17,7 @@ module ApiHelper
   end
 
   def avatar_img(author_email, author_email_md5)
-    default_url = "http://comments.richarddawkins.net/assets/default.jpg"
+    default_url = "https://comments.similaropinions.com/assets/default.jpg"
     if author_email
       return "http://www.gravatar.com/avatar/#{author_email_md5}? d=#{CGI.escape(default_url)}"
     else
