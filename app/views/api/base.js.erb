@@ -262,7 +262,7 @@ if (!Juvia) {
           var $this = $(this);
           $this.addClass('juvia-installed-behavior');
 		  $this.bind('click', function() {
-		    window.location = "/users?juvia=true&email=" + $this.data('user-email');
+		    window.location = "/users/profile?juvia=true&email=" + $this.data('user-email');
 		  });  
         });
 		

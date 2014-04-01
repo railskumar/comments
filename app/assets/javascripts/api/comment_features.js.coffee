@@ -232,4 +232,4 @@ Juvia.deleteComment = (event, this_obj) ->
   false
 
 Juvia.showUserComments = (key) ->
-  window.location = "/users?juvia=true&key=" + key
+  window.location = "/users/profile?juvia=true&key=" + key

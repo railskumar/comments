@@ -132,7 +132,7 @@ Juvia.rdf_comment_box = (option) ->
   aba.appendChild abaa
   abab = document.createElement("div")
   abab.className = "row-fluid juvia-comment-function"
-  aba.appendChild abab
+  #aba.appendChild abab
   ababa = document.createElement("div")
   if @user_logged_in and editable() or @user_logged_in
     ababa.className = "span7"
