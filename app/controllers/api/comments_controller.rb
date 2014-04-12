@@ -101,6 +101,17 @@ class Api::CommentsController < ApplicationController
       render :partial => 'api/site_not_found'
     end
   end
+  
+  def delete_topic_comments
+    prepare!([:site_key, :topic_key, :author_key], [ :js, :json])
+    author = Author.find_author(params[:author_key]).first
+    topic = Topic.lookup(@site_key, @topic_key)
+    comments = topic.topic_comments.where(:author_id => author.id)
+    comments.each do |comment|
+      comment.destroy
+    end
+    render :json => comments.map(&:id).to_json
+  end
 
   def sort_comment
     prepare!([:site_key, :topic_key, :topic_url, :topic_title, :sort], [:html, :js, :json])
