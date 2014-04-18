@@ -26,7 +26,9 @@ gem "therubyracer"
 group :development do
   gem 'guard-livereload'
 end
-
+group :production do
+  gem 'unicorn'
+end
 group :development, :test do
   gem 'debugger'
   gem 'rspec-rails', '~> 2.4'
