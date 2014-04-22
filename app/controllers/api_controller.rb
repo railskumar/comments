@@ -57,7 +57,7 @@ class ApiController < ApplicationController
   def latest_comments
     prepare!([:site_key],[:json])
     comments = Site.get_site(params[:site_key]).first.comments.recent_comments.page(params[:page].to_i || 1).per(5)
-    default_url = "https://comments.similaropinions.com/assets/default.jpg"
+    default_url = "https://comments.a-like.com/assets/default.jpg"
     comment_list = comments.map{|comment|
       { content: render_markdown(comment.content),
         referer: comment.referer,
