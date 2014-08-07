@@ -14,6 +14,6 @@ test:
   email_method: test
 
 production:
-  base_url: https://comments.alikemap.com
-  from: no-reply@alikemap.com
+  base_url: https://comments.voteatlas.com
+  from: no-reply@voteatlas.com
   email_method: smtp
