@@ -6,6 +6,10 @@ Juvia::Application.routes.draw do
   match 'api/topic/vote' => 'api/votes#topics_vote'
   match 'api/post/flag' => 'api/flags#post_report'
 
+  match 'api/comments/comment_all'
+  match 'api/comments/comment_delete'
+  match 'api/comments/comment_add'
+
   root :to => 'admin/dashboard#index'
 
   devise_for :users

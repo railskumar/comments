@@ -7,6 +7,55 @@ class Api::CommentsController < ApplicationController
   before_filter :check_restrict_comment_length, :only => [ :add_comment, :update_comment ]
   before_filter :authentic, :only => [ :add_comment, :update_comment, :destroy ]
 
+  def comment_all
+    topic = Topic.lookup(params[:site_key], params[:topic_key])
+    opposer_comments = Comment.where(:topic_id=>topic,:type => "Opposer").to_json(:include => { :author => { :only => :author_name } })
+    supporter_comments = Comment.where(:topic_id=>topic,:type => "Supporter").to_json(:include => { :author => { :only => :author_name } })
+    render :status => 200,
+      :json => {:opposer_comments=>JSON.parse(opposer_comments),
+              :supporter_comments=>JSON.parse(supporter_comments),
+              }
+  end  
+
+  def comment_delete
+    author = Author.find_author(params[:author_key]).first
+    topic = Topic.lookup(params[:site_key], params[:topic_key])
+    comments = topic.topic_comments.where(:author_id => author.id)
+    comments.each do |comment|
+      comment.destroy
+    end
+    render :json => comments.map(&:id).to_json
+  end  
+
+  def comment_add
+    @author = Author.find_author(params[:author_key]).first
+    Topic.transaction do
+      @topic = Topic.lookup_or_create(
+        params[:site_key],
+        params[:topic_key],
+        params[:topic_title],
+        params[:url_topic])
+      if @topic
+        parent_id = (Comment.where(id:params[:parent_id]).first.present?) ? params[:parent_id] : nil
+        @comment = @topic.comments.create!(
+          :comment_number => Comment.last_comment_number(@topic.comments) + 1,
+          :author_id => @author.present? ? @author.id : nil,
+          :author_name => params[:author_name],
+          :author_email => params[:author_email],
+          :author_ip => request.env['REMOTE_ADDR'],
+          :author_user_agent => request.env['HTTP_USER_AGENT'],
+          :referer => params[:url_topic],
+          :content => params[:content],
+          :type => params[:type],
+          :parent_id => parent_id)
+        render :json => {:comment => @comment}
+      else
+        render :json => "Not created"
+      end
+    end  
+  end  
+
+
   def show_topic
     @topic_title, @topic_url, @auth_token, @user_type = params[:topic_title], params[:topic_url], params[:auth_token], params[:user_type]
     @include_base, @include_css = get_boolean_param(:include_base, true), get_boolean_param(:include_css, true)
@@ -56,7 +105,7 @@ class Api::CommentsController < ApplicationController
         parent_id = (Comment.where(id:params[:parent_id]).first.present?) ? params[:parent_id] : nil
         @comment = @topic.comments.create!(
           :comment_number => Comment.last_comment_number(@topic.comments) + 1,
-          :author_id => @author.present? ? @author.id: nil,
+          :author_id => @author.present? ? @author.id : nil,
           :author_name => params[:author_name],
           :author_email => params[:author_email],
           :author_ip => request.env['REMOTE_ADDR'],
