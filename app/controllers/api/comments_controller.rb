@@ -93,7 +93,6 @@ class Api::CommentsController < ApplicationController
       return
     end
     comment_post_ability!(params[:author_key])
-
     @author = Author.find_author(params[:author_key]).first
     Topic.transaction do
       @topic = Topic.lookup_or_create(
