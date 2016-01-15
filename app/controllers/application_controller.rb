@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    @site = Site.where(key:params[:site_key]).first
+    @site = Site.where(:key => params[:site_key]).try(:first)
     I18n.locale = if @site.present? and !@site.locale.blank?
       @site.locale
     else
@@ -65,10 +65,10 @@ class ApplicationController < ActionController::Base
     Base64.decode64(str)
   end
 
-  def avatar_img(author_email, author_email_md5)
-    default_url = "https://comments.voteatlas.com/assets/default.jpg"
+  def avatar_img(author_email, author_email_md5, author_image)
+    default_url = author_image.present? ? author_image : "https://comments.voteatlas.com/assets/default.jpg"
     if author_email
-      return "https://gravatar.com/avatar/#{author_email_md5}.png?s=200&d=#{CGI.escape(default_url)}"
+      return author_image.present? ? author_image : "https://gravatar.com/avatar/#{author_email_md5}.png?s=200&d=#{CGI.escape(default_url)}"
     else
       return default_url
     end
@@ -145,6 +145,8 @@ class ApplicationController < ActionController::Base
     raise UnauthoriseAccess if !site.present? or params[:author_key].blank? or params[:auth_token].blank?
     client_secret_key = decrypt_secret_key(params[:auth_token])
     client_author_key = decrypt_author_key(params[:auth_token])
+    test = site.secret_key.split("\n")
+    site.secret_key = test[0]+test[1]
     raise UnauthoriseAccess if (client_secret_key != site.secret_key) || (client_author_key != params[:author_key])
     author = Author.find_author(params[:author_key]).first
     raise UnauthoriseAccess if author.present? and author.disabled

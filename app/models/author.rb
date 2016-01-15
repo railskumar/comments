@@ -1,12 +1,14 @@
 class Author < ActiveRecord::Base
   
-  attr_accessible :author_email, :notify_me, :last_posted_at, :author_name, :hash_key
+  attr_accessible :author_image, :author_email, :notify_me, :last_posted_at, :author_name, :hash_key
   scope :find_author, lambda{ |key| where('hash_key = ?', key) }
     
   has_many :topic_notifications, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_many :flags, :dependent => :destroy
   has_many :votes, :dependent => :destroy
+  has_attached_file :author_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :author_image, content_type: /\Aimage\/.*\Z/
   
   after_create :set_hash_key
   
