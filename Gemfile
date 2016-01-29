@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'rails'
 #gem 'rack-ssl'
 # heroku gems and services
-#-ruby "1.9.3"
+ruby "1.9.3"
 gem 'mysql2'
 gem 'dalli'
 gem 'schema_plus'
@@ -21,9 +21,9 @@ gem 'rails_config'
 gem 'nokogiri', :require => 'open-uri'
 gem "rest-client"
 gem 'capistrano'
-gem 'rvm-capistrano', '>= 1.1.0'
+gem 'rvm-capistrano', '>= 1.1.0',  require: false
 gem "therubyracer"
-gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
+
 group :development do
   gem 'guard-livereload'
 end

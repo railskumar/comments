@@ -14,14 +14,14 @@ class Api::AuthorsController < ApplicationController
     render
   end
 
-  # modify author if rdf user changed email or username.
-  def modify_author 
+  # modify author if rdf user changed email or username or email.
+  def modify_author
     if Site.get_site(params[:site_key]).first.present?
       author = Author.find_author(params[:key]).first
       if author.present?
-        author.update_attribute(:author_image, params[:image]) #if author.author_email != params[:email]
-        author.update_column(:author_email, params[:email]) if author.author_email != params[:email]
-        author.update_column(:author_name, params[:username]) if author.author_name != params[:username]
+        author.update_column(:author_image, params[:author_image]) if params[:author_image].present?
+        author.update_column(:author_email, params[:email]) if params[:email].present?
+        author.update_column(:author_name, params[:username]) if params[:username].present?
         author.update_column(:disabled, params[:disabled]) if params[:disabled].present?
       end
     end

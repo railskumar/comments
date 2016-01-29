@@ -6,10 +6,7 @@ class Author < ActiveRecord::Base
   has_many :topic_notifications, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_many :flags, :dependent => :destroy
-  has_many :votes, :dependent => :destroy
-  has_attached_file :author_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
-  validates_attachment_content_type :author_image, content_type: /\Aimage\/.*\Z/
-  
+  has_many :votes, :dependent => :destroy  
   after_create :set_hash_key
   
   def Author.notifier?(author_key)
