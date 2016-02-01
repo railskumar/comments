@@ -14,6 +14,6 @@ test:
   email_method: test
 
 production:
-  base_url: https://comments.voteatlas.com
-  from: no-reply@voteatlas.com
+  base_url: https://comments.likeminded.co
+  from: no-reply@likeminded.co
   email_method: smtp

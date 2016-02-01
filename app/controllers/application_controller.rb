@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def avatar_img(author_email, author_email_md5, author_image)
-    default_url = author_image.present? ? author_image : "https://comments.voteatlas.com/assets/default.jpg"
+    default_url = author_image.present? ? author_image : "https://comments.likeminded.co/assets/default.jpg"
     if author_email
       return author_image.present? ? author_image : "https://gravatar.com/avatar/#{author_email_md5}.png?s=200&d=#{CGI.escape(default_url)}"
     else
