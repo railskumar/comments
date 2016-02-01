@@ -62,7 +62,7 @@ module ApplicationHelper
   def comment_hash(comment, current_author, options = {})
     return {:comment_counter => 1,
             :comment_id => comment.id,
-            :user_image => avatar_img(comment.author.author_email, (comment.author.author_email_md5 rescue ''), comment.author.author_image.url),
+            :user_image => avatar_img(comment.author.author_image),
             :user_name => comment.author.author_name,
             :comment_text => render_markdown(comment.content),
             :creation_date => comment.created_at.strftime("%d-%b-%Y %H:%M %p"), 
@@ -78,7 +78,7 @@ module ApplicationHelper
   end
   
   def comment_users_hash(vote)
-    return {:comment_author_image => avatar_img(vote.author.author_email, (vote.author.author_email_md5 rescue '')),
+    return {:comment_author_image => avatar_img(vote.author.author_image),
             :comment_author_name => vote.author.author_name,
             :comment_author_key => vote.author.hash_key
     }

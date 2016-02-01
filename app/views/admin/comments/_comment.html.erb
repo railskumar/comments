@@ -3,7 +3,7 @@
   <div class="shell">
     <div class="metadata">
       <div class="avatar">
-  		  <img src="<%= avatar_img(comment.author.author_email, (comment.author.author_email_md5 rescue '')) %>"
+  		  <img src="<%= avatar_img(comment.author.author_image) %>"
   		  width="64"
   		  height="64"
   		  alt="<%= comment.author.author_name || 'Anonymous' %>">

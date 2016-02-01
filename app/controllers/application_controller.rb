@@ -65,13 +65,8 @@ class ApplicationController < ActionController::Base
     Base64.decode64(str)
   end
 
-  def avatar_img(author_email, author_email_md5, author_image)
-    default_url = author_image.present? ? author_image : "https://comments.likeminded.co/assets/default.jpg"
-    if author_email
-      return author_image.present? ? author_image : "https://gravatar.com/avatar/#{author_email_md5}.png?s=200&d=#{CGI.escape(default_url)}"
-    else
-      return default_url
-    end
+  def avatar_img(author_image)
+    author_image.blank? ? "https://comments.likeminded.co/assets/default.jpg" : author_image
   end
 
   def populate_variables

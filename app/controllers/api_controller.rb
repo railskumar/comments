@@ -66,7 +66,7 @@ class ApiController < ApplicationController
         count: comment.topic.comments.size,
         author: comment.author.author_name.capitalize,
         author_key: comment.author.hash_key,
-        image: avatar_img(comment.author.author_email, (comment.author.author_email_md5 rescue ''), comment.author.author_image.url),
+        image: avatar_img(comment.author.author_image),
         timestamp: get_timestamp(comment.created_at),
         comment_uid: comment.id.to_s,
         page: params[:page]

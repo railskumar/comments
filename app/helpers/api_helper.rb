@@ -16,13 +16,8 @@ module ApiHelper
   	"#{@jsonp}(#{options.to_json})".html_safe
   end
 
-  def avatar_img(author_email, author_email_md5)
-    default_url = "https://comments.likeminded.co/assets/default.jpg"
-    if author_email
-      return "https://www.gravatar.com/avatar/#{author_email_md5}? d=#{CGI.escape(default_url)}"
-    else
-      return default_url
-    end
+  def avatar_img(author_image)
+    author_image.blank? ? "https://comments.likeminded.co/assets/default.jpg" : author_image
   end
   
   def sorting_options
