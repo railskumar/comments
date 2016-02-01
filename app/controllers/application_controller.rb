@@ -141,7 +141,7 @@ class ApplicationController < ActionController::Base
     client_secret_key = decrypt_secret_key(params[:auth_token])
     client_author_key = decrypt_author_key(params[:auth_token])
     test = site.secret_key.split("\n")
-    site.secret_key = test[0]+test[1]
+    site.secret_key = test[0].to_s + test[1].to_s
     raise UnauthoriseAccess if (client_secret_key != site.secret_key) || (client_author_key != params[:author_key])
     author = Author.find_author(params[:author_key]).first
     raise UnauthoriseAccess if author.present? and author.disabled
